@@ -1,3 +1,22 @@
+.result {
+  background-color: #1e1e1e;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 800px;
+  box-shadow: 0 0 12px rgba(255,255,255,0.2);
+}
+.result h4 {
+  color: #ff9800;
+  margin-bottom: 10px;
+}
+.result img {
+  max-width: 100%;
+  border-radius: 6px;
+  margin-top: 10px;
+  box-shadow: 0 0 10px rgba(255,255,255,0.2);
+}
+
 /* style.css */
 
 :root {
