@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Competition Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    nav {
+      background-color: #1e1e1e;
+      padding: 12px 0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.6);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin: 0;
+      padding: 0;
+    }
+    nav ul li a {
+      color: #f0f0f0;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+    nav ul li a:hover {
+      color: #ff9800;
+    }
+    h2 {
+      margin: 20px 0;
+      color: #ffffff;
+    }
+    h3 {
+      color: #ff9800;
+      margin-bottom: 20px;
+    }
+    .logos {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin: 30px 0;
+    }
+    .logos img {
+      height: 80px;
+      object-fit: contain;
+      border-radius: 6px;
+      box-shadow: 0 0 10px rgba(255,255,255,0.2);
+    }
+    section {
+      margin: 40px auto;
+      max-width: 1200px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #444;
+      padding: 6px;
+      text-align: center;
+      font-size: 14px;
+    }
+    th {
+      background-color: #2c2c2c;
+      color: #f0f0f0;
+    }
+    td {
+      background-color: #1a1a1a;
+      color: #ddd;
+    }
+    .captain {
+      font-weight: bold;
+      color: #ff9800;
+    }
+    .teams-container {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: nowrap; /* dwingt naast elkaar */
+    }
+    .team {
+      background-color: #1e1e1e;
+      padding: 20px;
+      border-radius: 8px;
+      width: 320px;
+      box-shadow: 0 0 12px rgba(255,255,255,0.2);
+    }
+    .team img {
+      display: block;
+      margin: 0 auto 20px auto;
+      height: 80px;
+      object-fit: contain;
+      border-radius: 6px;
+      box-shadow: 0 0 10px rgba(255,255,255,0.2);
+    }
+    .team h4 {
+      color: #ff9800;
+      margin-bottom: 10px;
+    }
+    .standings img {
+      max-width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 0 12px rgba(255,255,255,0.2);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation menu -->
+  <nav>
+    <ul>
+      <li><a href="#results">Results</a></li>
+      <li><a href="#rules">Rules</a></li>
+      <li><a href="#gallery & video">Gallery & Video</a></li>
+      </ul>
+  </nav>
+
+  <h2>Pool League Kuta-Seminyak-Bali-Indonesia</h2>
+
+  <!-- Team logos -->
+  <div class="logos">
+    <img src="images/blacklibrary.jpg" alt="Black Library">
+    <img src="images/lituts.jpg" alt="Lituts">
+    <img src="images/venus.jpg" alt="Venus">
+  </div>
+
+  <!-- Matches section -->
+  <section id="matches">
+    <h3>Matches</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Match</th>
+          <th>Location</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>2026-unknown</td><td>Black Library vs Litut</td><td>Seminyak</td></tr>
+        <tr><td>2026-unknown</td><td>Venus vs Black Library</td><td>Kuta</td></tr>
+        <tr><td>2026-unknown</td><td>Litut vs Venus</td><td>Seminyak</td></tr>
+        <tr><td>2026-unknown</td><td>Black Library vs Litut</td><td>Seminyak</td></tr>
+        <tr><td>2026-unknown</td><td>Venus vs Black Library</td><td>Kuta</td></tr>
+        <tr><td>2026-unknown</td><td>Litut vs Venus</td><td>Seminyak</td></tr>
+        <tr><td>2026-unknown</td><td>Black Library vs Litut</td><td>Seminyak</td></tr>
+        <tr><td>2026-unknown</td><td>Venus vs Black Library</td><td>Kuta</td></tr>
+        <tr><td>2026-unknown</td><td>Litut vs Venus</td><td>Seminyak</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Teams section -->
+  <section id="teams">
+    <h3>Teams</h3>
+    <div class="teams-container">
+
+      <!-- Black Library -->
+      <div class="team">
+        <img src="images/blacklibrary.jpg" alt="Black Library Logo">
+        <h4>Black Library</h4>
+        <table>
+          <thead><tr><th>Player</th><th>Handicap</th></tr></thead>
+          <tbody>
+            <tr><td class="captain">STV ⭐</td><td>1</td></tr>
+            <tr><td>Danny</td><td>10</td></tr>
+            <tr><td>Wolf</td><td>5</td></tr>
+            <tr><td>Achie</td><td>4</td></tr>
+            <tr><td>Jon</td><td>3</td></tr>
+            <tr><td>Rose</td><td>3</td></tr>
+            <tr><td>Pyer</td><td>2</td></tr>
+            <tr><td>Virgy</td><td>2</td></tr>
+            <tr><td>Felix</td><td>2</td></tr>
+            <tr><td>Gary</td><td>1</td></tr>
+            <tr><td>JP</td><td>1</td></tr>
+            <tr><td>JC</td><td>1</td></tr>
+            <tr><td>Philly</td><td>1</td></tr>
+            <tr><td>Player 14</td><td>1</td></tr>
+            <tr><td>Player 15</td><td>1</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Litut -->
+      <div class="team">
+        <img src="images/lituts.jpg" alt="Litut Logo">
+        <h4>Litut</h4>
+        <table>
+          <thead><tr><th>Player</th><th>Handicap</th></tr></thead>
+          <tbody>
+            <tr><td class="captain">Ketut ⭐</td><td>7</td></tr>
+            <tr><td>Imran</td><td>5</td></tr>
+            <tr><td>Steve</td><td>4</td></tr>
+            <tr><td>Jhon</td><td>4</td></tr>
+            <tr><td>TJ</td><td>3</td></tr>
+            <tr><td>Lia</td><td>3</td></tr>
+            <tr><td>Dylan</td><td>3</td></tr>
+            <tr><td>Kai</td><td>2</td></tr>
+            <tr><td>Niluh</td><td>2</td></tr>
+            <tr><td>Aaron</td><td>2</td></tr>
+            <tr><td>Dave</td><td>2</td></tr>
+            <tr><td>Philly</td><td>1</td></tr>
+            <tr><td>Jesus</td><td>1</td></tr>
+            <tr><td>Tiara</td><td>1</td></tr>
+            <tr><td>Tony</td><td>1</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Venus -->
+      <div class="team">
+        <img src="images/venus.jpg" alt="Venus Samurai Logo">
+        <h4>Venus – Samurai Warriors</h4>
+        <table>
+        <thead><tr><th>Player</th><th>Handicap</th></tr></thead>
+        <tbody>
+          <tr><td class="captain">Johan ⭐</td><td>6</td></tr>
+          <tr><td>Andrew</td><td>5</td></tr>
+          <tr><td>Vanda</td><td>4</td></tr>
+          <tr><td>Hayato</td><td>4</td></tr>
+          <tr><td>Stek</td><td>3</td></tr>
+          <tr><td>Bill</td><td>3</td></tr>
+          <tr><td>Nima</td><td>3</td></tr>
+          <tr><td>Daz</td><td>2</td></tr>
+          <tr><td>Phil</td><td>2</td></tr>
+          <tr><td>Gianni</td><td>2</td></tr>
+          <tr><td>Terry</td><td>2</td></tr>
+          <tr><td>Player 12</td><td>1</td></tr>
+          <tr><td>Player 13</td><td>1</td></tr>
+          <tr><td>Player 14</td><td>1</td></tr>
+          <tr><td>Player 15</td><td>1</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- Standings section -->
+<section id="standings">
+  <h3>Player Standings</h3>
+  <div class="standings">
+    <img src="images/player-standings.jpg" alt="Player Standings">
+  </div>
+</section>
+
+<!-- Other Pool Competitions -->
+<section id="other-pool-events">
+  <h3>Other Pool Competitions in Bali</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Event</th>
+        <th>Location</th>
+        <th>Date</th>
+        <th>Details</th>
+        <th>Adress</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Every Monday</td>
+        <td>Unknow</td>
+        <td>Unknow</td>
+        <td>Buy-in: 100k • 16 teams • Start 8.30pm</td>
+        <td>Unknow</td>
+      </tr>
+ <tr>
+        <td>Every Tuesday</td>
+        <td>Black Library</td>
+        <td>Seminyak</td>
+        <td>Buy-in: 50k • max 16 players • start 8.30pm</td>
+        <td>Black Library Bar Cocktail & Tapas, Jl. Kunti I No.4, Seminyak, Kuta, Badung Regency, Bali 80361</td>
+      <tr>
+<tr>
+        <td>Every Wednesday</td>
+        <td>Litut Bar</td>
+        <td>Seminyak</td>
+        <td>Buy-in: 50k • max 16 players • start 8.30pm</td>
+        <td>Litut Bar & Restaurant, Jl. Mertanadi No.67, Kerobokan Kelod, Kuta Utara, Badung Regency, Bali 80361</td>
+      <tr>
+<tr>
+        <td>Every Wednesday</td>
+        <td>Sixteen Degrees Bar</td>
+        <td>Kuta</td>
+        <td>Buy-in: 50k • max 16 players • start 8.30pm</td>
+        <td>Sixteen Degrees Cafe & Bar, Jl. Benesari No.7, Legian, Kec. Kuta, Kabupaten Badung, Bali 80361</td>
+      <tr>
+<tr>
+        <td>Every Thursday</td>
+        <td>Venus Resto Bar</td>
+        <td>Kuta</td>
+        <td>Buy-in: 50k • max 16 players • start 8.30pm</td>
+        <td>Venus bar resto, 75MC+9WF, Jl. Poppies II Jl. Benesari, Kuta, Badung Regency, Bali 80361</td>
+      <tr>
+ <tr>
+        <td>Every Friday</td>
+        <td>Unknow</td>
+        <td>Unknow</td>
+        <td>Buy-in: 100k • 16 teams • Start 8.30pm</td>
+        <td>Unknow</td>
+      </tr>
+      </tr>
+<tr>
+        <td>Every Saturday</td>
+        <td>Black Library</td>
+        <td>Seminyak</td>
+        <td>Buy-in: 50k • max 16 players • start 8.30pm</td>
+        <td>Black Library Bar Cocktail & Tapas, Jl. Kunti I No.4, Seminyak, Kuta, Badung Regency, Bali 80361</td>
+      </tr>
+<tr>
+        <td>Every Sunday</td>
+        <td>Pool League: Black Library, Litut Bar & Venus Resto Bar </td>
+        <td>Kuta & Seminyak</td>
+        <td>• Team Pool League • start 9.pm</td>
+         <td>See Black Library, Litut & Venus</td>
+      </tr>
+<tr>
+        <td>WPA Men’s World 8-Ball Championship</td>
+        <td>Bali (venue TBA)</td>
+        <td>October 7–13, 2026</td>
+        <td>Part of multi-title world championship week</td>
+        <td>search with google maps</td>
+      </tr>
+      <tr>
+        <td>WPA Women’s World 10-Ball Championship</td>
+        <td>Bali (venue TBA)</td>
+        <td>October 7–13, 2026</td>
+        <td>Hosted by Predator Pro Billiard Series</td>
+        <td>search with google maps</td>
+      </tr>
+      <tr>
+        <td>WPA Men’s World 10-Ball Doubles (Debut)</td>
+        <td>Bali (venue TBA)</td>
+        <td>October 7–13, 2026</td>
+        <td>Historic first edition of doubles format</td>
+        <td>search with google maps</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+

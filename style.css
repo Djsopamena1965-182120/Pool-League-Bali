@@ -1,0 +1,144 @@
+/* style.css */
+
+:root {
+  --bg: #0f1217;
+  --card: #151a21;
+  --text: #e6e9ef;
+  --muted: #a9b0bd;
+  --accent: #3fa9f5;
+  --border: #27303c;
+
+  --black: #1f1f1f;
+  --lituts: #1f4fd6;
+  --venus: #d14f1f;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+}
+
+.header {
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, #131820, #10141a);
+}
+.header h1 {
+  margin: 0;
+  font-size: 22px;
+  letter-spacing: 0.3px;
+}
+.controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.controls select {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+.table-wrapper {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+thead {
+  background: #1a2028;
+}
+thead th {
+  text-align: left;
+  padding: 12px 10px;
+  font-size: 13px;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  position: relative;
+}
+thead th.sorted::after {
+  content: "⇅";
+  position: absolute;
+  right: 10px;
+  color: var(--accent);
+  font-size: 12px;
+}
+
+tbody td {
+  padding: 12px 10px;
+  font-size: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+tbody tr:hover {
+  background: #18202a;
+}
+
+/* Team kleuraccenten op de linkerkant */
+tbody tr.team-black td:first-child {
+  border-left: 4px solid var(--black);
+}
+tbody tr.team-lituts td:first-child {
+  border-left: 4px solid var(--lituts);
+}
+tbody tr.team-venus td:first-child {
+  border-left: 4px solid var(--venus);
+}
+
+/* Responsive */
+@media (max-width: 760px) {
+  thead th:nth-child(4),
+  thead th:nth-child(5),
+  thead th:nth-child(6),
+  thead th:nth-child(7),
+  thead th:nth-child(8),
+  thead th:nth-child(9),
+  thead th:nth-child(10),
+  thead th:nth-child(11),
+  tbody td:nth-child(4),
+  tbody td:nth-child(5),
+  tbody td:nth-child(6),
+  tbody td:nth-child(7),
+  tbody td:nth-child(8),
+  tbody td:nth-child(9),
+  tbody td:nth-child(10),
+  tbody td:nth-child(11) {
+    display: none;
+  }
+  thead th, tbody td {
+    padding: 10px 8px;
+    font-size: 14px;
+  }
+}
+
+.footer {
+  padding: 18px;
+  text-align: center;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+}
