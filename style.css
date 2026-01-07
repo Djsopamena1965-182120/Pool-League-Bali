@@ -161,3 +161,76 @@ tbody tr.team-venus td:first-child {
   color: var(--muted);
   border-top: 1px solid var(--border);
 }
+
+/* Navigatie */
+nav {
+  background: #1e1e1e;
+  padding: 12px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.6);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin: 0;
+  padding: 0;
+}
+nav ul li a {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+}
+nav ul li a:hover {
+  color: #ff9800;
+}
+
+/* Logo’s */
+.logos {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin: 24px 0;
+}
+.logos img {
+  height: 64px; /* kleiner maken */
+  width: auto;
+  object-fit: contain;
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgba(255,255,255,0.12);
+}
+
+/* Teams */
+.teams-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+.team {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: 320px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  padding: 16px;
+}
+.team img {
+  display: block;
+  margin: 0 auto 12px;
+  height: 64px;
+  width: auto;
+  object-fit: contain;
+}
+.team h4 {
+  color: #ff9800;
+  margin-bottom: 8px;
+}
+.captain {
+  font-weight: bold;
+  color: #ff9800;
+}
+

@@ -4,115 +4,38 @@
   <meta charset="UTF-8">
   <title>Competition Page</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #121212;
-      color: #f0f0f0;
-      margin: 0;
-      padding: 0;
-      text-align: center;
-    }
-    nav {
-      background-color: #1e1e1e;
-      padding: 12px 0;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.6);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-    nav ul {
-      list-style: none;
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      margin: 0;
-      padding: 0;
-    }
-    nav ul li a {
-      color: #f0f0f0;
-      text-decoration: none;
-      font-weight: bold;
-      transition: color 0.3s;
-    }
-    nav ul li a:hover {
-      color: #ff9800;
-    }
-    h2 {
-      margin: 20px 0;
-      color: #ffffff;
-    }
-    h3 {
-      color: #ff9800;
-      margin-bottom: 20px;
-    }
-    .logos {
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      margin: 30px 0;
-    }
-    .logos img {
-      height: 80px;
-      object-fit: contain;
-      border-radius: 6px;
-      box-shadow: 0 0 10px rgba(255,255,255,0.2);
-    }
-    section {
-      margin: 40px auto;
-      max-width: 1200px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    th, td {
-      border: 1px solid #444;
-      padding: 6px;
-      text-align: center;
-      font-size: 14px;
-    }
-    th {
-      background-color: #2c2c2c;
-      color: #f0f0f0;
-    }
-    td {
-      background-color: #1a1a1a;
-      color: #ddd;
-    }
-    .captain {
-      font-weight: bold;
-      color: #ff9800;
-    }
-    .teams-container {
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      flex-wrap: nowrap; /* dwingt naast elkaar */
-    }
-    .team {
-      background-color: #1e1e1e;
-      padding: 20px;
-      border-radius: 8px;
-      width: 320px;
-      box-shadow: 0 0 12px rgba(255,255,255,0.2);
-    }
-    .team img {
-      display: block;
-      margin: 0 auto 20px auto;
-      height: 80px;
-      object-fit: contain;
-      border-radius: 6px;
-      box-shadow: 0 0 10px rgba(255,255,255,0.2);
-    }
-    .team h4 {
-      color: #ff9800;
-      margin-bottom: 10px;
-    }
-    .standings img {
-      max-width: 100%;
-      border-radius: 8px;
-      box-shadow: 0 0 12px rgba(255,255,255,0.2);
-    }
+    body { font-family: Arial, sans-serif; background-color: #121212; color: #f0f0f0; margin: 0; padding: 0; text-align: center; }
+    nav { background-color: #1e1e1e; padding: 12px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.6); position: sticky; top: 0; z-index: 1000; }
+    nav ul { list-style: none; display: flex; justify-content: center; gap: 40px; margin: 0; padding: 0; }
+    nav ul li a { color: #f0f0f0; text-decoration: none; font-weight: bold; transition: color 0.3s; }
+    nav ul li a:hover { color: #ff9800; }
+    h2 { margin: 20px 0; color: #ffffff; }
+    h3 { color: #ff9800; margin-bottom: 20px; }
+    .logos { display: flex; justify-content: center; gap: 40px; margin: 30px 0; }
+    .logos img { height: 80px; object-fit: contain; border-radius: 6px; box-shadow: 0 0 10px rgba(255,255,255,0.2); }
+    section { margin: 40px auto; max-width: 1200px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid #444; padding: 6px; text-align: center; font-size: 14px; }
+    th { background-color: #2c2c2c; color: #f0f0f0; }
+    td { background-color: #1a1a1a; color: #ddd; }
+    .captain { font-weight: bold; color: #ff9800; }
+    .teams-container { display: flex; justify-content: center; gap: 40px; flex-wrap: nowrap; }
+    .team { background-color: #1e1e1e; padding: 20px; border-radius: 8px; width: 320px; box-shadow: 0 0 12px rgba(255,255,255,0.2); }
+    .team img { display: block; margin: 0 auto 20px auto; height: 80px; object-fit: contain; border-radius: 6px; box-shadow: 0 0 10px rgba(255,255,255,0.2); }
+    .team h4 { color: #ff9800; margin-bottom: 10px; }
+    .team-performance { text-align: left; margin-top: 15px; }
+    .team-performance h5 { color: #ffeb3b; margin-bottom: 8px; }
+    .team-performance ul { list-style: none; padding: 0; margin: 0; }
+    .team-performance li { margin: 4px 0; }
+    .standings img { max-width: 100%; border-radius: 8px; box-shadow: 0 0 12px rgba(255,255,255,0.2); }
+    .result { background-color: #1e1e1e; margin: 20px auto; padding: 20px; border-radius: 8px; max-width: 800px; box-shadow: 0 0 12px rgba(255,255,255,0.2); }
+    .result h4 { color: #ff9800; margin-bottom: 10px; }
+    .result img { max-width: 100%; border-radius: 6px; margin-top: 10px; box-shadow: 0 0 10px rgba(255,255,255,0.2); }
+    /* Gele links voor matches/results */
+    #matches a, #results a { color: #ffeb3b; font-weight: bold; }
+    #matches a:hover, #results a:hover { color: #ffc107; }
+    footer { background-color: #1e1e1e; padding: 20px; margin-top: 40px; }
+    footer p { color: #aaa; font-size: 14px; }
   </style>
 </head>
 <body>
@@ -120,10 +43,13 @@
   <!-- Navigation menu -->
   <nav>
     <ul>
+      <li><a href="#matches">Matches</a></li>
       <li><a href="#results">Results</a></li>
-      <li><a href="#rules">Rules</a></li>
-      <li><a href="#gallery & video">Gallery & Video</a></li>
-      </ul>
+      <li><a href="#teams">Teams</a></li>
+      <li><a href="#standings">Standings</a></li>
+      <li><a href="#other-pool-events">Other Competitions</a></li>
+      <li><a href="#gallery">Gallery & Video</a></li>
+    </ul>
   </nav>
 
   <h2>Third Pool League Kuta-Seminyak-Bali-Indonesia 2026</h2>
@@ -135,6 +61,8 @@
     <img src="images/venus.jpg" alt="Venus">
   </div>
 
+<section id="matches">
+  <h3>Matches</h3>
   <table>
     <thead>
       <tr>
@@ -142,66 +70,77 @@
         <th>Match</th>
         <th>Location</th>
         <th>Results</th>
+        <th>PDF</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td>2026-unknown</td>
+        <td>unknown</td>
         <td>Black Library vs Litut</td>
         <td>Seminyak</td>
-        <td>0 – 0</td>
+        <td>Unknown</td>
+        <td><a href="pdf/match1.pdf" target="_blank">(click here for match results)</a></td>
       </tr>
       <tr>
-        <td>2026-unknown</td>
+        <td>unknown</td>
         <td>Venus vs Black Library</td>
         <td>Kuta</td>
-        <td>0 – 0</td>
+        <td>Unknown</td>
+        <td><a href="pdf/match2.pdf" target="_blank">(click here for match results)</a></td>
       </tr>
       <tr>
-        <td>2026-unknown</td>
+        <td>unknown</td>
         <td>Litut vs Venus</td>
         <td>Seminyak</td>
-        <td>0 – 0</td>
+        <td>Unknown</td>
+        <td><a href="pdf/match3.pdf" target="_blank">(click here for match results)</a></td>
       </tr>
       <tr>
-        <td>2026-unknown</td>
+        <td>unknown</td>
         <td>Black Library vs Litut</td>
         <td>Seminyak</td>
-         <td>0 – 0</td>
+        <td>Unknown</td>
+        <td><a href="pdf/match4.pdf" target="_blank">(click here for match results)</a></td>
       </tr>
       <tr>
-        <td>2026-unknown</td>
+        <td>unknown</td>
         <td>Venus vs Black Library</td>
         <td>Kuta</td>
-        <td>0 – 0</td>
+        <td>Unknown</td>
+        <td><a href="pdf/match5.pdf" target="_blank">(click here for match results)</a></td>
       </tr>
       <tr>
-        <td>2026-unknown</td>
+        <td>unknown</td>
         <td>Litut vs Venus</td>
         <td>Seminyak</td>
-         <td>0 – 0</td>
+        <td>Unknown</td>
+        <td><a href="pdf/match6.pdf" target="_blank">(click here for match results)</a></td>
       </tr>
       <tr>
-        <td>2026-unknown</td>
+        <td>unknown</td>
         <td>Black Library vs Litut</td>
         <td>Seminyak</td>
-         <td>0 – 0</td>
+        <td>Unknown</td>
+        <td><a href="pdf/match7.pdf" target="_blank">(click here for match results)</a></td>
       </tr>
       <tr>
-        <td>2026-unknown</td>
+        <td>unknown</td>
         <td>Venus vs Black Library</td>
         <td>Kuta</td>
-         <td>0 – 0</td>
+        <td>Unknown</td>
+        <td><a href="pdf/match8.pdf" target="_blank">(click here for match results)</a></td>
       </tr>
       <tr>
-        <td>2026-unknown</td>
+        <td>unknown</td>
         <td>Litut vs Venus</td>
         <td>Seminyak</td>
-         <td>0 – 0</td>
+        <td>Unknown</td>
+        <td><a href="pdf/match9.pdf" target="_blank">(click here for match results)</a></td>
       </tr>
     </tbody>
   </table>
 </section>
+
 
 
   <!-- Teams section -->
@@ -216,21 +155,26 @@
         <table>
           <thead><tr><th>Player</th><th>Handicap</th></tr></thead>
           <tbody>
-            <tr><td class="captain">STV ⭐</td><td>1</td></tr>
-            <tr><td>Danny</td><td>10</td></tr>
-            <tr><td>Wolf</td><td>5</td></tr>
-            <tr><td>Achie</td><td>4</td></tr>
-            <tr><td>Jon</td><td>3</td></tr>
-            <tr><td>Rose</td><td>3</td></tr>
-            <tr><td>Pyer</td><td>2</td></tr>
-            <tr><td>Virgy</td><td>2</td></tr>
-            <tr><td>Felix</td><td>2</td></tr>
-            <tr><td>Gary</td><td>1</td></tr>
-            <tr><td>JP</td><td>1</td></tr>
-            <tr><td>JC</td><td>1</td></tr>
-            <tr><td>Philly</td><td>1</td></tr>
-            <tr><td>Player 14</td><td>1</td></tr>
-            <tr><td>Player 15</td><td>1</td></tr>
+            <tr><td class="captain">STV ⭐</td><td>0</td></tr>
+            <tr><td>Danny</td><td>0</td></tr>
+            <tr><td>Wolf</td><td>0</td></tr>
+            <tr><td>Achie</td><td>0</td></tr>
+            <tr><td>Jon</td><td>0</td></tr>
+            <tr><td>Rose</td><td>0</td></tr>
+            <tr><td>Pyer</td><td>0</td></tr>
+            <tr><td>Virgy</td><td>0</td></tr>
+            <tr><td>Felix</td><td>0</td></tr>
+            <tr><td>Gary</td><td>0</td></tr>
+            <tr><td>JP</td><td>0</td></tr>
+            <tr><td>JC</td><td>0</td></tr>
+            <tr><td>Philly</td><td>0</td></tr>
+            <tr><td>Player 14</td><td>0</td></tr>
+            <tr><td>Player 15</td><td>0</td></tr>
+            <tr><td>Player 16</td><td>1</td></tr>
+            <tr><td>Player 17</td><td>1</td></tr>
+            <tr><td>Player 18</td><td>1</td></tr>
+            <tr><td>Player 19</td><td>1</td></tr>
+            <tr><td>Player 20</td><td>1</td></tr>
           </tbody>
         </table>
       </div>
@@ -242,21 +186,26 @@
         <table>
           <thead><tr><th>Player</th><th>Handicap</th></tr></thead>
           <tbody>
-            <tr><td class="captain">Ketut ⭐</td><td>7</td></tr>
-            <tr><td>Imran</td><td>5</td></tr>
-            <tr><td>Steve</td><td>4</td></tr>
-            <tr><td>Jhon</td><td>4</td></tr>
-            <tr><td>TJ</td><td>3</td></tr>
-            <tr><td>Lia</td><td>3</td></tr>
-            <tr><td>Dylan</td><td>3</td></tr>
-            <tr><td>Kai</td><td>2</td></tr>
-            <tr><td>Niluh</td><td>2</td></tr>
-            <tr><td>Aaron</td><td>2</td></tr>
-            <tr><td>Dave</td><td>2</td></tr>
-            <tr><td>Philly</td><td>1</td></tr>
-            <tr><td>Jesus</td><td>1</td></tr>
-            <tr><td>Tiara</td><td>1</td></tr>
-            <tr><td>Tony</td><td>1</td></tr>
+            <tr><td class="captain">Imran ⭐</td><td>0</td></tr>
+            <tr><td>Ketut</td><td>0</td></tr>
+            <tr><td>Steve</td><td>0</td></tr>
+            <tr><td>Jhon</td><td>0</td></tr>
+            <tr><td>TJ</td><td>0</td></tr>
+            <tr><td>Lia</td><td>0</td></tr>
+            <tr><td>Dylan</td><td>0</td></tr>
+            <tr><td>Kai</td><td>0</td></tr>
+            <tr><td>Niluh</td><td>0</td></tr>
+            <tr><td>Aaron</td><td>0</td></tr>
+            <tr><td>Dave</td><td>0</td></tr>
+            <tr><td>Philly</td><td>0</td></tr>
+            <tr><td>Jesus</td><td>0</td></tr>
+            <tr><td>Tiara</td><td>0</td></tr>
+            <tr><td>Tony</td><td>0</td></tr>
+           <tr><td>Player 16</td><td>1</td></tr>
+           <tr><td>Player 17</td><td>1</td></tr>
+           <tr><td>Player 18</td><td>1</td></tr>
+           <tr><td>Player 19</td><td>1</td></tr>
+           <tr><td>Player 20</td><td>1</td></tr>
           </tbody>
         </table>
       </div>
@@ -268,21 +217,26 @@
         <table>
         <thead><tr><th>Player</th><th>Handicap</th></tr></thead>
         <tbody>
-          <tr><td class="captain">Johan ⭐</td><td>6</td></tr>
-          <tr><td>Andrew</td><td>5</td></tr>
-          <tr><td>Vanda</td><td>4</td></tr>
-          <tr><td>Hayato</td><td>4</td></tr>
-          <tr><td>Stek</td><td>3</td></tr>
-          <tr><td>Bill</td><td>3</td></tr>
-          <tr><td>Nima</td><td>3</td></tr>
-          <tr><td>Daz</td><td>2</td></tr>
-          <tr><td>Phil</td><td>2</td></tr>
-          <tr><td>Gianni</td><td>2</td></tr>
-          <tr><td>Terry</td><td>2</td></tr>
+          <tr><td class="captain">Johan ⭐</td><td>0</td></tr>
+          <tr><td>Andrew</td><td>0</td></tr>
+          <tr><td>Vanda</td><td>0</td></tr>
+          <tr><td>Hayato</td><td>0</td></tr>
+          <tr><td>Stek</td><td>0</td></tr>
+          <tr><td>Bill</td><td>0</td></tr>
+          <tr><td>Nima</td><td>0</td></tr>
+          <tr><td>Daz</td><td>0</td></tr>
+          <tr><td>Phil</td><td>0</td></tr>
+          <tr><td>Gianni</td><td>0</td></tr>
+          <tr><td>Terry</td><td>0</td></tr>
           <tr><td>Player 12</td><td>1</td></tr>
           <tr><td>Player 13</td><td>1</td></tr>
           <tr><td>Player 14</td><td>1</td></tr>
           <tr><td>Player 15</td><td>1</td></tr>
+          <tr><td>Player 16</td><td>1</td></tr>
+          <tr><td>Player 17</td><td>1</td></tr>
+          <tr><td>Player 18</td><td>1</td></tr>
+          <tr><td>Player 19</td><td>1</td></tr>
+          <tr><td>Player 20</td><td>1</td></tr>
         </tbody>
       </table>
     </div>
