@@ -5,46 +5,124 @@
   <title>Teams Admin – Pool League Bali</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body { font-family: "Segoe UI", Arial, sans-serif; background:#111; color:#eee; padding:20px; }
-    h1 { color:#ffd700; text-transform:uppercase; letter-spacing:2px; }
-    form { margin:20px 0; }
-    input, button { padding:8px; margin:5px; }
+    body { font-family:"Segoe UI", Arial, sans-serif; background:#111; color:#eee; margin:0; padding:0; }
+    nav ul { list-style:none; display:flex; gap:20px; padding:10px; margin:0; background:#111; }
+    nav a { color:#ffd700; text-decoration:none; font-weight:bold; }
+    h1 { text-align:center; text-transform:uppercase; letter-spacing:2px; color:#ffd700; margin:20px 0; }
+    form { margin:20px; display:flex; gap:10px; flex-wrap:wrap; }
+    input, button { padding:8px; }
     button { background:#ffd700; border:none; cursor:pointer; }
-    ul { list-style:none; padding:0; }
-    li { margin:5px 0; }
+    table { width:100%; border-collapse:collapse; background:#1e1e1e; color:#eee; font-size:14px; margin:20px 0; border-radius:8px; overflow:hidden; box-shadow:0 4px 12px rgba(0,0,0,0.6); }
+    thead th { background:#2c2c2c; color:#ffd700; text-transform:uppercase; letter-spacing:1px; padding:10px; }
+    tbody td { padding:8px; border-top:1px solid #333; text-align:center; }
+    tbody tr:nth-child(even) { background:#252525; }
+    tbody tr:hover { background:#333; }
+    #loginBox { text-align:center; margin-top:50px; }
+    #adminContent { display:none; }
   </style>
 </head>
 <body>
+  <!-- Navigatie -->
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="teams.html">Teams</a></li>
+      <li><a href="teams-admin.html">Admin</a></li>
+    </ul>
+  </nav>
+
   <h1>Teams Admin</h1>
 
-  <form id="addTeamForm">
-    <input type="text" id="teamName" placeholder="Teamnaam" required>
-    <input type="text" id="playerName" placeholder="Spelernaam" required>
-    <input type="text" id="handicap" placeholder="Handicap" required>
-    <button type="submit">Team toevoegen</button>
-  </form>
+  <!-- Login box -->
+  <div id="loginBox">
+    <h2 style="color:#ffd700;">Admin Login</h2>
+    <input type="password" id="adminPass" placeholder="Wachtwoord">
+    <button onclick="checkLogin()">Login</button>
+  </div>
 
-  <h2>Bestaande teams</h2>
-  <ul id="teamList"></ul>
+  <!-- Admin content (verstopt tot login) -->
+  <div id="adminContent">
+    <!-- Formulier om team + speler toe te voegen -->
+    <form id="addTeamForm">
+      <input type="text" id="teamName" placeholder="Teamnaam" required>
+      <input type="text" id="playerName" placeholder="Spelernaam">
+      <input type="text" id="handicap" placeholder="Handicap">
+      <button type="submit">Toevoegen</button>
+    </form>
+
+    <!-- Overzicht van teams -->
+    <div id="teamsContainer"></div>
+  </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    const toegangscode = "beheer123"; // kies zelf je geheime code
+
+    function checkLogin() {
+      const invoer = document.getElementById("adminPass").value;
+      if (invoer === toegangscode) {
+        document.getElementById("loginBox").style.display = "none";
+        document.getElementById("adminContent").style.display = "block";
+        initAdmin();
+      } else {
+        alert("Geen toegang");
+        window.location.href = "teams.html";
+      }
+    }
+
+    function initAdmin() {
       let data = JSON.parse(localStorage.getItem("teamsData") || "[]");
-      const list = document.getElementById("teamList");
+      const container = document.getElementById("teamsContainer");
+
+      function saveData() {
+        localStorage.setItem("teamsData", JSON.stringify(data));
+      }
 
       function renderTeams() {
-        list.innerHTML = "";
-        data.forEach(team => {
-          const li = document.createElement("li");
-          li.textContent = team.team + " (" + team.players.length + " spelers)";
-          list.appendChild(li);
+        container.innerHTML = "";
+        data.forEach((team, teamIndex) => {
+          const table = document.createElement("table");
+          let rows = "";
+
+          team.players.forEach((p, playerIndex) => {
+            rows += `
+              <tr>
+                <td>${p.name}</td>
+                <td>${p.handicap}</td>
+                <td>
+                  <button onclick="editPlayer(${teamIndex},${playerIndex})">Wijzig speler</button>
+                  <button onclick="deletePlayer(${teamIndex},${playerIndex})">Verwijder speler</button>
+                </td>
+              </tr>`;
+          });
+
+          if (rows === "") {
+            rows = `<tr><td colspan="3">Nog geen spelers toegevoegd</td></tr>`;
+          }
+
+          table.innerHTML = `
+            <thead>
+              <tr>
+                <th colspan="3">
+                  ${team.team}
+                  <button onclick="editTeam(${teamIndex})">Wijzig team</button>
+                  <button onclick="deleteTeam(${teamIndex})">Verwijder team</button>
+                </th>
+              </tr>
+              <tr><th>Speler</th><th>Handicap</th><th>Acties</th></tr>
+            </thead>
+            <tbody>${rows}</tbody>
+            <tfoot>
+              <tr>
+                <td colspan="3">
+                  <button onclick="addPlayer(${teamIndex})">Speler toevoegen</button>
+                </td>
+              </tr>
+            </tfoot>`;
+          container.appendChild(table);
         });
       }
 
-      renderTeams();
-
-      const form = document.getElementById("addTeamForm");
-      form.addEventListener("submit", function(e) {
+      document.getElementById("addTeamForm").addEventListener("submit", function(e) {
         e.preventDefault();
         const teamName = document.getElementById("teamName").value;
         const playerName = document.getElementById("playerName").value;
@@ -55,14 +133,62 @@
           team = { team: teamName, players: [] };
           data.push(team);
         }
+        if (playerName) {
+          team.players.push({ name: playerName, handicap: handicap });
+        }
 
-        team.players.push({ name: playerName, handicap: handicap });
-
-        localStorage.setItem("teamsData", JSON.stringify(data));
+        saveData();
         renderTeams();
-        form.reset();
+        e.target.reset();
       });
-    });
+
+      window.editTeam = function(teamIndex) {
+        const newName = prompt("Nieuwe teamnaam:", data[teamIndex].team);
+        if (newName) {
+          data[teamIndex].team = newName;
+          saveData();
+          renderTeams();
+        }
+      };
+
+      window.deleteTeam = function(teamIndex) {
+        if (confirm("Weet je zeker dat je dit team wilt verwijderen?")) {
+          data.splice(teamIndex, 1);
+          saveData();
+          renderTeams();
+        }
+      };
+
+      window.addPlayer = function(teamIndex) {
+        const name = prompt("Naam speler:");
+        const handicap = prompt("Handicap:");
+        if (name) {
+          data[teamIndex].players.push({ name:name, handicap:handicap || "-" });
+          saveData();
+          renderTeams();
+        }
+      };
+
+      window.editPlayer = function(teamIndex, playerIndex) {
+        const player = data[teamIndex].players[playerIndex];
+        const newName = prompt("Nieuwe naam:", player.name);
+        const newHandicap = prompt("Nieuwe handicap:", player.handicap);
+        if (newName) player.name = newName;
+        if (newHandicap) player.handicap = newHandicap;
+        saveData();
+        renderTeams();
+      };
+
+      window.deletePlayer = function(teamIndex, playerIndex) {
+        if (confirm("Speler verwijderen?")) {
+          data[teamIndex].players.splice(playerIndex, 1);
+          saveData();
+          renderTeams();
+        }
+      };
+
+      renderTeams();
+    }
   </script>
 </body>
 </html>
