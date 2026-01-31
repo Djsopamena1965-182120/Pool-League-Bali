@@ -6,68 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
-    body {
-      font-family: "Segoe UI", Arial, sans-serif;
-      background: #111;
-      color: #eee;
-      margin: 0;
-      padding: 20px;
-    }
-
-    h1 {
-      text-align: center;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      color: #ffd700;
-      margin: 20px 0;
-    }
-
-    .teams-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-      padding: 20px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #1e1e1e;
-      color: #eee;
-      font-size: 14px;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
-    }
-
-    thead th {
-      background: #2c2c2c;
-      color: #ffd700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      padding: 10px;
-    }
-
-    tbody td {
-      padding: 8px;
-      border-top: 1px solid #333;
-      text-align: center;
-    }
-
-    tbody tr:nth-child(even) {
-      background: #252525;
-    }
-
-    tbody tr:hover {
-      background: #333;
-    }
-
-    footer {
-      text-align: center;
-      color: #aaa;
-      font-size: 12px;
-      margin-top: 20px;
-    }
+    body { font-family:"Segoe UI", Arial, sans-serif; background:#111; color:#eee; margin:0; padding:20px; }
+    h1 { text-align:center; text-transform:uppercase; letter-spacing:2px; color:#ffd700; margin:20px 0; }
+    .teams-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; padding:20px; }
+    table { width:100%; border-collapse:collapse; background:#1e1e1e; color:#eee; font-size:14px; border-radius:8px; overflow:hidden; box-shadow:0 4px 12px rgba(0,0,0,0.6); }
+    thead th { background:#2c2c2c; color:#ffd700; text-transform:uppercase; letter-spacing:1px; padding:10px; }
+    tbody td { padding:8px; border-top:1px solid #333; text-align:center; }
+    tbody tr:nth-child(even) { background:#252525; }
+    tbody tr:hover { background:#333; }
+    footer { text-align:center; color:#aaa; font-size:12px; margin-top:20px; }
   </style>
 </head>
 <body>
@@ -81,10 +28,8 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-      // Probeer teams uit LocalStorage te halen
       let data = JSON.parse(localStorage.getItem("teamsData") || "[]");
 
-      // Als LocalStorage leeg is, gebruik fallback data
       if (!data || data.length === 0) {
         data = [
           { team: "Litut", players: [{ name: "Imram", handicap: "-" }] },
