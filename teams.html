@@ -4,9 +4,10 @@
   <meta charset="UTF-8">
   <title>Teams – Pool League Bali</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
   <style>
-    body { font-family:"Segoe UI", Arial, sans-serif; background:#111; color:#eee; margin:0; padding:20px; }
+    body { font-family:"Segoe UI", Arial, sans-serif; background:#111; color:#eee; margin:0; padding:0; }
+    nav ul { list-style:none; display:flex; gap:20px; padding:10px; margin:0; background:#111; }
+    nav a { color:#ffd700; text-decoration:none; font-weight:bold; }
     h1 { text-align:center; text-transform:uppercase; letter-spacing:2px; color:#ffd700; margin:20px 0; }
     .teams-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; padding:20px; }
     table { width:100%; border-collapse:collapse; background:#1e1e1e; color:#eee; font-size:14px; border-radius:8px; overflow:hidden; box-shadow:0 4px 12px rgba(0,0,0,0.6); }
@@ -14,22 +15,29 @@
     tbody td { padding:8px; border-top:1px solid #333; text-align:center; }
     tbody tr:nth-child(even) { background:#252525; }
     tbody tr:hover { background:#333; }
-    footer { text-align:center; color:#aaa; font-size:12px; margin-top:20px; }
+    footer { text-align:center; color:#aaa; font-size:12px; margin:20px 0; }
   </style>
 </head>
 <body>
-  <h1>Teams – Pool League Bali</h1>
+  <!-- Navigatie -->
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="teams.html">Teams</a></li>
+      <li><a href="teams-admin.html">Admin</a></li>
+    </ul>
+  </nav>
 
+  <h1>Teams – Pool League Bali</h1>
   <div class="teams-grid"></div>
 
-  <footer>
-    <p>&copy; Pool League Bali</p>
-  </footer>
+  <footer><p>&copy; Pool League Bali</p></footer>
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       let data = JSON.parse(localStorage.getItem("teamsData") || "[]");
 
+      // Fallback als er geen data is
       if (!data || data.length === 0) {
         data = [
           { team: "Litut", players: [{ name: "Imram", handicap: "-" }] },
@@ -45,19 +53,18 @@
       data.forEach(team => {
         const table = document.createElement("table");
         let rows = "";
-        team.players.forEach(p => {
-          rows += `
-            <tr>
-              <td>${p.name}</td>
-              <td>${p.handicap}</td>
-              <td></td>
-            </tr>`;
-        });
+
+        if (team.players && team.players.length > 0) {
+          team.players.forEach(p => {
+            rows += `<tr><td>${p.name}</td><td>${p.handicap}</td><td></td></tr>`;
+          });
+        } else {
+          rows = `<tr><td colspan="3">Geen spelers toegevoegd</td></tr>`;
+        }
+
         table.innerHTML = `
           <thead>
-            <tr>
-              <th colspan="3">${team.team}</th>
-            </tr>
+            <tr><th colspan="3">${team.team}</th></tr>
             <tr><th>Players</th><th>Handicap</th><th>Actions</th></tr>
           </thead>
           <tbody>${rows}</tbody>`;
