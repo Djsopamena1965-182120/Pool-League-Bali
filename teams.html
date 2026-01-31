@@ -80,10 +80,23 @@
   </footer>
 
   <script>
-    function loadTeamsPublic() {
-      const data = JSON.parse(localStorage.getItem("teamsData") || "[]");
+    document.addEventListener("DOMContentLoaded", function() {
+      // Probeer teams uit LocalStorage te halen
+      let data = JSON.parse(localStorage.getItem("teamsData") || "[]");
+
+      // Als LocalStorage leeg is, gebruik fallback data
+      if (!data || data.length === 0) {
+        data = [
+          { team: "Litut", players: [{ name: "Imram", handicap: "-" }] },
+          { team: "Team 2", players: [{ name: "Nog niet ingevuld", handicap: "-" }] },
+          { team: "Team 3", players: [{ name: "Nog niet ingevuld", handicap: "-" }] },
+          { team: "Team 4", players: [{ name: "Nog niet ingevuld", handicap: "-" }] }
+        ];
+      }
+
       const grid = document.querySelector(".teams-grid");
       grid.innerHTML = "";
+
       data.forEach(team => {
         const table = document.createElement("table");
         let rows = "";
@@ -105,9 +118,7 @@
           <tbody>${rows}</tbody>`;
         grid.appendChild(table);
       });
-    }
-
-    window.onload = loadTeamsPublic;
+    });
   </script>
 </body>
 </html>
