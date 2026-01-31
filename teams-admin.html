@@ -1,74 +1,223 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Teams Admin – Pool League Bali</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body { font-family:"Segoe UI", Arial, sans-serif; background:#111; color:#eee; margin:0; padding:0; }
-    nav ul { list-style:none; display:flex; gap:20px; padding:10px; margin:0; background:#111; }
-    nav a { color:#ffd700; text-decoration:none; font-weight:bold; }
-    h1 { text-align:center; text-transform:uppercase; letter-spacing:2px; color:#ffd700; margin:20px 0; }
-    form { margin:20px; display:flex; gap:10px; flex-wrap:wrap; }
-    input, button { padding:8px; }
-    button { background:#ffd700; border:none; cursor:pointer; }
-    table { width:100%; border-collapse:collapse; background:#1e1e1e; color:#eee; font-size:14px; margin:20px 0; border-radius:8px; overflow:hidden; box-shadow:0 4px 12px rgba(0,0,0,0.6); }
-    thead th { background:#2c2c2c; color:#ffd700; text-transform:uppercase; letter-spacing:1px; padding:10px; }
-    tbody td { padding:8px; border-top:1px solid #333; text-align:center; }
-    tbody tr:nth-child(even) { background:#252525; }
-    tbody tr:hover { background:#333; }
-    #loginBox { text-align:center; margin-top:50px; }
-    #adminContent { display:none; }
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #0f0f0f;
+      color: #eaeaea;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 24px;
+      padding: 12px 20px;
+      margin: 0;
+      background: #1a1a1a;
+      border-bottom: 1px solid #333;
+    }
+    nav a {
+      color: #ccc;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+    nav a:hover {
+      color: #ffd700;
+    }
+
+    h1 {
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #ffd700;
+      margin: 30px 0;
+      font-size: 24px;
+    }
+
+    #loginBox {
+      text-align: center;
+      margin-top: 60px;
+    }
+    #loginBox input {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #444;
+      background: #1a1a1a;
+      color: #eee;
+      font-size: 14px;
+    }
+    #loginBox button {
+      padding: 10px 20px;
+      margin-left: 10px;
+      background: #444;
+      color: #eee;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      transition: background 0.2s ease;
+    }
+    #loginBox button:hover {
+      background: #666;
+    }
+
+    #adminContent {
+      display: none;
+    }
+
+    form {
+      margin: 20px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    form input {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #444;
+      background: #1a1a1a;
+      color: #eee;
+      font-size: 14px;
+    }
+    form button {
+      padding: 10px 20px;
+      background: #444;
+      color: #eee;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    form button:hover {
+      background: #666;
+    }
+
+    /* 2 teams per row, 1 on mobile */
+    #teamsContainer {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin: 20px;
+    }
+    @media (max-width: 768px) {
+      #teamsContainer { grid-template-columns: 1fr; }
+    }
+
+    .team-block {
+      background: #1a1a1a;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .team-block:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.7);
+    }
+
+    .team-block table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      background: #181818;
+    }
+    .team-block thead th {
+      background: #222;
+      color: #ffd700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 12px;
+      font-weight: 600;
+      border-bottom: 1px solid #333;
+    }
+    .team-block tbody td {
+      padding: 10px;
+      border-top: 1px solid #333;
+      text-align: center;
+      color: #ddd;
+    }
+    .team-block tbody tr:nth-child(even) {
+      background: #202020;
+    }
+    .team-block tbody tr:hover {
+      background: #2a2a2a;
+    }
+    .team-block tfoot td {
+      padding: 12px;
+      background: #1a1a1a;
+      border-top: 1px solid #333;
+      text-align: center;
+    }
+
+    /* Compact buttons */
+    .team-block button {
+      padding: 4px 8px;
+      margin: 2px;
+      background: #444;
+      color: #eee;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 500;
+      display: inline-block;
+      transition: background 0.2s ease;
+    }
+    .team-block button:hover {
+      background: #666;
+    }
   </style>
 </head>
 <body>
-  <!-- Navigatie -->
- <nav class="main-nav">
-  <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="teams.html">Teams</a></li>
-    <li><a href="match-results.html">Match Results</a></li>
-    <li><a href="standings.html">Standings</a></li>
-    <li><a href="rules.html">Rules</a></li>
-    <li><a href="other-events.html">Other Competitions</a></li>
-    <li><a href="teams-admin.html" aria-current="page">Admin</a></li>
-  </ul>
-</nav>
+  <nav class="main-nav">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="teams.html">Teams</a></li>
+      <li><a href="match-results.html">Match Results</a></li>
+      <li><a href="standings.html">Standings</a></li>
+      <li><a href="rules.html">Rules</a></li>
+      <li><a href="other-events.html">Other Competitions</a></li>
+      <li><a href="teams-admin.html" aria-current="page">Admin</a></li>
+    </ul>
+  </nav>
 
   <h1>Teams Admin</h1>
 
-  <!-- Login box -->
   <div id="loginBox">
     <h2 style="color:#ffd700;">Admin Login</h2>
-    <input type="password" id="adminPass" placeholder="Wachtwoord">
+    <input type="password" id="adminPass" placeholder="Password">
     <button onclick="checkLogin()">Login</button>
   </div>
 
-  <!-- Admin content (verstopt tot login) -->
   <div id="adminContent">
-    <!-- Formulier om team + speler toe te voegen -->
     <form id="addTeamForm">
-      <input type="text" id="teamName" placeholder="Teamnaam" required>
-      <input type="text" id="playerName" placeholder="Spelernaam">
+      <input type="text" id="teamName" placeholder="Team name" required>
+      <input type="text" id="playerName" placeholder="Player name">
       <input type="text" id="handicap" placeholder="Handicap">
-      <button type="submit">Toevoegen</button>
+      <button type="submit">Add</button>
     </form>
-
-    <!-- Overzicht van teams -->
     <div id="teamsContainer"></div>
   </div>
-
   <script>
-    const toegangscode = "DJ88888"; // kies zelf je geheime code
+    const accessCode = "DJ88888"; // your secret code
 
     function checkLogin() {
-      const invoer = document.getElementById("adminPass").value;
-      if (invoer === toegangscode) {
+      const input = document.getElementById("adminPass").value;
+      if (input === accessCode) {
         document.getElementById("loginBox").style.display = "none";
         document.getElementById("adminContent").style.display = "block";
         initAdmin();
       } else {
-        alert("Geen toegang");
+        alert("Access denied");
         window.location.href = "teams.html";
       }
     }
@@ -84,48 +233,53 @@
       function renderTeams() {
         container.innerHTML = "";
         data.forEach((team, teamIndex) => {
-          const table = document.createElement("table");
-          let rows = "";
+          const block = document.createElement("div");
+          block.className = "team-block";
 
+          let rows = "";
           team.players.forEach((p, playerIndex) => {
             rows += `
               <tr>
                 <td>${p.name}</td>
                 <td>${p.handicap}</td>
                 <td>
-                  <button onclick="editPlayer(${teamIndex},${playerIndex})">Wijzig speler</button>
-                  <button onclick="deletePlayer(${teamIndex},${playerIndex})">Verwijder speler</button>
+                  <button onclick="editPlayer(${teamIndex},${playerIndex})">Edit</button>
+                  <button onclick="editHandicap(${teamIndex},${playerIndex})">Handicap</button>
+                  <button onclick="deletePlayer(${teamIndex},${playerIndex})">Delete</button>
                 </td>
               </tr>`;
           });
 
           if (rows === "") {
-            rows = `<tr><td colspan="3">Nog geen spelers toegevoegd</td></tr>`;
+            rows = `<tr><td colspan="3">No players added yet</td></tr>`;
           }
 
-          table.innerHTML = `
-            <thead>
-              <tr>
-                <th colspan="3">
-                  ${team.team}
-                  <button onclick="editTeam(${teamIndex})">Wijzig team</button>
-                  <button onclick="deleteTeam(${teamIndex})">Verwijder team</button>
-                </th>
-              </tr>
-              <tr><th>Speler</th><th>Handicap</th><th>Acties</th></tr>
-            </thead>
-            <tbody>${rows}</tbody>
-            <tfoot>
-              <tr>
-                <td colspan="3">
-                  <button onclick="addPlayer(${teamIndex})">Speler toevoegen</button>
-                </td>
-              </tr>
-            </tfoot>`;
-          container.appendChild(table);
+          block.innerHTML = `
+            <table>
+              <thead>
+                <tr>
+                  <th colspan="3">
+                    ${team.team}
+                    <button onclick="editTeam(${teamIndex})">Rename</button>
+                    <button onclick="deleteTeam(${teamIndex})">Delete team</button>
+                  </th>
+                </tr>
+                <tr><th>Player</th><th>Handicap</th><th>Actions</th></tr>
+              </thead>
+              <tbody>${rows}</tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="3">
+                    <button onclick="addPlayer(${teamIndex})">Add player</button>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>`;
+          container.appendChild(block);
         });
       }
 
+      // Form submit listener
       document.getElementById("addTeamForm").addEventListener("submit", function(e) {
         e.preventDefault();
         const teamName = document.getElementById("teamName").value;
@@ -146,8 +300,9 @@
         e.target.reset();
       });
 
+      // CRUD functions
       window.editTeam = function(teamIndex) {
-        const newName = prompt("Nieuwe teamnaam:", data[teamIndex].team);
+        const newName = prompt("New team name:", data[teamIndex].team);
         if (newName) {
           data[teamIndex].team = newName;
           saveData();
@@ -156,7 +311,7 @@
       };
 
       window.deleteTeam = function(teamIndex) {
-        if (confirm("Weet je zeker dat je dit team wilt verwijderen?")) {
+        if (confirm("Are you sure you want to delete this team?")) {
           data.splice(teamIndex, 1);
           saveData();
           renderTeams();
@@ -164,10 +319,10 @@
       };
 
       window.addPlayer = function(teamIndex) {
-        const name = prompt("Naam speler:");
+        const name = prompt("Player name:");
         const handicap = prompt("Handicap:");
         if (name) {
-          data[teamIndex].players.push({ name:name, handicap:handicap || "-" });
+          data[teamIndex].players.push({ name: name, handicap: handicap || "-" });
           saveData();
           renderTeams();
         }
@@ -175,22 +330,37 @@
 
       window.editPlayer = function(teamIndex, playerIndex) {
         const player = data[teamIndex].players[playerIndex];
-        const newName = prompt("Nieuwe naam:", player.name);
-        const newHandicap = prompt("Nieuwe handicap:", player.handicap);
-        if (newName) player.name = newName;
-        if (newHandicap) player.handicap = newHandicap;
+        const newName = prompt("New name:", player.name);
+        const newHandicap = prompt("New handicap:", player.handicap);
+        if (newName !== null && newName.trim() !== "") {
+          player.name = newName.trim();
+        }
+        if (newHandicap !== null && newHandicap.trim() !== "") {
+          player.handicap = newHandicap.trim();
+        }
         saveData();
         renderTeams();
       };
 
+      window.editHandicap = function(teamIndex, playerIndex) {
+        const player = data[teamIndex].players[playerIndex];
+        const newHandicap = prompt("New handicap:", player.handicap);
+        if (newHandicap !== null && newHandicap.trim() !== "") {
+          player.handicap = newHandicap.trim();
+          saveData();
+          renderTeams();
+        }
+      };
+
       window.deletePlayer = function(teamIndex, playerIndex) {
-        if (confirm("Speler verwijderen?")) {
+        if (confirm("Are you sure you want to delete this player?")) {
           data[teamIndex].players.splice(playerIndex, 1);
           saveData();
           renderTeams();
         }
       };
 
+      // Initial render after login
       renderTeams();
     }
   </script>
