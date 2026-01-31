@@ -1,0 +1,73 @@
+/* Container & headings */
+#match-results {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+#match-results h2 {
+  text-align: center;
+  color: #ffcc00;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+.week-title {
+  margin: 20px 0 10px;
+  font-size: 1.1rem;
+  color: #ffcc00;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Table styling – identiek aan teams.css look */
+.standings-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 24px;
+  font-size: 0.95rem;
+  background: linear-gradient(145deg, #0d131c, #1a1f29);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+  overflow: hidden;
+}
+.standings-table caption {
+  text-align: left;
+  font-weight: 600;
+  margin: 12px;
+  color: #a8b0bd;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.standings-table th, .standings-table td {
+  border: 1px solid #2a2f3a;
+  padding: 10px;
+  text-align: center;
+}
+.standings-table thead th {
+  background: #1a1f29;
+  color: #ffcc00;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.standings-table tbody tr:nth-child(odd) td {
+  background: #121826;
+  color: #e9eef5;
+}
+.standings-table tbody tr:nth-child(even) td {
+  background: #0e1522;
+  color: #e9eef5;
+}
+.standings-table tbody tr:hover td {
+  background: #1f2633;
+  transition: background 0.3s ease;
+}
+.standings-table tfoot td {
+  background: #0e1420;
+  color: #a8b0bd;
+  font-size: 0.85rem;
+  text-align: right;
+  padding: 8px;
+}

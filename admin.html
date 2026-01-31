@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {font-family: system-ui, Arial, sans-serif; background:#0f1115; color:#e6e6e6; margin:0; padding:20px;}
+    .card {background:#141821; padding:20px; border-radius:10px; max-width:400px; margin:auto;}
+    .titlebar {margin-bottom:15px;}
+    label {display:block; margin-bottom:10px;}
+    input {width:100%; padding:8px; border-radius:6px; border:1px solid #263245; background:#101622; color:#e6e6e6;}
+    .row {display:flex; gap:10px; margin-top:15px;}
+    .btn {flex:1; padding:10px; border:0; border-radius:6px; cursor:pointer;}
+    .btn.ok {background:#2e7d32; color:#fff;}
+    .btn.muted {background:#37474f; color:#cfd8dc;}
+  </style>
+</head>
+<body>
+
+<div class="card" id="admin-login">
+  <div class="titlebar"><h2>Admin login</h2></div>
+  <form id="admin-form">
+    <label><span>Admin code</span>
+      <input type="password" name="code" required>
+    </label>
+    <div class="row">
+      <button type="submit" class="btn ok">Login</button>
+      <button type="button" id="logout-btn" class="btn muted">Logout</button>
+    </div>
+  </form>
+</div>
+
+<script>
+document.getElementById("admin-form").addEventListener("submit", function(e) {
+  e.preventDefault();
+  const code = this.code.value;
+  if (code === "88888") {
+    sessionStorage.setItem("adminUnlocked", "true");
+    alert("Admin mode unlocked");
+  } else {
+    alert("Wrong code");
+  }
+});
+
+document.getElementById("logout-btn").addEventListener("click", function() {
+  sessionStorage.removeItem("adminUnlocked");
+  alert("Admin mode locked");
+});
+</script>
+
+</body>
+</html>

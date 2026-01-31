@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Pool League Bali – Standings v12.13</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Koppeling naar externe stylesheet -->
+  <link rel="stylesheet" href="standings.css">
+  <style>
+    :root {
+      --bg:#0f1115; --card:#141821; --sub:#101622; --text:#e6e6e6;
+      --muted:#a7b3c7; --line:#263245; --accent:#1976d2; --ok:#2e7d32; --danger:#c62828;
+    }
+    *{box-sizing:border-box}
+    body{font-family:system-ui,Arial,sans-serif;background:var(--bg);color:var(--text);margin:0}
+
+    /* nav.main-nav regels verwijderd — die staan nu in standings.css */
+
+    nav.team-nav{background:var(--sub);border-top:1px solid var(--line)}
+    nav.team-nav ul{list-style:none;display:flex;flex-wrap:wrap;gap:10px;padding:10px 20px;margin:0}
+    nav.team-nav a{color:#a7b3c7;text-decoration:none;font-size:14px}
+
+    .card{margin:20px;padding:16px;background:var(--card);border-radius:10px}
+    .titlebar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+    .tag{background:#263245;color:var(--muted);padding:4px 8px;border-radius:999px;font-size:12px}
+
+    .btn{padding:8px 12px;border:0;border-radius:6px;cursor:pointer}
+    .btn.ok{background:var(--ok);color:#fff}
+    .btn.muted{background:#37474f;color:#cfd8dc}
+    .btn.edit{background:var(--accent);color:#fff}
+    .btn.danger{background:var(--danger);color:#fff}
+
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    label{display:block;margin-bottom:8px}
+    label span{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
+    input,select{width:100%;padding:8px;border-radius:6px;border:1px solid var(--line);background:#0f141f;color:var(--text)}
+
+    table{width:100%;border-collapse:collapse}
+    thead th{background:#1b2130;color:#cfd8dc;padding:10px;text-align:left;font-weight:600}
+    tbody td,tfoot td{padding:8px 10px;border-top:1px solid var(--line)}
+    .num{text-align:right;font-variant-numeric:tabular-nums}
+
+    .sub{margin-top:12px;padding:12px;background:var(--sub);border-radius:8px}
+    .note{color:var(--muted);font-size:12px;margin-top:8px}
+    .warn{color:#ffcc80;font-size:12px;margin-top:6px}
+    .row{display:flex;gap:8px;align-items:center}
+    .pill{display:inline-block;padding:2px 8px;border-radius:999px;background:#1b2130;color:var(--muted)}
+
+    .locked form, .locked button.btn { pointer-events:none; opacity:0.6; }
+    .bonus-row td{background:#162235}
+    .status-ok{color:#9ccc65}
+    .status-missing{color:#ffcc80}
+    .status-tie{color:#90caf9}
+  </style>
+</head>
+
+
+  <body>
+
+  <!-- Kopbanner -->
+  <div class="header-banner">
+    <img src="images/index-banner.jpg" alt="Logo 1" class="logo">
+    <h1>Pool League Bali – Season 3</h1>
+     </div>
+
+  <!-- Hoofd-navigatie -->
+  <nav class="main-nav">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="teams.html">Teams</a></li>
+      <li><a href="match-results.html">Match Results</a></li>
+      <li><a href="standings.html" aria-current="page">Standings</a></li>
+      <li><a href="rules.html">Rules</a></li>
+      <li><a href="other-events.html">Other Competitions</a></li>
+    </ul>
+  </nav>
+
+
+  <!-- Teamlinks (apart blok) -->
+  <nav class="team-nav" aria-label="Nav teams">
+    <ul id="nav-teams"></ul>
+  </nav>
+
+  <!-- Admin-login -->
+  <div class="card" id="admin-card">
+    <div class="titlebar"><h2>Admin mode</h2><span class="tag">Unlock voor bewerken</span></div>
+    <form id="admin-form">
+      <label><span>Admin code</span><input type="password" name="code" required></label>
+      <div class="row">
+        <button type="submit" class="btn ok">Unlock</button>
+        <button type="button" id="lock-btn" class="btn muted">Lock</button>
+        <button type="button" id="recompute-btn" class="btn ok" style="display:none;">Recompute Scores</button>
+      </div>
+      <div class="note">Once unlocked, you can manage teams and add/edit matches.</div>
+    </form>
+  </div>
+
+  <!-- Team management -->
+  <div class="card locked" id="team-management">
+    <div class="titlebar"><h2>MANAGING TEAMS</h2><span class="tag">Teams + spelers</span></div>
+    <form id="teams-form">
+      <div class="grid">
+        <div>
+          <label><span>Teamnaam (nieuw of bestaand)</span><input type="text" name="newTeam" placeholder="Team name" required></label>
+          <label><span>Spelers toevoegen (komma‑gescheiden)</span><input type="text" name="newPlayers" placeholder="Achie, Danny, Wolf"></label>
+          <div class="row">
+            <button type="submit" class="btn ok">Add / Update team</button>
+            <button type="button" id="rename-team-btn" class="btn edit">Rename team</button>
+          </div>
+        </div>
+        <div>
+          <label><span>Selecteer team</span><select id="teams-select"></select></label>
+          <div class="row">
+            <button type="button" id="remove-team-btn" class="btn danger">Remove team</button>
+            <button type="button" id="clear-players-btn" class="btn danger">Clear players</button>
+          </div>
+          <label class="row" style="margin-top:8px;gap:6px;">
+            <input type="text" id="remove-player-input" placeholder="Exacte naam" style="flex:1;">
+            <button type="button" id="remove-player-btn" class="btn danger">Remove player</button>
+          </label>
+        </div>
+      </div>
+    </form>
+    <div class="note">Teams: <span id="teams-badge" class="pill"></span></div>
+  </div>
+
+  <!-- Invulschema — wedstrijden -->
+  <div class="card locked" id="match-entry">
+    <div class="titlebar"><h2>Entry form — competitions</h2><span class="tag">Singles & Doubles</span></div>
+    <form id="match-form">
+      <div class="grid">
+        <div>
+          <label><span>Week</span><select name="week" required></select></label>
+          <label><span>Datum</span><input type="date" name="date" required></label>
+          <label><span>Team A</span><select name="teamA" id="teamA-select" required></select></label>
+          <label><span>Team B</span><select name="teamB" id="teamB-select" required></select></label>
+          <div id="team-warn" class="warn" style="display:none;">Voeg spelers toe aan beide teams om de dropdowns te vullen.</div>
+        </div>
+        <div>
+          <label><span>Type</span>
+            <select name="type" id="type-select" required>
+              <option value="Single">Single (2 sets)</option>
+              <option value="Double">Double (1 set)</option>
+            </select>
+          </label>
+
+          <!-- Permanente, lege selects tot teamkeuze -->
+          <label><span>Player A1</span><select name="playerA1" id="playerA1" required></select></label>
+          <label><span>Player A2</span><select name="playerA2" id="playerA2"></select></label>
+          <label><span>Player B1</span><select name="playerB1" id="playerB1" required></select></label>
+          <label><span>Player B2</span><select name="playerB2" id="playerB2"></select></label>
+
+          <label id="set1-label"><span>Set 1</span><input type="text" name="set1" placeholder="5-3" required></label>
+          <label id="set2-label"><span>Set 2 (Singles only)</span><input type="text" name="set2" placeholder="4-5"></label>
+        </div>
+      </div>
+      <div class="row">
+  <button type="submit" class="btn ok" id="add-match-btn">Add match</button>
+  <button type="button" class="btn edit" id="edit-rules-btn">Edit Rules</button>
+</div>
+      <div class="note">Per combinatie per dag: 7 singles + 3 doubles. Bonus +3 pas na compleet dagprogramma.</div>
+    </form>
+  </div>
+
+<!-- Rules bewerkformulier -->
+<div id="rules-editor" style="display:none; margin-top:20px;">
+  <h3>Edit Rules</h3>
+  <textarea id="rules-text" rows="10" style="width:100%;"></textarea>
+  <button type="button" class="btn ok" id="save-rules-btn">Save Rules</button>
+</div>
+
+  <!-- Weekly matches -->
+  <div class="card locked" id="weekly-card">
+    <div class="titlebar"><h2>Weekly matches</h2><span class="tag">Overzicht</span></div>
+    <table id="matches-table">
+      <thead>
+        <tr><th>Week</th><th>Date</th><th>Teams</th><th>Type</th><th>Sets</th><th class="num">Base</th><th>Actions</th></tr>
+      </thead>
+      <tbody id="matches-body"><tr><td colspan="7">No matches yet.</td></tr></tbody>
+    </table>
+  </div>
+
+  <!-- Player standings -->
+  <div class="card">
+    <div class="titlebar"><h2>Player standings</h2><span class="tag">Season 3</span></div>
+    <table id="player-standings-table">
+      <thead>
+        <tr><th>Player</th><th class="num">Played</th><th class="num">Wins</th><th class="num">Losses</th><th class="num">Points</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- Team ranking -->
+  <div class="card">
+    <div class="titlebar"><h2>Team ranking</h2><span class="tag">Season 3</span></div>
+    <table id="team-ranking-table">
+      <thead>
+        <tr><th>Team</th><th class="num">Played</th><th class="num">Wins</th><th class="num">Draws</th><th class="num">Losses</th><th class="num">Total teampoints</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- Breakdown (per datum + teams-combinatie) -->
+  <div class="card">
+    <div class="titlebar"><h2>Season 3 — Match breakdown</h2><span class="tag">Per datum + teams-combinatie</span></div>
+    <div id="breakdown-tables"></div>
+  </div>
+
+  <!-- ====== Footer ====== -->
+  <footer class="footer">
+    <p>© 2026 Pool League Bali</p>
+    <p>Website Designer Johan Sopamena Alias DJ Sopamena</p>
+      </footer>
+
+  <!-- Script -->
+  <script>
+    console.log("standings.js v12.13 loaded");
+
+    // ====== Config ======
+    const REQUIRED_SINGLES_PER_DAY = 7;
+    const REQUIRED_DOUBLES_PER_DAY = 3;
+    const adminCode = "88888";
+
+    // ====== Baseline teams (incl. Sixteen Degrees hersteld) ======
+    const BASELINE_TEAMS = [
+      { name: "Black Library", players: ["Achie (Captain)","Danny","STV","Jon","Rose","Pyer","Virgy","Felix","Gary","JP","JC","Philly","BL-13","BL-14","BL-15"] },
+      { name: "Litut", players: ["Jesus (Captain)","Ketut","TJ","Dave","Troublemaker","BG John","Kai","Dylan","Judas","Niluh","Tony","Sidd","LT-13","LT-14","LT-15"] },
+      { name: "Venus – Samurai Warriors", players: ["Andrew (Captain)","Susanto","Stek","Bill","Hayato","Lance","Vanda","Josh","Terry","Johan","Jeff","Ray","Nima","Tony","VN-15"] },
+      { name: "Sixteen Degrees", players: ["Andrew S","Budi","Cahyo","Dewa","Eka","Fajar","Gilang","Hendra","Iwan","Joko","Komang","Made","Nyoman","Oka","Putu"] }
+    ];
+
+    // ====== State ======
+    let teams = [];   // {name, players[]}
+    let matches = []; // {id, week, date, teamA, teamB, type, playerA1, playerA2, playerB1, playerB2, set1, set2, scoreBase}
+    let playerStats = {};
+    let teamStats = {};
+    let editingId = null;
+
+    // ====== Storage ======
+    function saveAll(){ localStorage.setItem("teams_v1213", JSON.stringify(teams)); localStorage.setItem("matches_v1213", JSON.stringify(matches)); }
+    function loadAll(){
+      try{ teams = JSON.parse(localStorage.getItem("teams_v1213")) || []; }catch(e){ teams=[]; }
+      try{ matches = JSON.parse(localStorage.getItem("matches_v1213")) || []; }catch(e){ matches=[]; }
+      if(!Array.isArray(teams) || teams.length===0){ teams = JSON.parse(JSON.stringify(BASELINE_TEAMS)); }
+    }
+
+    // ====== Admin ======
+    document.getElementById('admin-form').onsubmit = function(e){
+      e.preventDefault();
+      const code = e.target.code.value;
+      if(code === adminCode){
+        document.querySelectorAll('.card.locked').forEach(el => { el.classList.remove('locked'); el.classList.add('unlocked'); });
+        document.getElementById('recompute-btn').style.display = 'inline-block';
+        alert("Admin mode activated");
+      }else{
+        alert("Incorrect code");
+      }
+    };
+    document.getElementById('lock-btn').onclick = function(){
+      document.querySelectorAll('.card.unlocked').forEach(el => { el.classList.remove('unlocked'); el.classList.add('locked'); });
+      document.getElementById('recompute-btn').style.display = 'none';
+      alert("Admin mode locked");
+    };
+
+    // ====== DOM refs ======
+    const weekSelect = document.querySelector("select[name=week]");
+    const teamASelect = document.getElementById("teamA-select");
+    const teamBSelect = document.getElementById("teamB-select");
+    const teamsSelect = document.getElementById("teams-select");
+    const teamsBadge = document.getElementById("teams-badge");
+    const teamWarn = document.getElementById("team-warn");
+    const playerA1Sel = document.getElementById("playerA1");
+    const playerA2Sel = document.getElementById("playerA2");
+    const playerB1Sel = document.getElementById("playerB1");
+    const playerB2Sel = document.getElementById("playerB2");
+
+    // ====== Weeks ======
+    function renderWeeks(){
+      weekSelect.innerHTML="";
+      for(let i=1;i<=10;i++){ const o=document.createElement("option"); o.value=i; o.textContent="Week "+i; weekSelect.appendChild(o); }
+    }
+
+    // ====== Nav teams ======
+    function renderNavTeams(){
+      const nav=document.getElementById("nav-teams");
+      nav.innerHTML="";
+      teams.forEach(t=>{
+        const li=document.createElement("li");
+        const a=document.createElement("a"); a.href="teams.html#"+encodeURIComponent(t.name); a.textContent=t.name;
+        li.appendChild(a); nav.appendChild(li);
+      });
+    }
+
+    // ====== Team dropdowns ======
+    function renderTeamDropdowns(){
+      teamASelect.innerHTML=""; teamBSelect.innerHTML=""; teamsSelect.innerHTML="";
+      const phA=new Option("Select team…","",true,true); phA.disabled=true;
+      const phB=new Option("Select team…","",true,true); phB.disabled=true;
+      teamASelect.appendChild(phA); teamBSelect.appendChild(phB);
+      teams.forEach(t=>{
+        teamASelect.appendChild(new Option(t.name,t.name));
+        teamBSelect.appendChild(new Option(t.name,t.name));
+        teamsSelect.appendChild(new Option(t.name,t.name));
+      });
+      if(teamsBadge) teamsBadge.textContent = teams.map(t=>t.name).join(" • ");
+      resetAllPlayerSelects();
+    }
+
+    // ====== Team management ======
+    document.getElementById('teams-form').onsubmit = function(e){
+      e.preventDefault();
+      const name=e.target.newTeam.value.trim();
+      const playersStr=e.target.newPlayers.value.trim();
+      const players=playersStr?playersStr.split(",").map(p=>p.trim()).filter(Boolean):[];
+      if(!name) return;
+      const existing=teams.find(t=>t.name===name);
+      if(!existing){ teams.push({name,players}); }
+      else{ existing.players = Array.from(new Set([...(existing.players||[]), ...players])); }
+      e.target.reset();
+      renderTeamDropdowns(); renderNavTeams(); saveAll();
+    };
+    document.getElementById('rename-team-btn').onclick=function(){
+      const sel=teamsSelect.value; if(!sel) return;
+      const nn=prompt("Nieuwe teamnaam voor: "+sel, sel); if(!nn) return;
+      if(teams.some(t=>t.name===nn)){ alert("Naam bestaat al."); return; }
+      const t=teams.find(t=>t.name===sel); if(!t) return; t.name=nn;
+      matches = matches.map(m=>{ if(m.teamA===sel) m.teamA=nn; if(m.teamB===sel) m.teamB=nn; return m; });
+      renderTeamDropdowns(); renderNavTeams(); renderMatches(); recalcAllStats(); saveAll();
+    };
+    document.getElementById('remove-team-btn').onclick=function(){
+      const sel=teamsSelect.value; if(!sel) return;
+      if(!confirm("Verwijder team '"+sel+"'?")) return;
+      teams = teams.filter(t=>t.name!==sel);
+      matches = matches.filter(m=>m.teamA!==sel && m.teamB!==sel);
+      renderTeamDropdowns(); renderNavTeams(); renderMatches(); recalcAllStats(); saveAll();
+    };
+    document.getElementById('clear-players-btn').onclick=function(){
+      const sel=teamsSelect.value; const t=teams.find(t=>t.name===sel); if(!t) return;
+      if(!confirm("Alle spelers verwijderen uit '"+sel+"'?")) return;
+      t.players=[]; renderTeamDropdowns(); saveAll();
+    };
+    document.getElementById('remove-player-btn').onclick=function(){
+      const sel=teamsSelect.value; const name=document.getElementById('remove-player-input').value.trim();
+      if(!sel||!name) return;
+      const t=teams.find(t=>t.name===sel); if(!t) return;
+      const before=t.players.length; t.players=t.players.filter(p=>p!==name);
+      if(before===t.players.length) alert("Speler niet gevonden.");
+      document.getElementById('remove-player-input').value=""; renderTeamDropdowns(); saveAll();
+    };
+
+    // ====== Player selects ======
+    function setPlaceholder(sel){ sel.innerHTML=""; const ph=new Option("Select player…","",true,true); ph.disabled=true; sel.appendChild(ph); }
+    function fillSelect(sel, options){ setPlaceholder(sel); options.forEach(p=>sel.appendChild(new Option(p,p))); }
+    function resetAllPlayerSelects(){ setPlaceholder(playerA1Sel); setPlaceholder(playerA2Sel); setPlaceholder(playerB1Sel); setPlaceholder(playerB2Sel); }
+
+    function ensurePlayerSelectsForTeams(){
+      const a=teams.find(t=>t.name===teamASelect.value);
+      const b=teams.find(t=>t.name===teamBSelect.value);
+      const aPlayers=(a&&a.players||[]), bPlayers=(b&&b.players||[]);
+      teamWarn.style.display = (!aPlayers.length || !bPlayers.length) ? "block" : "none";
+      const isDouble = document.getElementById("type-select").value === "Double";
+      fillSelect(playerA1Sel, aPlayers); fillSelect(playerB1Sel, bPlayers);
+      fillSelect(playerA2Sel, aPlayers); fillSelect(playerB2Sel, bPlayers);
+      playerA1Sel.required = true; playerB1Sel.required = true;
+      playerA2Sel.required = isDouble; playerB2Sel.required = isDouble;
+    }
+    teamASelect.addEventListener("change", ensurePlayerSelectsForTeams);
+    teamBSelect.addEventListener("change", ensurePlayerSelectsForTeams);
+    document.getElementById("type-select").addEventListener("change", ensurePlayerSelectsForTeams);
+
+    // ====== Helpers ======
+    function parseSet(s){ if(!s) return null; const p=s.split("-").map(x=>parseInt(x,10)); if(p.length!==2||p.some(Number.isNaN)) return null; return {a:p[0],b:p[1]}; }
+
+    // ====== Compute base points ======
+    function computeBasePoints(m){
+      const s1=parseSet(m.set1), s2=parseSet(m.set2);
+      let a=0,b=0;
+      if(m.type==="Single"){
+        let aw=0,bw=0;
+        if(s1){ if(s1.a>s1.b) aw++; else if(s1.b>s1.a) bw++; }
+        if(s2){ if(s2.a>s2.b) aw++; else if(s2.b>s2.a) bw++; }
+        if(aw>bw) a+=3; else if(bw>aw) b+=3; else { a+=1; b+=1; }
+      }else{
+        if(s1){ if(s1.a>s1.b) a+=2; else if(s1.b>s1.a) b+=2; else { a+=1; b+=1; } }
+      }
+      return {teamAPoints:a, teamBPoints:b};
+    }
+
+    // ====== Stats ======
+    function resetStats(){ playerStats={}; teamStats={}; teams.forEach(t=>teamStats[t.name]={played:0,wins:0,draws:0,losses:0,points:0}); }
+    function addPlayer(p,pts,win,loss){ if(!p) return; if(!playerStats[p]) playerStats[p]={played:0,wins:0,losses:0,points:0}; playerStats[p].played++; playerStats[p].points+=pts; if(win) playerStats[p].wins++; if(loss) playerStats[p].losses++; }
+
+    function applyMatchToStats(m){
+      if(!teamStats[m.teamA]) teamStats[m.teamA]={played:0,wins:0,draws:0,losses:0,points:0};
+      if(!teamStats[m.teamB]) teamStats[m.teamB]={played:0,wins:0,draws:0,losses:0,points:0};
+      teamStats[m.teamA].played++; teamStats[m.teamB].played++;
+      const {teamAPoints,teamBPoints}=computeBasePoints(m);
+      if(teamAPoints>teamBPoints){ teamStats[m.teamA].wins++; teamStats[m.teamB].losses++; }
+      else if(teamBPoints>teamAPoints){ teamStats[m.teamB].wins++; teamStats[m.teamA].losses++; }
+      else { teamStats[m.teamA].draws++; teamStats[m.teamB].draws++; }
+      teamStats[m.teamA].points += teamAPoints;
+      teamStats[m.teamB].points += teamBPoints;
+
+      // Player points (basis)
+      const s1=parseSet(m.set1), s2=parseSet(m.set2);
+      if(m.type==="Single"){
+        let aw=0,bw=0;
+        if(s1){ if(s1.a>s1.b) aw++; else if(s1.b>s1.a) bw++; }
+        if(s2){ if(s2.a>s2.b) aw++; else if(s2.b>s2.a) bw++; }
+        if(aw>bw){ addPlayer(m.playerA1,3,true,false); addPlayer(m.playerB1,0,false,true); }
+        else if(bw>aw){ addPlayer(m.playerB1,3,true,false); addPlayer(m.playerA1,0,false,true); }
+        else { addPlayer(m.playerA1,1,false,false); addPlayer(m.playerB1,1,false,false); }
+      }else{
+        if(s1){
+          if(s1.a>s1.b){ addPlayer(m.playerA1,2,true,false); addPlayer(m.playerA2,2,true,false); addPlayer(m.playerB1,0,false,true); addPlayer(m.playerB2,0,false,true); }
+          else if(s1.b>s1.a){ addPlayer(m.playerB1,2,true,false); addPlayer(m.playerB2,2,true,false); addPlayer(m.playerA1,0,false,true); addPlayer(m.playerA2,0,false,true); }
+          else { addPlayer(m.playerA1,1,false,false); addPlayer(m.playerA2,1,false,false); addPlayer(m.playerB1,1,false,false); addPlayer(m.playerB2,1,false,false); }
+        }
+      }
+    }
+
+    // ====== Bonus per datum + teams-combinatie ======
+    function makeTeamsKey(teamA, teamB){ return [teamA, teamB].sort().join("_vs_"); }
+
+    function computeDailyTotalsAndCounts(){
+      // key: "week|date|teamsKey"
+      const totals = {}; // { key: { teamName: basePoints } }
+      const counts = {}; // { key: { singles: n, doubles: n } }
+      matches.forEach(m=>{
+        const teamsKey = makeTeamsKey(m.teamA, m.teamB);
+        const key = m.week + "|" + m.date + "|" + teamsKey;
+
+        if(!totals[key]) totals[key] = {};
+        if(!counts[key]) counts[key] = { singles:0, doubles:0 };
+
+        const {teamAPoints,teamBPoints} = computeBasePoints(m);
+        if(!totals[key][m.teamA]) totals[key][m.teamA] = 0;
+        if(!totals[key][m.teamB]) totals[key][m.teamB] = 0;
+        totals[key][m.teamA] += teamAPoints;
+        totals[key][m.teamB] += teamBPoints;
+
+        if(m.type === "Single") counts[key].singles++;
+        else if(m.type === "Double") counts[key].doubles++;
+      });
+      return { totals, counts };
+    }
+
+    function applyDailyBonuses(){
+      const { totals, counts } = computeDailyTotalsAndCounts();
+      Object.entries(totals).forEach(([key, scores])=>{
+        const c = counts[key] || {singles:0, doubles:0};
+        const isCompleteDay = (c.singles === REQUIRED_SINGLES_PER_DAY) && (c.doubles === REQUIRED_DOUBLES_PER_DAY);
+        if(!isCompleteDay) return; // bonus pas na compleet dagprogramma voor deze combinatie
+
+        const max = Math.max(...Object.values(scores));
+        const winners = Object.keys(scores).filter(t=>scores[t]===max);
+
+        if(winners.length === 1){
+          const winner = winners[0];
+          if(!teamStats[winner]) teamStats[winner] = {played:0,wins:0,draws:0,losses:0,points:0};
+          teamStats[winner].points += 3;
+        }
+        // winners.length > 1 betekent gelijkstand → geen bonus
+      });
+    }
+
+    // ====== Matches table ======
+    function renderMatches(){
+      const body=document.getElementById('matches-body'); body.innerHTML="";
+      if(matches.length===0){ const tr=document.createElement('tr'); tr.innerHTML='<td colspan="7">No matches yet.</td>'; body.appendChild(tr); return; }
+      [...matches].sort((a,b)=>a.week-b.week||a.date.localeCompare(b.date)).forEach(m=>{
+        const setsStr = m.type==="Single" ? `${m.set1||""} / ${m.set2||""}` : `${m.set1||""}`;
+        const tr=document.createElement('tr');
+        tr.innerHTML=`
+          <td class="num">${m.week}</td>
+          <td>${m.date}</td>
+          <td>${m.teamA} vs ${m.teamB}</td>
+          <td>${m.type}</td>
+          <td class="num">${setsStr}</td>
+          <td class="num">${m.scoreBase||""}</td>
+          <td>
+            <button class="btn edit" onclick="editMatch('${m.id}')">Edit</button>
+            <button class="btn danger" onclick="deleteMatch('${m.id}')">Delete</button>
+          </td>`;
+        body.appendChild(tr);
+      });
+    }
+
+    // ====== Player standings ======
+    function renderPlayerStandings(){
+      const tbody=document.querySelector('#player-standings-table tbody'); tbody.innerHTML="";
+      const rows=Object.entries(playerStats).map(([player,s])=>({player,...s})).sort((a,b)=>b.points-a.points||a.player.localeCompare(b.player));
+      rows.forEach(r=>{
+        const tr=document.createElement('tr');
+        tr.innerHTML=`<td>${r.player}</td><td class="num">${r.played}</td><td class="num">${r.wins}</td><td class="num">${r.losses}</td><td class="num">${r.points}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // ====== Team ranking ======
+    function renderTeamRanking(){
+      const tbody=document.querySelector('#team-ranking-table tbody'); tbody.innerHTML="";
+      const rows=Object.entries(teamStats).map(([team,s])=>({team,...s})).sort((a,b)=>b.points-a.points||a.team.localeCompare(b.team));
+      rows.forEach(r=>{
+        const tr=document.createElement('tr');
+        tr.innerHTML=`<td>${r.team}</td><td class="num">${r.played}</td><td class="num">${r.wins}</td><td class="num">${r.draws}</td><td class="num">${r.losses}</td><td class="num">${r.points}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // ====== Breakdown (per datum + teams-combinatie) ======
+    function buildWeekBreakdownTable(week){
+      const card=document.createElement('div'); card.className='sub';
+      const title=document.createElement('div'); title.className='titlebar';
+      title.innerHTML=`<h3>Week ${week} — Match breakdown</h3><span class="tag">Per datum + teams-combinatie</span>`;
+      const table=document.createElement('table'); table.className='standings-table'; table.id=`breakdown-week-${week}`;
+      table.innerHTML=`
+        <thead>
+          <tr>
+            <th>Date</th><th>Teams</th><th>Status</th><th>Type</th><th>Team A</th><th>Team B</th>
+            <th>Player A1</th><th>Player A2</th><th>Player B1</th><th>Player B2</th>
+            <th class="num">Sets</th><th class="num">Base total</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+          <tr class="summary team-points"><td colspan="10">Team base points (sum for this date+combination)</td><td class="pointsA num">A: 0</td><td class="pointsB num">B: 0</td></tr>
+          <tr class="summary bonus-points"><td colspan="10">Bonus (+3) only if complete (7 singles + 3 doubles) and highest total is unique</td><td class="bonusA num">A: 0</td><td class="bonusB num">B: 0</td></tr>
+        </tfoot>`;
+      card.appendChild(title); card.appendChild(table); return card;
+    }
+    function ensureBreakdownTables(){
+      const container=document.getElementById('breakdown-tables'); container.innerHTML="";
+      for(let w=1; w<=10; w++) container.appendChild(buildWeekBreakdownTable(w));
+    }
+    function renderBreakdownTables(){
+      // clear all
+      for(let w=1; w<=10; w++){
+        const table=document.getElementById(`breakdown-week-${w}`); if(!table) continue;
+        table.querySelector('tbody').innerHTML="";
+        table.querySelector('.pointsA').textContent="A: 0";
+        table.querySelector('.pointsB').textContent="B: 0";
+        table.querySelector('.bonusA').textContent="A: 0";
+        table.querySelector('.bonusB').textContent="B: 0";
+      }
+      // group by week|date|teamsKey
+      const grouped = {};
+      matches.forEach(m=>{
+        const key=m.week+"|"+m.date+"|"+makeTeamsKey(m.teamA,m.teamB);
+        if(!grouped[key]) grouped[key]=[];
+        grouped[key].push(m);
+      });
+
+      Object.entries(grouped).forEach(([key, list])=>{
+        const [weekStr,dateStr,teamsKey]=key.split("|");
+        const week=parseInt(weekStr,10);
+        const table=document.getElementById(`breakdown-week-${week}`); if(!table) return;
+        const tbody=table.querySelector('tbody');
+
+        // per-date+combination totals & counts
+        const totals={}; // team -> base points
+        let singles=0, doubles=0;
+        list.forEach(m=>{
+          const setsStr = m.type==="Single" ? `${m.set1||""} / ${m.set2||""}` : `${m.set1||""}`;
+          const tr=document.createElement('tr');
+          tr.innerHTML=`
+            <td>${m.date}</td>
+            <td>${teamsKey.replace("_vs_"," vs ")}</td>
+            <td></td>
+            <td>${m.type}</td><td>${m.teamA}</td><td>${m.teamB}</td>
+            <td>${m.playerA1||""}</td><td>${m.playerA2||""}</td><td>${m.playerB1||""}</td><td>${m.playerB2||""}</td>
+            <td class="num">${setsStr}</td><td class="num">${m.scoreBase||""}</td>`;
+          tbody.appendChild(tr);
+
+          if(!totals[m.teamA]) totals[m.teamA]=0;
+          if(!totals[m.teamB]) totals[m.teamB]=0;
+          const {teamAPoints,teamBPoints}=computeBasePoints(m);
+          totals[m.teamA]+=teamAPoints;
+          totals[m.teamB]+=teamBPoints;
+
+          if(m.type==="Single") singles++; else if(m.type==="Double") doubles++;
+        });
+
+        // status cell (first row of this date+combination)
+        const firstRow = tbody.querySelector('tr');
+        const statusCell = firstRow ? firstRow.children[2] : null;
+        const isCompleteDay = (singles===REQUIRED_SINGLES_PER_DAY) && (doubles===REQUIRED_DOUBLES_PER_DAY);
+        if(statusCell){
+          if(isCompleteDay) statusCell.innerHTML = `<span class="status-ok">Complete: ${singles} singles + ${doubles} doubles</span>`;
+          else statusCell.innerHTML = `<span class="status-missing">Missing: ${REQUIRED_SINGLES_PER_DAY-singles} singles, ${REQUIRED_DOUBLES_PER_DAY-doubles} doubles</span>`;
+        }
+
+        // compute bonus winner for this date+combination
+        const max = Math.max(...Object.values(totals));
+        const winners = Object.keys(totals).filter(t=>totals[t]===max);
+
+        // summary rows labels (top twee totals)
+        const topTeams = Object.entries(totals).sort((a,b)=>b[1]-a[1]);
+        const aLabel = topTeams[0] ? `${topTeams[0][0]}: ${topTeams[0][1]}` : "A: 0";
+        const bLabel = topTeams[1] ? `${topTeams[1][0]}: ${topTeams[1][1]}` : "B: 0";
+        table.querySelector('.pointsA').textContent = aLabel;
+        table.querySelector('.pointsB').textContent = bLabel;
+
+        // bonus display (only if complete and unique winner)
+        let bonusA = 0, bonusB = 0;
+        let bonusText = "no bonus";
+        if(isCompleteDay){
+          if(winners.length===1){
+            const winnerName = winners[0];
+            bonusText = `Bonus +3 → ${winnerName}`;
+            if(topTeams[0] && topTeams[0][0]===winnerName) bonusA = 3;
+            else bonusB = 3;
+          }else{
+            bonusText = "no bonus (tie)";
+          }
+        }else{
+          bonusText = "no bonus (incomplete day)";
+        }
+        table.querySelector('.bonusA').textContent = `A: ${bonusA}`;
+        table.querySelector('.bonusB').textContent = `B: ${bonusB}`;
+
+        // visual bonus row per date+combination
+        const bonusTr=document.createElement('tr'); bonusTr.className='bonus-row';
+        bonusTr.innerHTML=`<td colspan="12">Date ${dateStr} — ${teamsKey.replace("_vs_"," vs ")}: ${bonusText}. Required: ${REQUIRED_SINGLES_PER_DAY} singles + ${REQUIRED_DOUBLES_PER_DAY} doubles.</td>`;
+        tbody.appendChild(bonusTr);
+      });
+    }
+
+    // ====== Edit/Delete ======
+    function editMatch(id){
+      const m=matches.find(x=>x.id===id); if(!m) return;
+      const f=document.getElementById('match-form');
+      f.week.value=m.week; f.date.value=m.date; f.teamA.value=m.teamA; f.teamB.value=m.teamB;
+      document.getElementById('type-select').value=m.type;
+      ensurePlayerSelectsForTeams();
+      if(m.playerA1) playerA1Sel.value=m.playerA1;
+      if(m.playerA2) playerA2Sel.value=m.playerA2;
+      if(m.playerB1) playerB1Sel.value=m.playerB1;
+      if(m.playerB2) playerB2Sel.value=m.playerB2;
+      f.set1.value=m.set1||""; f.set2.value=m.set2||"";
+      editingId=id;
+      window.scrollTo({top:f.getBoundingClientRect().top+window.scrollY-80,behavior:'smooth'});
+    }
+    function deleteMatch(id){ matches=matches.filter(m=>m.id!==id); saveAll(); renderMatches(); recalcAllStats(); }
+
+    // ====== Add/Update match ======
+    document.getElementById('match-form').addEventListener('submit', function(e){
+      e.preventDefault();
+      const f=e.target;
+      const newMatch={
+        id: editingId || (crypto && crypto.randomUUID ? crypto.randomUUID() : (Date.now()+"-"+Math.random().toString(16).slice(2))),
+        week: parseInt(f.week.value,10),
+        date: f.date.value,
+        teamA: f.teamA.value,
+        teamB: f.teamB.value,
+        type: f.type.value,
+        playerA1: playerA1Sel.value,
+        playerA2: playerA2Sel.value,
+        playerB1: playerB1Sel.value,
+        playerB2: playerB2Sel.value,
+        set1: f.set1.value.trim(),
+        set2: f.set2.value.trim()
+      };
+      const {teamAPoints,teamBPoints}=computeBasePoints(newMatch);
+      newMatch.scoreBase = `${teamAPoints} – ${teamBPoints}`;
+
+      if(editingId){ matches = matches.map(m=>m.id===editingId ? newMatch : m); editingId=null; }
+      else{ matches.push(newMatch); }
+
+      saveAll(); renderMatches(); recalcAllStats();
+      f.reset(); resetAllPlayerSelects();
+    });
+
+    // ====== Recompute Scores ======
+    document.getElementById('recompute-btn').onclick = function(){
+      matches = matches.map(m=>{
+        const {teamAPoints,teamBPoints}=computeBasePoints(m);
+        return { ...m, scoreBase: `${teamAPoints} – ${teamBPoints}` };
+      });
+      saveAll(); renderMatches(); recalcAllStats();
+      alert("All match base scores recomputed.");
+    };
+
+    // ====== Recalc ======
+    function recalcAllStats(){
+      resetStats();
+      matches.forEach(applyMatchToStats);   // basispunten
+      applyDailyBonuses();                  // bonus per datum + teams-combinatie
+      renderPlayerStandings(); renderTeamRanking(); renderBreakdownTables();
+    }
+
+    // ====== Init ======
+    function init(){
+      loadAll(); renderWeeks(); renderNavTeams(); renderTeamDropdowns();
+      ensureBreakdownTables(); renderMatches(); recalcAllStats();
+    }
+    init();
+
+    // Expose
+    window.editMatch=editMatch; window.deleteMatch=deleteMatch;
+  </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // laad bestaande regels
+  const rulesText = document.getElementById("rules-text");
+  const savedRules = localStorage.getItem("league_rules_v1213") || "";
+  rulesText.value = savedRules;
+
+  // toggle editor
+  document.getElementById("edit-rules-btn").addEventListener("click", () => {
+    document.getElementById("rules-editor").style.display = "block";
+  });
+
+  // opslaan
+  document.getElementById("save-rules-btn").addEventListener("click", () => {
+    localStorage.setItem("league_rules_v1213", rulesText.value);
+    alert("Rules updated!");
+  });
+});
+</script>
+
+</body>
+</html>

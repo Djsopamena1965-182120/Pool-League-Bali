@@ -1,0 +1,74 @@
+/* Teams sectie */
+#teams {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+#teams h2 {
+  text-align: center;
+  color: #ffcc00;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Grid layout */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+/* Team cards */
+.team {
+  background: linear-gradient(145deg, #0d131c, #1a1f29);
+  border: 1px solid #2a2f3a;
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.team:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.6);
+}
+
+.team h3 {
+  margin: 0 0 12px;
+  color: #ffcc00;
+  font-size: 1.2rem;
+  text-align: center;
+  border-bottom: 1px solid #333;
+  padding-bottom: 8px;
+}
+
+/* Players table */
+.players-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.players-table th, .players-table td {
+  border: 1px solid #333;
+  padding: 6px;
+  text-align: center;
+}
+.players-table thead th {
+  background: #222;
+  color: #ffcc00;
+  font-weight: 700;
+}
+.players-table tbody tr:nth-child(odd) td { background: #1a1a1a; }
+.players-table tbody tr:nth-child(even) td { background: #2a2a2a; }
+.players-table td { color: #eee; }
+
+/* Responsief gedrag */
+@media (max-width: 900px) {
+  .team-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .team-grid { grid-template-columns: 1fr; }
+}

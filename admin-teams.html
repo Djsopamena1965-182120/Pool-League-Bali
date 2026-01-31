@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin – Manage Teams</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body.dark-theme {
+      background:#111; color:#eee; font-family:Arial,sans-serif; margin:0;
+    }
+    .footer {margin-top:20px; padding:10px; text-align:center; font-size:12px; color:#aaa;}
+    label span {display:block; font-size:12px; color:#ccc; margin-bottom:4px;}
+    input {padding:6px; margin:4px 0; border-radius:4px; border:1px solid #444; background:#222; color:#eee;}
+    button {margin:4px; padding:6px 12px; border-radius:4px; border:0; cursor:pointer;}
+    .remove-player {background:#c62828; color:#fff;}
+    #add-player {background:#1976d2; color:#fff;}
+  </style>
+</head>
+<body class="dark-theme admin-page">
+
+  <h2>Admin – Manage Teams</h2>
+
+  <form id="team-form">
+    <label>
+      <span>Select team:</span>
+      <select id="team-select"></select>
+    </label>
+
+    <label>
+      <span>Teamnaam</span>
+      <input type="text" id="team-name" value="">
+    </label>
+
+    <div id="players"></div>
+
+    <button type="submit">Save changes</button>
+    <button type="button" id="delete-team">Delete this team</button>
+    <button type="button" id="new-team">Add new team</button>
+    <button type="button" id="login-btn">Go to Admin Login</button>
+  </form>
+
+<script>
+// === Initial data with your 4 original teams ===
+const initialTeams = [
+  { teamName: "Black Library", players: [
+    {name:"Achie (Captain)", handicap:"0"}, {name:"Danny", handicap:"0"}, {name:"STV", handicap:"0"},
+    {name:"Jon", handicap:"0"}, {name:"Rose", handicap:"0"}, {name:"Pyer", handicap:"0"},
+    {name:"Virgy", handicap:"0"}, {name:"Felix", handicap:"0"}, {name:"Gary", handicap:"0"},
+    {name:"JP", handicap:"0"}, {name:"JC", handicap:"0"}, {name:"Philly", handicap:"0"},
+    {name:"BL-13", handicap:"0"}, {name:"BL-14", handicap:"0"}, {name:"BL-15", handicap:"0"}
+  ]},
+  { teamName: "Litut", players: [
+    {name:"Jesus (Captain)", handicap:"0"}, {name:"Ketut", handicap:"0"}, {name:"TJ", handicap:"0"},
+    {name:"Dave", handicap:"0"}, {name:"Troublemaker", handicap:"0"}, {name:"BG John", handicap:"0"},
+    {name:"Kai", handicap:"0"}, {name:"Dylan", handicap:"0"}, {name:"Judas", handicap:"0"},
+    {name:"Niluh", handicap:"0"}, {name:"Tony", handicap:"0"}, {name:"Sidd", handicap:"0"},
+    {name:"LT-13", handicap:"0"}, {name:"LT-14", handicap:"0"}, {name:"LT-15", handicap:"0"}
+  ]},
+  { teamName: "Venus – Samurai Warriors", players: [
+    {name:"Andrew (Captain)", handicap:"0"}, {name:"Susanto", handicap:"0"}, {name:"Stek", handicap:"0"},
+    {name:"Bill", handicap:"0"}, {name:"Hayato", handicap:"0"}, {name:"Lance", handicap:"0"},
+    {name:"Vanda", handicap:"0"}, {name:"Josh", handicap:"0"}, {name:"Terry", handicap:"0"},
+    {name:"Johan", handicap:"0"}, {name:"Jeff", handicap:"0"}, {name:"Ray", handicap:"0"},
+    {name:"Nima", handicap:"0"}, {name:"Tony", handicap:"0"}, {name:"VN-15", handicap:"0"}
+  ]},
+  { teamName: "Sixteen Degrees", players: [
+    {name:"Imran (Captain)", handicap:"0"}, {name:"Joel", handicap:"0"}, {name:"Pete U", handicap:"0"},
+    {name:"John", handicap:"0"}, {name:"German", handicap:"0"}, {name:"Candra", handicap:"0"},
+    {name:"Abdul", handicap:"0"}, {name:"Ipank", handicap:"0"}, {name:"Jeremy", handicap:"0"},
+    {name:"Iva", handicap:"0"}, {name:"Pete F", handicap:"0"}, {name:"Fezza", handicap:"0"},
+    {name:"Noel", handicap:"0"}, {name:"Tiger", handicap:"0"}, {name:"Esha", handicap:"0"}
+  ]}
+];
+
+// === Init localStorage only once ===
+if(!localStorage.getItem("teams_data")){
+  localStorage.setItem("teams_data", JSON.stringify(initialTeams));
+}
+// === Functions to load/edit/delete ===
+function loadTeamsIntoSelect(){
+  const teams = JSON.parse(localStorage.getItem("teams_data")) || [];
+  const select = document.getElementById("team-select");
+  select.innerHTML = "";
+  teams.forEach((t,i)=>{
+    const opt = document.createElement("option");
+    opt.value = i;
+    opt.textContent = t.teamName;
+    select.appendChild(opt);
+  });
+  if(teams.length > 0){
+    loadTeamData(0);
+  }
+}
+
+function loadTeamData(index){
+  const teams = JSON.parse(localStorage.getItem("teams_data")) || [];
+  const team = teams[index];
+  document.getElementById("team-name").value = team.teamName;
+  const playersDiv = document.getElementById("players");
+  playersDiv.innerHTML = "<h3>" + team.teamName + "</h3>";
+  team.players.forEach((p,i)=>{
+    playersDiv.innerHTML += `
+      <div>
+        <input type="text" value="${p.name}" class="player-name">
+        <input type="text" value="${p.handicap}" class="player-handicap">
+        <button type="button" class="remove-player" data-index="${i}">Remove player</button>
+      </div>`;
+  });
+  playersDiv.innerHTML += `<button type="button" id="add-player">Add player</button>`;
+}
+// === Event handlers ===
+
+// wissel team in dropdown
+document.getElementById("team-select").addEventListener("change", e=>{
+  loadTeamData(e.target.value);
+});
+
+// opslaan van wijzigingen (teamnaam + spelers)
+document.getElementById("team-form").addEventListener("submit", e=>{
+  e.preventDefault();
+  console.log("Saving..."); // test of handler triggert
+  const index = document.getElementById("team-select").value;
+  let teams = JSON.parse(localStorage.getItem("teams_data")) || [];
+
+  // nieuwe teamnaam opslaan
+  const newName = document.getElementById("team-name").value.trim();
+  if(newName) teams[index].teamName = newName;
+
+  // spelers opslaan
+  const players = [];
+  document.querySelectorAll("#players div").forEach(div=>{
+    const name = div.querySelector(".player-name").value;
+    const handicap = div.querySelector(".player-handicap").value;
+    players.push({name, handicap});
+  });
+  teams[index].players = players;
+
+  localStorage.setItem("teams_data", JSON.stringify(teams));
+  alert("Team updated!");
+  loadTeamsIntoSelect(); // dropdown opnieuw vullen met nieuwe naam
+  document.getElementById("team-select").value = index; // selectie behouden
+});
+
+// spelers toevoegen/verwijderen
+document.getElementById("players").addEventListener("click", e=>{
+  const teamIndex = document.getElementById("team-select").value;
+  let teams = JSON.parse(localStorage.getItem("teams_data")) || [];
+
+  if(e.target.classList.contains("remove-player")){
+    teams[teamIndex].players.splice(e.target.dataset.index,1);
+    localStorage.setItem("teams_data", JSON.stringify(teams));
+    loadTeamData(teamIndex);
+  }
+
+  if(e.target.id === "add-player"){
+    teams[teamIndex].players.push({name:"New player", handicap:"0"});
+    localStorage.setItem("teams_data", JSON.stringify(teams));
+    loadTeamData(teamIndex);
+  }
+});
+
+// team verwijderen
+document.getElementById("delete-team").addEventListener("click", ()=>{
+  const index = document.getElementById("team-select").value;
+  let teams = JSON.parse(localStorage.getItem("teams_data")) || [];
+  const teamName = teams[index].teamName;
+  if(confirm("Are you sure you want to delete team '" + teamName + "'?")){
+    teams.splice(index,1);
+    localStorage.setItem("teams_data", JSON.stringify(teams));
+    alert("Team deleted!");
+    loadTeamsIntoSelect();
+  }
+});
+
+// nieuw team toevoegen
+document.getElementById("new-team").addEventListener("click", ()=>{
+  let teams = JSON.parse(localStorage.getItem("teams_data")) || [];
+  const newTeam = {
+    teamName: "New Team",
+    players: Array.from({length:15}, (_,i)=>({name:"Player "+(i+1), handicap:"0"}))
+  };
+  teams.push(newTeam);
+  localStorage.setItem("teams_data", JSON.stringify(teams));
+  alert("New team added!");
+  loadTeamsIntoSelect();
+  document.getElementById("team-select").value = teams.length-1;
+  loadTeamData(teams.length-1);
+});
+
+// login knop
+document.getElementById("login-btn").addEventListener("click", ()=>{
+  window.location.href = "admin-login.html";
+});
+
+// init
+document.addEventListener("DOMContentLoaded", loadTeamsIntoSelect);
+</script>
+
+<!-- ====== Footer ====== -->
+<footer class="footer">
+  <p>© 2026 Pool League Bali</p>
+  <p>Website Designer Johan Sopamena Alias DJ Sopamena</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,147 @@
+/* Basis */
+body.dark-theme {
+  background: #111;
+  color: #eee;
+  font-family: Arial, sans-serif;
+  margin: 0;
+}
+
+/* Navigatie */
+.main-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #222;
+  border-bottom: 1px solid #333;
+}
+.main-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 12px 0;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+.main-nav a {
+  color: #eee;
+  text-decoration: none;
+  font-weight: bold;
+}
+.main-nav a[aria-current="page"] { color: #ffcc00; }
+.main-nav a:hover { color: #ffcc00; }
+
+/* Hero banner */
+.hero {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  height: 400px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+.hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+}
+.hero-content { position: absolute; bottom: 14px; left: 14px; }
+
+/* After banner */
+.after-banner { margin-top: 2.5cm; }
+
+/* Banner + logos */
+.banner {
+  text-align: center;
+  margin: 20px auto;
+  max-width: 1000px;
+}
+.banner h2 {
+  margin: 6px 0;
+  color: #ffcc00;
+  font-weight: 700;
+}
+.banner .subtitle {
+  margin: 4px 0 0;
+  color: #eee;
+  font-size: 0.95rem;
+  font-style: italic;
+}
+.banner-logos {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.team-logo { text-align: center; }
+.team-logo img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid #333;
+}
+.team-logo span {
+  display: block;
+  margin-top: 4px;
+  color: #eee;
+  font-size: 0.9rem;
+}
+
+/* Sectie */
+.section {
+  max-width: 1000px;
+  margin: 24px auto;
+  padding: 0 20px;
+  text-align: center;
+}
+.section h2 {
+  color: #ffcc00;
+  margin-bottom: 16px;
+}
+.section p { margin: 8px 0 16px; }
+
+/* Results table — uniform */
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px auto;
+  font-size: 0.95rem;
+}
+.results-table th, .results-table td {
+  border: 1px solid #333;
+  padding: 10px 12px;
+  text-align: center;
+}
+.results-table th {
+  background: #222;
+  color: #ffcc00;
+  font-weight: 700;
+}
+.results-table tbody tr:nth-child(odd) td { background: #1a1a1a; }
+.results-table tbody tr:nth-child(even) td { background: #2a2a2a; }
+.results-table td { color: #eee; }
+
+/* Footer — uniform gecentreerd */
+.footer {
+  background: #222;
+  color: #aaa;
+  width: 100%;
+  padding: 20px 0;
+  margin-top: 40px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.footer p {
+  margin: 6px 0;
+  max-width: 800px;
+}

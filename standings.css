@@ -1,0 +1,189 @@
+/* ====== Algemene layout ====== */
+body.dark-theme {
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  background: #121212;
+  color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+}
+
+/* ====== Navigatie ====== */
+nav.main-nav {
+  background: #141821;
+  border-bottom: 2px solid #ffd700;
+}
+nav.main-nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;   /* centreren */
+  gap: 28px;
+  margin: 0;
+  padding: 14px 0;
+}
+nav.main-nav li {
+  position: relative;
+}
+nav.main-nav a {
+  color: #e6e6e6;
+  text-decoration: none;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: color 0.3s, transform 0.2s;
+}
+nav.main-nav a:hover {
+  color: #ffd700;
+  transform: scale(1.05);
+}
+nav.main-nav a[aria-current="page"] {
+  color: #ffd700;
+  font-weight: 700;
+  border-bottom: 2px solid #ffd700;
+  padding-bottom: 2px;
+}
+
+/* ====== Kopbanner ====== */
+.header-banner {
+  width: 100%;
+  max-width: 1200px;
+  height: 300px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(90deg, #1e1e1e, #333);
+  padding: 0 40px;
+  border-bottom: 3px solid #ffd700;
+}
+.header-banner img.logo {
+  width: 200px;
+  height: auto;
+}
+.header-banner h1 {
+  font-size: 2.4rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: #ffd700;
+  flex-grow: 1;
+  text-align: center;
+}
+
+/* ====== Cards ====== */
+.card {
+  background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+  margin: 20px 0;
+  padding: 20px;
+}
+.card .titlebar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #444;
+  margin-bottom: 12px;
+}
+.card h2 {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 1.2rem;
+  color: #ffd700;
+}
+.card .tag {
+  background: #333;
+  color: #aaa;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+}
+
+/* ====== Tabellen ====== */
+.standings-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+  font-size: 0.9rem;
+  background-color: #141821;
+  color: #e6e6e6;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+.standings-table thead th {
+  background-color: #1b2130;
+  color: #ffd700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 12px;
+  border-bottom: 2px solid #263245;
+  font-weight: 600;
+  text-align: center;
+}
+.standings-table tbody td,
+.standings-table tfoot td {
+  padding: 10px 12px;
+  border-top: 1px solid #263245;
+  text-align: center;
+}
+.standings-table tbody tr:nth-child(even) {
+  background-color: #101622;
+}
+.standings-table tbody tr:hover {
+  background-color: #1f2738;
+  transition: background 0.2s ease-in-out;
+}
+.standings-table .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: #ffd700;
+}
+
+/* ====== Buttons ====== */
+.btn {
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+.btn.ok { background: #2e7d32; color: #fff; }
+.btn.ok:hover { background: #388e3c; transform: scale(1.05); }
+.btn.danger { background: #c62828; color: #fff; }
+.btn.danger:hover { background: #e53935; transform: scale(1.05); }
+.btn.muted { background: #555; color: #ccc; }
+.btn.muted:hover { background: #666; transform: scale(1.05); }
+.btn.edit { background: #1565c0; color: #fff; }
+.btn.edit:hover { background: #1976d2; transform: scale(1.05); }
+
+/* ====== Formulieren ====== */
+form label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+}
+form input, form select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background: #1a1a1a;
+  color: #f0f0f0;
+}
+form input:focus, form select:focus {
+  border-color: #ffd700;
+  outline: none;
+}
+
+/* ====== Grid layout ====== */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+/* ====== Responsief gedrag ====== */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
