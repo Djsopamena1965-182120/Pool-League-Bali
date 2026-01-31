@@ -10,6 +10,8 @@
     form { margin:20px 0; }
     input, button { padding:8px; margin:5px; }
     button { background:#ffd700; border:none; cursor:pointer; }
+    ul { list-style:none; padding:0; }
+    li { margin:5px 0; }
   </style>
 </head>
 <body>
@@ -22,9 +24,24 @@
     <button type="submit">Team toevoegen</button>
   </form>
 
+  <h2>Bestaande teams</h2>
+  <ul id="teamList"></ul>
+
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       let data = JSON.parse(localStorage.getItem("teamsData") || "[]");
+      const list = document.getElementById("teamList");
+
+      function renderTeams() {
+        list.innerHTML = "";
+        data.forEach(team => {
+          const li = document.createElement("li");
+          li.textContent = team.team + " (" + team.players.length + " spelers)";
+          list.appendChild(li);
+        });
+      }
+
+      renderTeams();
 
       const form = document.getElementById("addTeamForm");
       form.addEventListener("submit", function(e) {
@@ -33,7 +50,6 @@
         const playerName = document.getElementById("playerName").value;
         const handicap = document.getElementById("handicap").value;
 
-        // Zoek of team al bestaat
         let team = data.find(t => t.team === teamName);
         if (!team) {
           team = { team: teamName, players: [] };
@@ -43,7 +59,7 @@
         team.players.push({ name: playerName, handicap: handicap });
 
         localStorage.setItem("teamsData", JSON.stringify(data));
-        alert("Team opgeslagen!");
+        renderTeams();
         form.reset();
       });
     });
