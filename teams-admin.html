@@ -204,6 +204,18 @@
       <input type="text" id="handicap" placeholder="Handicap">
       <button type="submit">Add</button>
     </form>
+
+<!-- Formulier om nieuwe teams/spelers toe te voegen -->
+<form id="addTeamForm">
+  <input id="teamName" placeholder="Team name" required>
+  <input id="playerName" placeholder="Player name">
+  <input id="handicap" placeholder="Handicap" value="0">
+  <button type="submit">Add</button>
+</form>
+
+<!-- Container waar alle teams worden getoond -->
+<div id="teamsContainer"></div>
+
     <div id="teamsContainer"></div>
   </div>
   <script>
