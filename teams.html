@@ -44,15 +44,15 @@
     document.addEventListener("DOMContentLoaded", function() {
       let data = JSON.parse(localStorage.getItem("teamsData") || "[]");
 
-      // Fallback als er geen data is
-      if (!data || data.length === 0) {
-        data = [
-          { team: "Litut", players: [{ name: "Imram", handicap: "-" }] },
-          { team: "Team 2", players: [{ name: "Nog niet ingevuld", handicap: "-" }] },
-          { team: "Team 3", players: [{ name: "Nog niet ingevuld", handicap: "-" }] },
-          { team: "Team 4", players: [{ name: "Nog niet ingevuld", handicap: "-" }] }
-        ];
-      }
+     // Fallback als er geen data is
+if (!data || data.length === 0) {
+  data = [
+    { team: "BLACK LIBRARY", players: [{ name: "Achie (C)", handicap: "0" }] },
+    { team: "LITUT", players: [{ name: "Jesus (C)", handicap: "0" }] },
+    { team: "VENUS SAMURAI WARRIORS", players: [{ name: "Andrew (C)", handicap: "0" }] },
+    { team: "SIXTEEN DEGREES", players: [{ name: "Imran (C)", handicap: "0" }] }
+  ];
+}
 
       const grid = document.querySelector(".teams-grid");
       grid.innerHTML = "";
