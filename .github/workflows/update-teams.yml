@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -36,13 +38,14 @@ jobs:
             "${{ github.event.inputs.handicap }}" \
             "${{ github.event.inputs.action }}"
 
-      - name: Commit changes
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add teams-data.json
+          git diff --cached --quiet || git commit -m "Update teams-data.json via workflow"
+          git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git add teams-data.json
-          git commit -m "Update teams-data.json via workflow" || echo "No changes to commit"
-          git push
+
 
