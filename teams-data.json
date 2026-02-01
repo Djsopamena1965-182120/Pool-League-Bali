@@ -1,27 +1,10 @@
 [
   {
-    "team": "BLACK LIBRARY",
+    "team": "Litut",
     "players": [
-      { "name": "Achie (C)", "handicap": "0" },
-      { "name": "Nieuwe speler", "handicap": "0" }
-    ]
-  },
-  {
-    "team": "LITUT",
-    "players": [
-      { "name": "Jesus (C)", "handicap": "0" }
-    ]
-  },
-  {
-    "team": "VENUS SAMURAI WARRIORS",
-    "players": [
-      { "name": "Andrew (C)", "handicap": "0" }
-    ]
-  },
-  {
-    "team": "SIXTEEN DEGREES",
-    "players": [
-      { "name": "Imran (C)", "handicap": "0" }
+      { "name": "Imram", "handicap": 0 }
     ]
   }
 ]
+
+
