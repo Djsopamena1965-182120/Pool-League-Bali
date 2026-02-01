@@ -5,8 +5,11 @@
   <title>Teams Admin – Pool League Bali</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body { font-family:"Segoe UI", Arial, sans-serif; background:#111; color:#eee; margin:0; padding:20px; }
-    h1 { text-align:center; color:#ffd700; text-transform:uppercase; letter-spacing:2px; }
+    body { font-family:"Segoe UI", Arial, sans-serif; background:#111; color:#eee; margin:0; padding:0; }
+    nav { background:#222; padding:10px; text-align:center; }
+    nav a { color:#ffd700; margin:0 15px; text-decoration:none; font-weight:bold; }
+    nav a:hover { text-decoration:underline; }
+    h1 { text-align:center; color:#ffd700; text-transform:uppercase; letter-spacing:2px; margin:20px 0; }
     .hidden { display:none; }
     input, button { padding:8px; margin:5px; border:none; border-radius:4px; }
     button { background:#444; color:#ffd700; cursor:pointer; }
@@ -16,16 +19,29 @@
     tbody td { padding:8px; border-top:1px solid #333; text-align:center; }
     tbody tr:nth-child(even) { background:#252525; }
     tbody tr:hover { background:#333; }
+    form { text-align:center; margin:20px 0; }
   </style>
 </head>
 <body>
+  <!-- Navigatie -->
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="standings.html">Standings</a>
+    <a href="teams.html">Teams</a>
+    <a href="schedule.html">Schedule</a>
+    <a href="results.html">Results</a>
+    <a href="teams-admin.html">Admin</a>
+  </nav>
+
   <h1>Teams Admin</h1>
 
-  <div id="loginSection">
+  <!-- Login -->
+  <div id="loginSection" style="text-align:center;">
     <input id="accessCode" placeholder="Enter access code">
     <button onclick="checkAccess()">Login</button>
   </div>
 
+  <!-- Admin Panel -->
   <div id="adminPanel" class="hidden">
     <form id="addTeamForm">
       <input id="teamName" placeholder="Team name" required>
