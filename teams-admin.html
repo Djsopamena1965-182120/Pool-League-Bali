@@ -11,17 +11,11 @@
     nav a:hover { text-decoration:underline; }
     h1 { text-align:center; color:#ffd700; text-transform:uppercase; letter-spacing:2px; margin:20px 0; }
     .hidden { display:none; }
-    input, button { padding:8px; margin:5px; border:none; border-radius:4px; }
+    input, button { padding:6px; margin:3px; border:none; border-radius:4px; font-size:13px; }
     button { background:#444; color:#ffd700; cursor:pointer; }
     button:hover { background:#666; }
-    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px; margin:20px; }
-    .card { background:#1e1e1e; padding:15px; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.6); }
-    .card h2 { color:#ffd700; font-size:16px; margin-bottom:10px; text-transform:uppercase; letter-spacing:1px; }
-    table { width:100%; border-collapse:collapse; margin-top:10px; background:#252525; color:#eee; font-size:14px; border-radius:6px; overflow:hidden; }
-    thead th { background:#2c2c2c; color:#ffd700; padding:8px; }
-    tbody td { padding:6px; border-top:1px solid #333; text-align:center; }
-    tbody tr:nth-child(even) { background:#2a2a2a; }
-    tbody tr:hover { background:#333; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px; margin:20px; }
+    .team-actions { text-align:center; margin:20px 0; }
   </style>
 </head>
 <body>
@@ -45,42 +39,16 @@
 
   <!-- Admin Panel -->
   <div id="adminPanel" class="hidden">
-    <div class="grid">
-      <!-- Team beheer -->
-      <div class="card">
-        <h2>Team Beheer</h2>
-        <input id="teamName" placeholder="Team naam">
-        <button onclick="addTeam()">Team toevoegen</button>
-        <button onclick="deleteTeam()">Team verwijderen</button>
-        <button onclick="updateTeam()">Team aanpassen</button>
-      </div>
-
-      <!-- Player beheer -->
-      <div class="card">
-        <h2>Speler Beheer</h2>
-        <input id="playerName" placeholder="Speler naam">
-        <input id="playerTeam" placeholder="Team naam">
-        <button onclick="addPlayer()">Speler toevoegen</button>
-        <button onclick="deletePlayer()">Speler verwijderen</button>
-        <button onclick="updatePlayer()">Speler aanpassen</button>
-      </div>
-
-      <!-- Handicap beheer -->
-      <div class="card">
-        <h2>Handicap Beheer</h2>
-        <input id="handicapValue" placeholder="Handicap">
-        <input id="handicapPlayer" placeholder="Speler naam">
-        <button onclick="addHandicap()">Handicap toevoegen</button>
-        <button onclick="deleteHandicap()">Handicap verwijderen</button>
-        <button onclick="updateHandicap()">Handicap aanpassen</button>
-      </div>
+    <div class="team-actions">
+      <input id="newTeamName" placeholder="Nieuwe teamnaam">
+      <button onclick="addTeam()">Add Team</button>
+      <button onclick="deleteTeam()">Delete Team</button>
     </div>
 
-    <!-- Teams overzicht -->
     <div id="teamsContainer" class="grid"></div>
   </div>
-
   <script>
+    // Login check
     function checkAccess() {
       const code = document.getElementById("accessCode").value;
       if (code === "DJ88888") {
@@ -92,12 +60,14 @@
       }
     }
 
+    // Teams laden uit JSON
     async function loadTeams() {
       const res = await fetch("teams-data.json");
       const data = await res.json();
       renderTeams(data);
     }
 
+    // Teams renderen in grid
     function renderTeams(data) {
       const container = document.getElementById("teamsContainer");
       container.innerHTML = "";
@@ -105,28 +75,68 @@
         const table = document.createElement("table");
         let rows = "";
         team.players.forEach(p => {
-          rows += `<tr><td>${p.name}</td><td>${p.handicap}</td></tr>`;
+          rows += `<tr><td>${p.name}${p.captain ? " (C)" : ""}</td><td>${p.handicap}</td><td>
+            <button onclick="editPlayer('${team.team}','${p.name}')">Edit</button>
+            <button onclick="deletePlayer('${team.team}','${p.name}')">Delete</button>
+          </td></tr>`;
         });
+        // extra rij voor nieuwe speler
+        rows += `
+          <tr class="action-row">
+            <td><input id="player-${team.team}" placeholder="Speler naam"></td>
+            <td><input id="handicap-${team.team}" placeholder="Handicap"></td>
+            <td><button onclick="addPlayer('${team.team}')">Add Player</button></td>
+          </tr>
+        `;
         table.innerHTML = `
           <thead>
-            <tr><th colspan="2">${team.team}</th></tr>
-            <tr><th>Speler</th><th>Handicap</th></tr>
+            <tr><th colspan="3">${team.team}</th></tr>
+            <tr><th>Speler</th><th>Handicap</th><th>Acties</th></tr>
           </thead>
           <tbody>${rows}</tbody>`;
         container.appendChild(table);
       });
     }
 
-    // Placeholder functies voor knoppen
-    function addTeam(){ alert("Team toevoegen workflow"); }
-    function deleteTeam(){ alert("Team verwijderen workflow"); }
-    function updateTeam(){ alert("Team aanpassen workflow"); }
-    function addPlayer(){ alert("Speler toevoegen workflow"); }
-    function deletePlayer(){ alert("Speler verwijderen workflow"); }
-    function updatePlayer(){ alert("Speler aanpassen workflow"); }
-    function addHandicap(){ alert("Handicap toevoegen workflow"); }
-    function deleteHandicap(){ alert("Handicap verwijderen workflow"); }
-    function updateHandicap(){ alert("Handicap aanpassen workflow"); }
+    // Teambeheer
+    async function addTeam() {
+      const team = document.getElementById("newTeamName").value.trim();
+      if (!team) return alert("Teamnaam verplicht");
+      await triggerWorkflow({team});
+    }
+    async function deleteTeam() {
+      const team = document.getElementById("newTeamName").value.trim();
+      if (!team) return alert("Teamnaam verplicht");
+      await triggerWorkflow({team, action:"delete"});
+    }
+
+    // Playerbeheer
+    async function addPlayer(team) {
+      const player = document.getElementById("player-"+team).value.trim();
+      const handicap = document.getElementById("handicap-"+team).value.trim() || "0";
+      if (!player) return alert("Spelernaam verplicht");
+      await triggerWorkflow({team, player, handicap, action:"add"});
+    }
+    async function editPlayer(team, player) {
+      const handicap = prompt("Nieuwe handicap voor "+player+":");
+      if (handicap===null) return;
+      await triggerWorkflow({team, player, handicap, action:"edit"});
+    }
+    async function deletePlayer(team, player) {
+      if (!confirm("Verwijder speler "+player+" uit "+team+"?")) return;
+      await triggerWorkflow({team, player, action:"delete"});
+    }
+
+    // Workflow trigger
+    async function triggerWorkflow(payload) {
+      await fetch("https://api.github.com/repos/djsopamena1965-182120/Pool-League-Bali/actions/workflows/update-teams.yml/dispatches", {
+        method: "POST",
+        headers: { "Accept": "application/vnd.github+json" },
+        body: JSON.stringify({ ref: "main", inputs: payload })
+      });
+      alert("Workflow gestart, even wachten...");
+      setTimeout(loadTeams, 5000);
+    }
   </script>
 </body>
 </html>
