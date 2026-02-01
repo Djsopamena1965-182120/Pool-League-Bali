@@ -14,12 +14,14 @@
     input, button { padding:8px; margin:5px; border:none; border-radius:4px; }
     button { background:#444; color:#ffd700; cursor:pointer; }
     button:hover { background:#666; }
-    table { width:100%; border-collapse:collapse; margin-top:20px; background:#1e1e1e; color:#eee; font-size:14px; border-radius:8px; overflow:hidden; box-shadow:0 4px 12px rgba(0,0,0,0.6); }
-    thead th { background:#2c2c2c; color:#ffd700; text-transform:uppercase; letter-spacing:1px; padding:10px; }
-    tbody td { padding:8px; border-top:1px solid #333; text-align:center; }
-    tbody tr:nth-child(even) { background:#252525; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px; margin:20px; }
+    .card { background:#1e1e1e; padding:15px; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.6); }
+    .card h2 { color:#ffd700; font-size:16px; margin-bottom:10px; text-transform:uppercase; letter-spacing:1px; }
+    table { width:100%; border-collapse:collapse; margin-top:10px; background:#252525; color:#eee; font-size:14px; border-radius:6px; overflow:hidden; }
+    thead th { background:#2c2c2c; color:#ffd700; padding:8px; }
+    tbody td { padding:6px; border-top:1px solid #333; text-align:center; }
+    tbody tr:nth-child(even) { background:#2a2a2a; }
     tbody tr:hover { background:#333; }
-    form { text-align:center; margin:20px 0; }
   </style>
 </head>
 <body>
@@ -43,14 +45,39 @@
 
   <!-- Admin Panel -->
   <div id="adminPanel" class="hidden">
-    <form id="addTeamForm">
-      <input id="teamName" placeholder="Team name" required>
-      <input id="playerName" placeholder="Player name">
-      <input id="handicap" placeholder="Handicap" value="0">
-      <button type="submit">Add</button>
-    </form>
+    <div class="grid">
+      <!-- Team beheer -->
+      <div class="card">
+        <h2>Team Beheer</h2>
+        <input id="teamName" placeholder="Team naam">
+        <button onclick="addTeam()">Team toevoegen</button>
+        <button onclick="deleteTeam()">Team verwijderen</button>
+        <button onclick="updateTeam()">Team aanpassen</button>
+      </div>
 
-    <div id="teamsContainer"></div>
+      <!-- Player beheer -->
+      <div class="card">
+        <h2>Speler Beheer</h2>
+        <input id="playerName" placeholder="Speler naam">
+        <input id="playerTeam" placeholder="Team naam">
+        <button onclick="addPlayer()">Speler toevoegen</button>
+        <button onclick="deletePlayer()">Speler verwijderen</button>
+        <button onclick="updatePlayer()">Speler aanpassen</button>
+      </div>
+
+      <!-- Handicap beheer -->
+      <div class="card">
+        <h2>Handicap Beheer</h2>
+        <input id="handicapValue" placeholder="Handicap">
+        <input id="handicapPlayer" placeholder="Speler naam">
+        <button onclick="addHandicap()">Handicap toevoegen</button>
+        <button onclick="deleteHandicap()">Handicap verwijderen</button>
+        <button onclick="updateHandicap()">Handicap aanpassen</button>
+      </div>
+    </div>
+
+    <!-- Teams overzicht -->
+    <div id="teamsContainer" class="grid"></div>
   </div>
 
   <script>
@@ -83,32 +110,23 @@
         table.innerHTML = `
           <thead>
             <tr><th colspan="2">${team.team}</th></tr>
-            <tr><th>Player</th><th>Handicap</th></tr>
+            <tr><th>Speler</th><th>Handicap</th></tr>
           </thead>
           <tbody>${rows}</tbody>`;
         container.appendChild(table);
       });
     }
 
-    document.getElementById("addTeamForm").addEventListener("submit", async function(e) {
-      e.preventDefault();
-      const teamName = document.getElementById("teamName").value.trim();
-      const playerName = document.getElementById("playerName").value.trim();
-      const handicap = document.getElementById("handicap").value.trim();
-      if (!teamName) return;
-
-      const payload = { team: teamName, player: playerName, handicap: handicap };
-
-      await fetch("https://api.github.com/repos/djsopamena1965-182120/Pool-League-Bali/actions/workflows/update-teams.yml/dispatches", {
-        method: "POST",
-        headers: { "Accept": "application/vnd.github+json" },
-        body: JSON.stringify({ ref: "main", inputs: payload })
-      });
-
-      alert("Update verzonden naar workflow. Even wachten tot de data is bijgewerkt.");
-      this.reset();
-      setTimeout(loadTeams, 5000);
-    });
+    // Placeholder functies voor knoppen
+    function addTeam(){ alert("Team toevoegen workflow"); }
+    function deleteTeam(){ alert("Team verwijderen workflow"); }
+    function updateTeam(){ alert("Team aanpassen workflow"); }
+    function addPlayer(){ alert("Speler toevoegen workflow"); }
+    function deletePlayer(){ alert("Speler verwijderen workflow"); }
+    function updatePlayer(){ alert("Speler aanpassen workflow"); }
+    function addHandicap(){ alert("Handicap toevoegen workflow"); }
+    function deleteHandicap(){ alert("Handicap verwijderen workflow"); }
+    function updateHandicap(){ alert("Handicap aanpassen workflow"); }
   </script>
 </body>
 </html>
