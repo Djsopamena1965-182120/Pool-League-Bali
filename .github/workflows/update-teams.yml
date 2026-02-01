@@ -44,4 +44,5 @@ jobs:
           git config --global user.email "actions@github.com"
           git add teams-data.json
           git commit -m "Update teams-data.json via workflow" || echo "No changes to commit"
-          git push origin HEAD:main
+          git push
+
