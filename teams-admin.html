@@ -15,6 +15,12 @@
     button { background:#444; color:#ffd700; cursor:pointer; }
     button:hover { background:#666; }
     .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px; margin:20px; }
+    table { width:100%; border-collapse:collapse; background:#1e1e1e; color:#eee; font-size:14px; border-radius:8px; overflow:hidden; box-shadow:0 4px 12px rgba(0,0,0,0.6); }
+    thead th { background:#2c2c2c; color:#ffd700; padding:8px; }
+    tbody td { padding:6px; border-top:1px solid #333; text-align:center; }
+    tbody tr:nth-child(even) { background:#252525; }
+    tbody tr:hover { background:#333; }
+    .action-row input { width:90%; }
     .team-actions { text-align:center; margin:20px 0; }
   </style>
 </head>
@@ -47,6 +53,7 @@
 
     <div id="teamsContainer" class="grid"></div>
   </div>
+
   <script>
     // Login check
     function checkAccess() {
@@ -75,25 +82,32 @@
         const table = document.createElement("table");
         let rows = "";
         team.players.forEach(p => {
-          rows += `<tr><td>${p.name}${p.captain ? " (C)" : ""}</td><td>${p.handicap}</td><td>
-            <button onclick="editPlayer('${team.team}','${p.name}')">Edit</button>
-            <button onclick="deletePlayer('${team.team}','${p.name}')">Delete</button>
-          </td></tr>`;
+          const isCaptain = p.captain ? " (C)" : "";
+          rows += `
+            <tr>
+              <td>${p.name}${isCaptain}</td>
+              <td>${p.handicap}</td>
+              <td>
+                <button onclick="editPlayer('${team.team}','${p.name}')">Edit</button>
+                <button onclick="deletePlayer('${team.team}','${p.name}')">Delete</button>
+              </td>
+            </tr>`;
         });
-        // extra rij voor nieuwe speler
+        // Extra rij onderaan voor Add Player
         rows += `
           <tr class="action-row">
             <td><input id="player-${team.team}" placeholder="Speler naam"></td>
             <td><input id="handicap-${team.team}" placeholder="Handicap"></td>
             <td><button onclick="addPlayer('${team.team}')">Add Player</button></td>
-          </tr>
-        `;
+          </tr>`;
+
         table.innerHTML = `
           <thead>
             <tr><th colspan="3">${team.team}</th></tr>
             <tr><th>Speler</th><th>Handicap</th><th>Acties</th></tr>
           </thead>
           <tbody>${rows}</tbody>`;
+
         container.appendChild(table);
       });
     }
@@ -102,12 +116,12 @@
     async function addTeam() {
       const team = document.getElementById("newTeamName").value.trim();
       if (!team) return alert("Teamnaam verplicht");
-      await triggerWorkflow({team});
+      await triggerWorkflow({team, action:"addTeam"});
     }
     async function deleteTeam() {
       const team = document.getElementById("newTeamName").value.trim();
       if (!team) return alert("Teamnaam verplicht");
-      await triggerWorkflow({team, action:"delete"});
+      await triggerWorkflow({team, action:"deleteTeam"});
     }
 
     // Playerbeheer
@@ -115,16 +129,16 @@
       const player = document.getElementById("player-"+team).value.trim();
       const handicap = document.getElementById("handicap-"+team).value.trim() || "0";
       if (!player) return alert("Spelernaam verplicht");
-      await triggerWorkflow({team, player, handicap, action:"add"});
+      await triggerWorkflow({team, player, handicap, action:"addPlayer"});
     }
     async function editPlayer(team, player) {
       const handicap = prompt("Nieuwe handicap voor "+player+":");
       if (handicap===null) return;
-      await triggerWorkflow({team, player, handicap, action:"edit"});
+      await triggerWorkflow({team, player, handicap, action:"editPlayer"});
     }
     async function deletePlayer(team, player) {
       if (!confirm("Verwijder speler "+player+" uit "+team+"?")) return;
-      await triggerWorkflow({team, player, action:"delete"});
+      await triggerWorkflow({team, player, action:"deletePlayer"});
     }
 
     // Workflow trigger
