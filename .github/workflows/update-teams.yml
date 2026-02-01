@@ -4,55 +4,44 @@ on:
   workflow_dispatch:
     inputs:
       team:
-        description: 'Team name'
+        description: "Team naam"
         required: true
       player:
-        description: 'Player name'
+        description: "Speler naam"
         required: false
       handicap:
-        description: 'Handicap'
+        description: "Handicap waarde"
         required: false
+      action:
+        description: "Actie (addTeam, deleteTeam, addPlayer, editPlayer, deletePlayer)"
+        required: true
 
 jobs:
   update:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: 18
 
-      - name: Update teams-data.json
+      - name: Run update script
         run: |
-          node -e "
-          const fs = require('fs');
-          const path = 'teams-data.json';
-          const data = JSON.parse(fs.readFileSync(path, 'utf8'));
-          const teamName = process.env.INPUT_TEAM;
-          const playerName = process.env.INPUT_PLAYER;
-          const handicap = process.env.INPUT_HANDICAP || '0';
-
-          let team = data.find(t => t.team === teamName);
-          if (!team) {
-            team = { team: teamName, players: [] };
-            data.push(team);
-          }
-          if (playerName) {
-            team.players.push({ name: playerName, handicap });
-          }
-
-          fs.writeFileSync(path, JSON.stringify(data, null, 2));
-          "
+          node .github/scripts/update-teams.js \
+            "${{ github.event.inputs.team }}" \
+            "${{ github.event.inputs.player }}" \
+            "${{ github.event.inputs.handicap }}" \
+            "${{ github.event.inputs.action }}"
 
       - name: Commit changes
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add teams-data.json
-          git commit -m "Update teams-data.json via workflow_dispatch"
-          git push
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add teams-data.json
+          git commit -m "Update teams-data.json via workflow" || echo "No changes to commit"
+          git push origin HEAD:main
