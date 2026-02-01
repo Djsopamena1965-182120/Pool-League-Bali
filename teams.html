@@ -1,4 +1,3 @@
-<!deel1>
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -20,20 +19,17 @@
   </style>
 </head>
 <body>
-  <!-- Navigatie -->
-<nav class="main-nav">
-  <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="teams.html" aria-current="page">Teams</a></li>
-    <li><a href="match-results.html">Match Results</a></li>
-    <li><a href="standings.html">Standings</a></li>
-    <li><a href="rules.html">Rules</a></li>
-    <li><a href="other-events.html">Other Competitions</a></li>
-    <li><a href="teams-admin.html">Admin</a></li>
-  </ul>
-</nav>
-
-
+  <nav class="main-nav">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="teams.html" aria-current="page">Teams</a></li>
+      <li><a href="match-results.html">Match Results</a></li>
+      <li><a href="standings.html">Standings</a></li>
+      <li><a href="rules.html">Rules</a></li>
+      <li><a href="other-events.html">Other Competitions</a></li>
+      <li><a href="teams-admin.html">Admin</a></li>
+    </ul>
+  </nav>
 
   <h1>Teams – Pool League Bali</h1>
   <div class="teams-grid"></div>
@@ -42,41 +38,36 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-      let data = JSON.parse(localStorage.getItem("teamsData") || "[]");
+      fetch("teams-data.json")
+        .then(response => response.json())
+        .then(data => {
+          const grid = document.querySelector(".teams-grid");
+          grid.innerHTML = "";
 
-     // Fallback als er geen data is
-if (!data || data.length === 0) {
-  data = [
-    { team: "BLACK LIBRARY", players: [{ name: "Achie (C)", handicap: "0" }] },
-    { team: "LITUT", players: [{ name: "Jesus (C)", handicap: "0" }] },
-    { team: "VENUS SAMURAI WARRIORS", players: [{ name: "Andrew (C)", handicap: "0" }] },
-    { team: "SIXTEEN DEGREES", players: [{ name: "Imran (C)", handicap: "0" }] }
-  ];
-}
+          data.forEach(team => {
+            const table = document.createElement("table");
+            let rows = "";
 
-      const grid = document.querySelector(".teams-grid");
-      grid.innerHTML = "";
+            if (team.players && team.players.length > 0) {
+              team.players.forEach(p => {
+                rows += `<tr><td>${p.name}</td><td>${p.handicap}</td></tr>`;
+              });
+            } else {
+              rows = `<tr><td colspan="2">Geen spelers toegevoegd</td></tr>`;
+            }
 
-      data.forEach(team => {
-        const table = document.createElement("table");
-        let rows = "";
-
-        if (team.players && team.players.length > 0) {
-          team.players.forEach(p => {
-            rows += `<tr><td>${p.name}</td><td>${p.handicap}</td><td></td></tr>`;
+            table.innerHTML = `
+              <thead>
+                <tr><th colspan="2">${team.team}</th></tr>
+                <tr><th>Speler</th><th>Handicap</th></tr>
+              </thead>
+              <tbody>${rows}</tbody>`;
+            grid.appendChild(table);
           });
-        } else {
-          rows = `<tr><td colspan="3">Geen spelers toegevoegd</td></tr>`;
-        }
-
-        table.innerHTML = `
-          <thead>
-            <tr><th colspan="3">${team.team}</th></tr>
-            <tr><th>Players</th><th>Handicap</th><th>Actions</th></tr>
-          </thead>
-          <tbody>${rows}</tbody>`;
-        grid.appendChild(table);
-      });
+        })
+        .catch(error => {
+          console.error("Fout bij laden teams-data.json:", error);
+        });
     });
   </script>
 </body>
