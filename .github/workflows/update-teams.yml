@@ -16,6 +16,9 @@ on:
         description: "Actie (addTeam, deleteTeam, addPlayer, editPlayer, deletePlayer)"
         required: true
 
+permissions:
+  contents: write
+
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -47,6 +50,7 @@ jobs:
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
 
 
