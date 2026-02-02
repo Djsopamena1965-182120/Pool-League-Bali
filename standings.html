@@ -16,6 +16,36 @@
 
     /* nav.main-nav regels verwijderd — die staan nu in standings.css */
 
+    /* Hero banner consistent met index.html */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 300px; /* zelfde hoogte als index */
+      overflow: hidden;
+    }
+    .hero-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .hero-overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.4);
+    }
+    .hero-content {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #ffd700;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
     nav.team-nav{background:var(--sub);border-top:1px solid var(--line)}
     nav.team-nav ul{list-style:none;display:flex;flex-wrap:wrap;gap:10px;padding:10px 20px;margin:0}
     nav.team-nav a{color:#a7b3c7;text-decoration:none;font-size:14px}
@@ -54,28 +84,33 @@
   </style>
 </head>
 
+<body>
 
-  <body>
-
-  <!-- Kopbanner -->
-  <div class="header-banner">
-    <img src="images/index-banner.jpg" alt="Logo 1" class="logo">
-    <h1>Pool League Bali – Season 3</h1>
-     </div>
-
-  <!-- Hoofd-navigatie -->
+  <!-- Hoofd-navigatie bovenaan -->
   <nav class="main-nav">
-  <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="teams-all.html">All Teams incl. Handicap</a></li>
-    <li><a href="teams.html">Teams</a></li>
-    <li><a href="match-results.html">Match Results</a></li>
-    <li><a href="standings.html" aria-current="page">Standings</a></li>
-    <li><a href="rules.html">Rules</a></li>
-    <li><a href="other-events.html">Other Competitions</a></li>
-    <li><a href="teams-admin.html">Admin</a></li>
-  </ul>
-</nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="teams-all.html">All Teams incl. Handicap</a></li>
+      <li><a href="teams.html">Teams</a></li>
+      <li><a href="match-results.html">Match Results</a></li>
+      <li><a href="standings.html" aria-current="page">Standings</a></li>
+      <li><a href="rules.html">Rules</a></li>
+      <li><a href="other-events.html">Other Competitions</a></li>
+      <li><a href="teams-admin.html">Admin</a></li>
+    </ul>
+  </nav>
+
+  <!-- Kopbanner zoals index.html -->
+  <header class="hero">
+    <img src="images/index-banner.jpg" alt="Pool League Bali Banner" class="hero-img">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>Pool League Bali – Season 3</h1>
+    </div>
+  </header>
+
+</body>
+</html>
 
 
 
