@@ -1,64 +1,23 @@
-name: Update Teams Data
+name: Test Workflow No Push
 
 on:
   workflow_dispatch:
-    inputs:
-      team:
-        description: "Team naam"
-        required: true
-      player:
-        description: "Speler naam"
-        required: false
-      handicap:
-        description: "Handicap waarde"
-        required: false
-      action:
-        description: "Actie (addTeam, deleteTeam, addPlayer, editPlayer, deletePlayer)"
-        required: true
-
-permissions:
-  contents: write
-  pull-requests: write
 
 jobs:
-  update:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
+      - name: Echo runner
+        run: echo "Runner draait ✅"
 
-      - name: Run update script
+      - name: Create debug file
+        run: echo "Debug run at $(date)" > debug-output.txt
+
+      - name: Show repo status
         run: |
-          node .github/scripts/update-teams.js \
-            "${{ github.event.inputs.team }}" \
-            "${{ github.event.inputs.player }}" \
-            "${{ github.event.inputs.handicap }}" \
-            "${{ github.event.inputs.action }}"
-
-      - name: Commit changes to new branch
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-          git add teams-data.json
-          git diff --cached --quiet || git commit -m "Update teams-data.json via workflow"
-          BRANCH="workflow-update-$(date +%s)"
-          git checkout -b $BRANCH
-          git push origin $BRANCH
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
-          base: main
-          title: "Update teams-data.json via workflow"
-          body: "Automatisch aangemaakt door workflow"
+          git status
+          git branch -a
+          git remote -v
