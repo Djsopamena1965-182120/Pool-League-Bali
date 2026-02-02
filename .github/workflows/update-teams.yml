@@ -50,6 +50,7 @@ jobs:
           git diff --cached --quiet || git commit -m "Update teams-data.json via workflow"
           BRANCH="workflow-update-$(date +%s)"
           git checkout -b $BRANCH
+          echo "=== Pushing to branch $BRANCH ==="
           git push origin $BRANCH
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -69,3 +70,10 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
           merge-method: squash
+
+      - name: Debug confirmation
+        run: |
+          echo "=== Merge uitgevoerd ==="
+          echo "Pull Request nummer: ${{ steps.cpr.outputs.pull-request-number }}"
+          echo "Laatste commit:"
+          git log -1 --stat
