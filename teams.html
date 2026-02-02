@@ -16,6 +16,35 @@
     tbody tr:nth-child(even) { background:#252525; }
     tbody tr:hover { background:#333; }
     footer { text-align:center; color:#aaa; font-size:12px; margin:20px 0; }
+
+/* Navigatie consistent met index.html */
+.main-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #222;
+  border-bottom: 1px solid #333;
+}
+.main-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 12px 0;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+.main-nav a {
+  color: #eee;
+  text-decoration: none;
+  font-weight: bold;
+}
+.main-nav a[aria-current="page"] {
+  color: #ffcc00;
+}
+.main-nav a:hover {
+  color: #ffcc00;
+}
+
   </style>
 </head>
 <body>
