@@ -36,7 +36,7 @@ jobs:
       - name: Run update script
         run: |
           node .github/scripts/update-teams.js \
-            "${{ github.event.inputs.team }}" \
+            "${{ github.event.inputs.team}" \
             "${{ github.event.inputs.player }}" \
             "${{ github.event.inputs.handicap }}" \
             "${{ github.event.inputs.action }}"
@@ -50,6 +50,7 @@ jobs:
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
 
 
