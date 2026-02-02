@@ -1,13 +1,26 @@
-name: Test Workflow
+name: Update Teams Data
 
 on:
   workflow_dispatch:
+    inputs:
+      team:
+        description: "Team naam"
+        required: true
+      player:
+        description: "Speler naam"
+        required: false
+      handicap:
+        description: "Handicap waarde"
+        required: false
+      action:
+        description: "Actie (addTeam, deleteTeam, addPlayer, editPlayer, deletePlayer)"
+        required: true
 
 permissions:
   contents: write
 
 jobs:
-  test:
+  update:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -15,20 +28,27 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Echo test
-        run: echo "Workflow runner werkt ✅"
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
 
-      - name: Create test file
-        run: echo "Test run at $(date)" > workflow-test.txt
+      - name: Run update script
+        run: |
+          node .github/scripts/update-teams.js \
+            "${{ github.event.inputs.team }}" \
+            "${{ github.event.inputs.player }}" \
+            "${{ github.event.inputs.handicap }}" \
+            "${{ github.event.inputs.action }}"
 
-      - name: Commit and push test file
+      - name: Commit and push changes
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          git add workflow-test.txt
-          git diff --cached --quiet || git commit -m "Add workflow-test.txt"
-          git pull --rebase origin main
-          git push origin HEAD:main
+          git add teams-data.json
+          git diff --cached --quiet || git commit -m "Update teams-data.json via workflow"
+          git pull --rebase origin main || git pull --rebase origin master
+          git push origin HEAD:main || git push origin HEAD:master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
