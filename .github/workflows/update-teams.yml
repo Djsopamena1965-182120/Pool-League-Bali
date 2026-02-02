@@ -1,13 +1,26 @@
-name: Debug Workflow (Testbranch)
+name: Update Teams Data
 
 on:
   workflow_dispatch:
+    inputs:
+      team:
+        description: "Team naam"
+        required: true
+      player:
+        description: "Speler naam"
+        required: false
+      handicap:
+        description: "Handicap waarde"
+        required: false
+      action:
+        description: "Actie (addTeam, deleteTeam, addPlayer, editPlayer, deletePlayer)"
+        required: true
 
 permissions:
   contents: write
 
 jobs:
-  debug:
+  update:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -15,16 +28,27 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create debug file
-        run: echo "Debug run at $(date)" > debug-output.txt
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
 
-      - name: Commit and push to test branch
+      - name: Run update script
+        run: |
+          node .github/scripts/update-teams.js \
+            "${{ github.event.inputs.team }}" \
+            "${{ github.event.inputs.player }}" \
+            "${{ github.event.inputs.handicap }}" \
+            "${{ github.event.inputs.action }}"
+
+      - name: Commit and push changes to new branch
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          git checkout -b debug-test-branch
-          git add debug-output.txt
-          git commit -m "Debug push to test branch"
-          git push origin debug-test-branch
+          git add teams-data.json
+          git diff --cached --quiet || git commit -m "Update teams-data.json via workflow"
+          BRANCH="workflow-update-$(date +%s)"
+          git checkout -b $BRANCH
+          git push origin $BRANCH
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
