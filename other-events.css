@@ -1,147 +1,152 @@
-/* Basis */
-body.dark-theme {
-  background: #111;
+/* ====== Basis ====== */
+body.dark-theme.other-events-page {
+  background: #111 !important;
   color: #eee;
   font-family: Arial, sans-serif;
   margin: 0;
 }
 
-/* Navigatie */
+/* ====== Navigatie consistent ====== */
 .main-nav {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: #222;
+  background: #111;
   border-bottom: 1px solid #333;
 }
 .main-nav ul {
   list-style: none;
   margin: 0;
-  padding: 12px 0;
+  padding: 10px;
   display: flex;
   justify-content: center;
   gap: 20px;
+  flex-wrap: wrap;
 }
 .main-nav a {
-  color: #eee;
+  color: #fff;              /* niet-actieve links wit */
   text-decoration: none;
   font-weight: bold;
 }
-.main-nav a[aria-current="page"] { color: #ffcc00; }
-.main-nav a:hover { color: #ffcc00; }
-
-/* Hero banner */
-.hero {
-  position: relative;
-  width: 100%;
-  max-width: 1200px;
-  height: 400px;
-  margin: 0 auto;
-  overflow: hidden;
+.main-nav a[aria-current="page"] {
+  color: #ffcc00;           /* actieve pagina geel */
 }
-.hero-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.main-nav a:hover {
+  color: #ffcc00;           /* hover geel */
+}
+
+/* ====== Switch Language knop ====== */
+.language-switch {
   display: block;
-}
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.3);
-}
-.hero-content { position: absolute; bottom: 14px; left: 14px; }
-
-/* After banner */
-.after-banner { margin-top: 2.5cm; }
-
-/* Banner + logos */
-.banner {
+  margin: 12px auto;
+  padding: 8px 16px;
+  background: #ffcc00;
+  color: #111;
+  font-weight: bold;
   text-align: center;
-  margin: 20px auto;
-  max-width: 1000px;
+  border-radius: 6px;
+  width: fit-content;
 }
-.banner h2 {
-  margin: 6px 0;
+
+/* ====== Sectie Other Events ====== */
+#other-events {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+#other-events h2 {
+  text-align: center;
   color: #ffcc00;
+  font-size: 2rem;
   font-weight: 700;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
-.banner .subtitle {
-  margin: 4px 0 0;
-  color: #eee;
-  font-size: 0.95rem;
-  font-style: italic;
+
+/* ====== Event cards ====== */
+.event-card {
+  background: linear-gradient(145deg, #0d131c, #1a1f29);
+  border: 1px solid #2a2f3a;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.banner-logos {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-bottom: 10px;
+.event-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.6);
 }
-.team-logo { text-align: center; }
-.team-logo img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border: 2px solid #333;
+.event-card h3 {
+  margin: 0 0 12px;
+  color: #ffcc00;
+  font-size: 1.2rem;
+  text-align: center;
+  border-bottom: 1px solid #333;
+  padding-bottom: 8px;
 }
-.team-logo span {
-  display: block;
-  margin-top: 4px;
+.event-card p {
   color: #eee;
   font-size: 0.9rem;
+  line-height: 1.4;
 }
 
-/* Sectie */
-.section {
-  max-width: 1000px;
-  margin: 24px auto;
-  padding: 0 20px;
-  text-align: center;
-}
-.section h2 {
-  color: #ffcc00;
-  margin-bottom: 16px;
-}
-.section p { margin: 8px 0 16px; }
-
-/* Results table — uniform */
-.results-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 20px auto;
-  font-size: 0.95rem;
-}
-.results-table th, .results-table td {
-  border: 1px solid #333;
-  padding: 10px 12px;
-  text-align: center;
-}
-.results-table th {
-  background: #222;
-  color: #ffcc00;
-  font-weight: 700;
-}
-.results-table tbody tr:nth-child(odd) td { background: #1a1a1a; }
-.results-table tbody tr:nth-child(even) td { background: #2a2a2a; }
-.results-table td { color: #eee; }
-
-/* Footer — uniform gecentreerd */
+/* ====== Footer ====== */
 .footer {
   background: #222;
   color: #aaa;
   width: 100%;
   padding: 20px 0;
   margin-top: 40px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   text-align: center;
 }
 .footer p {
   margin: 6px 0;
   max-width: 800px;
+}
+
+/* ====== Responsief gedrag ====== */
+@media (max-width: 900px) {
+  #other-events h2 { font-size: 1.6rem; }
+  .event-card h3 { font-size: 1rem; }
+}
+
+@media (max-width: 600px) {
+  .main-nav ul {
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 0;
+  }
+
+  .main-nav a {
+    display: block;
+    padding: 4px 8px;
+    font-size: 0.8rem;
+    color: #fff;            /* niet-actieve links wit */
+  }
+
+  .main-nav a[aria-current="page"] {
+    color: #ffcc00;         /* actieve pagina geel */
+  }
+
+  .language-switch {
+    margin-top: 6px;
+    font-size: 0.75rem;
+    padding: 4px 8px;
+  }
+
+  #other-events h2 {
+    font-size: 1.3rem;
+  }
+
+  .event-card h3 {
+    font-size: 0.9rem;
+  }
+
+  .event-card p {
+    font-size: 0.8rem;
+  }
 }
