@@ -173,8 +173,6 @@ body.dark-theme {
 .btn-lang:hover {
   background: #ffd633;
 }
-/* ====== Responsief gedrag ====== */
-
 /* Tablet */
 @media (max-width: 992px) {
   .main-nav ul {
@@ -185,10 +183,10 @@ body.dark-theme {
   .hero {
     height: 300px;
   }
-  .after-banner .banner h2 {
+  .banner h2 {   /* aangepast */
     font-size: 1.5rem;
   }
-  .after-banner .banner .subtitle {
+  .banner .subtitle {   /* aangepast */
     font-size: 0.95rem;
   }
   .banner-logos {
@@ -208,10 +206,10 @@ body.dark-theme {
   .hero {
     height: 200px;
   }
-  .after-banner .banner h2 {
+  .banner h2 {   /* aangepast */
     font-size: 1.2rem;
   }
-  .after-banner .banner .subtitle {
+  .banner .subtitle {   /* aangepast */
     font-size: 0.9rem;
   }
   .banner-logos {
@@ -222,4 +220,6 @@ body.dark-theme {
     height: 60px;
   }
 }
+
+
 
