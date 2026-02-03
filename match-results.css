@@ -4,14 +4,22 @@ body {
   font-family: "Segoe UI", Arial, sans-serif;
   background: #0f1117;
   color: #e6e6e6;
+  line-height: 1.5;
 }
 
 /* ====== Header / Banner ====== */
 header.banner {
   background: url('../images/banner.jpg') no-repeat center;
   background-size: cover;
-  height: 180px;
+  height: 200px;
   border-bottom: 3px solid #ffd700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+header.banner img.logo {
+  height: 120px;
+  width: auto;
 }
 
 /* ====== Navigatie ====== */
@@ -46,7 +54,7 @@ nav.main-nav a[aria-current="page"] {
   padding-bottom: 2px;
 }
 
-/* ====== Navigatie mobiel fix ====== */
+/* ====== Navigatie mobiel ====== */
 @media (max-width: 600px) {
   nav.main-nav ul {
     flex-direction: column;
@@ -56,8 +64,8 @@ nav.main-nav a[aria-current="page"] {
   }
   nav.main-nav a {
     display: block;
-    padding: 4px 8px;
-    font-size: 0.85rem;
+    padding: 6px 10px;
+    font-size: 0.9rem;
     color: #e6e6e6;
   }
   nav.main-nav a[aria-current="page"] {
@@ -66,32 +74,52 @@ nav.main-nav a[aria-current="page"] {
   }
 }
 
-/* ====== Matchresultaten ====== */
+/* ====== Matchresultaten container ====== */
 .match-results {
-  width: 90%;
+  width: 95%;
   margin: 20px auto;
   background: #1c1f29;
   border: 1px solid #333;
   border-radius: 6px;
-  padding: 12px;
+  padding: 16px;
 }
 .match-results h2 {
   text-align: center;
   color: #ffd700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  margin-bottom: 12px;
 }
+
+/* ====== Matchresultaten tabel ====== */
 .match-results table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
 }
 .match-results th, .match-results td {
-  padding: 8px;
+  padding: 10px;
   border: 1px solid #333;
   text-align: center;
 }
 .match-results th {
   background: #141821;
   color: #ffd700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.match-results tr:nth-child(even) {
+  background: #181b24;
+}
+
+/* ====== Responsieve indeling ====== */
+@media (max-width: 900px) {
+  .match-results table {
+    font-size: 0.9rem;
+  }
+}
+@media (max-width: 600px) {
+  .match-results table, .match-results th, .match-results td {
+    font-size: 0.8rem;
+    padding: 6px;
+  }
 }
