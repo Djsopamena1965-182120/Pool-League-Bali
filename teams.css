@@ -6,30 +6,46 @@ body.dark-theme.teams-page {
   margin: 0;
 }
 
-/* ====== Navigatie consistent ====== */
+/* ====== Navigatie zoals index.html ====== */
 .main-nav {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: #222;
+  background: #111;
   border-bottom: 1px solid #333;
 }
 .main-nav ul {
   list-style: none;
   margin: 0;
-  padding: 12px 0;
+  padding: 10px;
   display: flex;
   justify-content: center;
   gap: 20px;
+  flex-wrap: wrap;
 }
 .main-nav a {
-  color: #eee;
+  color: #c080ff;
   text-decoration: none;
   font-weight: bold;
 }
-.main-nav a[aria-current="page"],
+.main-nav a[aria-current="page"] {
+  color: #ffcc00;
+}
 .main-nav a:hover {
   color: #ffcc00;
+}
+
+/* ====== Switch Language knop ====== */
+.language-switch {
+  display: block;
+  margin: 12px auto;
+  padding: 8px 16px;
+  background: #ffcc00;
+  color: #111;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 6px;
+  width: fit-content;
 }
 
 /* ====== Teams sectie ====== */
