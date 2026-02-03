@@ -35,7 +35,7 @@ body.dark-theme.other-events-page {
   position: relative;
   width: 100%;
   max-width: 1200px;
-  height: 400px;
+  height: 250px;
   margin: 0 auto;
   overflow: hidden;
 }
@@ -166,3 +166,4 @@ body.dark-theme.other-events-page {
     color: #ffcc00;
   }
 }
+
