@@ -71,3 +71,25 @@
   text-align: right;
   padding: 8px;
 }
+/* ====== Navigatie mobiel fix ====== */
+@media (max-width: 600px) {
+  nav.main-nav ul {
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 0;
+  }
+
+  nav.main-nav a {
+    display: block;
+    padding: 4px 8px;
+    font-size: 0.85rem;   /* verkleint tekst */
+    color: #e6e6e6;
+  }
+
+  nav.main-nav a[aria-current="page"] {
+    color: #ffd700;
+    border-bottom: none;
+  }
+}
+
