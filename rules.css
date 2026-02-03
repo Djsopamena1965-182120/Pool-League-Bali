@@ -131,8 +131,21 @@ body.dark-theme.rules-page {
   border-collapse: collapse;
   margin: 12px 0;
   font-size: 0.95rem;
-
- background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+  background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+}
+.results-table th, .results-table td {
+  border: 1px solid #333;
+  padding: 8px 12px;
+  text-align: center;
+}
+.results-table th {
+  background: #222;
+  color: #ffcc00;
+  font-weight: 700;
+}
+.results-table tbody tr:nth-child(odd) td { background: #1a1a1a; }
+.results-table tbody tr:nth-child(even) td { background: #2a2a2a; }
+.results-table td { color: #eee; }
 
 /* Tablet */
 @media (max-width: 992px) {
@@ -144,10 +157,10 @@ body.dark-theme.rules-page {
   .hero {
     height: 300px;
   }
-  .banner h2 {   /* aangepast */
+  .banner h2 {
     font-size: 1.5rem;
   }
-  .banner .subtitle {   /* aangepast */
+  .banner .subtitle {
     font-size: 0.95rem;
   }
   .banner-logos {
@@ -167,10 +180,10 @@ body.dark-theme.rules-page {
   .hero {
     height: 200px;
   }
-  .banner h2 {   /* aangepast */
+  .banner h2 {
     font-size: 1.2rem;
   }
-  .banner .subtitle {   /* aangepast */
+  .banner .subtitle {
     font-size: 0.9rem;
   }
   .banner-logos {
@@ -181,5 +194,3 @@ body.dark-theme.rules-page {
     height: 60px;
   }
 }
-                              
-
