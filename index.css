@@ -1,82 +1,226 @@
-/* ===== Pool League Bali - Index Styles ===== */
-
-/* Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* Body */
-body {
-  font-family: 'Segoe UI', Arial, sans-serif;
+/* Basis */
+body.dark-theme {
   background: #111;
   color: #eee;
-  line-height: 1.6;
+  font-family: Arial, sans-serif;
+  margin: 0;
 }
 
-/* Banner */
-.banner img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* Navigation */
-nav {
+/* Navigatie */
+.main-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
   background: #222;
+  border-bottom: 1px solid #333;
 }
-nav ul {
+.main-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 12px 0;
   display: flex;
   justify-content: center;
-  list-style: none;
+  gap: 20px;
 }
-nav ul li {
-  margin: 0 15px;
-}
-nav ul li a {
+.main-nav a {
   color: #eee;
   text-decoration: none;
-  padding: 10px 15px;
+  font-weight: bold;
+}
+.main-nav a[aria-current="page"] { color: #ffcc00; }
+.main-nav a:hover { color: #ffcc00; }
+
+/* Hero banner – 1200 × 400 pixels bij 72 DPI */
+.hero {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  height: 250px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+.hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   display: block;
 }
-nav ul li.active a,
-nav ul li a:hover {
-  background: #444;
-  border-radius: 4px;
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
 }
+.hero-content { position: absolute; bottom: 14px; left: 14px; }
 
-/* Intro Section */
-.intro {
+/* After banner */
+.after-banner { margin-top: 2.5cm; }
+
+/* Banner + logos */
+.banner {
   text-align: center;
-  padding: 40px 20px;
+  margin: 20px 0;
 }
-.intro h1 {
-  font-size: 2rem;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  margin-bottom: 15px;
+.banner h2 {
+  margin: 6px 0;
+  color: #ffcc00;
+  font-weight: 700;
 }
-.intro p {
-  font-size: 1.1rem;
-  color: #ccc;
+.banner .subtitle {
+  margin: 4px 0 0;
+  color: #eee;
+  font-size: 0.95rem;
+  font-style: italic;
 }
 
-/* Footer */
-footer {
+/* ✅ Verbeterde logos layout */
+.banner-logos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 40px;
+  justify-items: center;
+  align-items: center;
+  margin: 30px auto;
+  max-width: 800px;
+}
+.team-logo {
+  text-align: center;
+}
+.team-logo img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid #ffcc00;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+.team-logo img:hover {
+  transform: scale(1.1);
+  border-color: #ffd633;
+}
+.team-logo span {
+  display: block;
+  margin-top: 8px;
+  color: #eee;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Secties */
+.section {
+  max-width: 900px;
+  margin: 24px auto;
+  padding: 0 20px;
+}
+.section h2 {
+  text-align: center;
+  color: #ffcc00;
+  margin-bottom: 16px;
+}
+.section p {
+  margin: 8px 0 16px;
+}
+
+/* Tabellen — uniform */
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  font-size: 0.95rem;
+}
+.results-table th, .results-table td {
+  border: 1px solid #333;
+  padding: 8px 12px;
+  text-align: center;
+}
+.results-table th {
   background: #222;
-  text-align: center;
-  padding: 15px;
-  font-size: 0.9rem;
+  color: #ffcc00;
+  font-weight: 700;
+}
+.results-table tbody tr:nth-child(odd) td { background: #1a1a1a; }
+.results-table tbody tr:nth-child(even) td { background: #2a2a2a; }
+.results-table td { color: #eee; }
+
+/* Footer — uniform gecentreerd */
+.footer {
+  background: #222;
   color: #aaa;
+  width: 100%;
+  padding: 20px 0;
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.footer p {
+  margin: 6px 0;
+  max-width: 800px;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  nav ul {
-    flex-direction: column;
+/* Language toggle button */
+.btn-lang {
+  margin-left: 20px;
+  padding: 6px 12px;
+  background: #ffcc00;
+  color: #111;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.btn-lang:hover {
+  background: #ffd633;
+}
+/* ====== Responsief gedrag ====== */
+
+/* Tablet */
+@media (max-width: 992px) {
+  .main-nav ul {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
   }
-  nav ul li {
-    margin: 5px 0;
+  .hero {
+    height: 300px;
+  }
+  .after-banner .banner h2 {
+    font-size: 1.5rem;
+  }
+  .after-banner .banner .subtitle {
+    font-size: 0.95rem;
+  }
+  .banner-logos {
+    gap: 15px;
   }
 }
+
+/* Mobiel */
+@media (max-width: 600px) {
+  .main-nav ul {
+    flex-direction: column;
+    align-items: center;
+  }
+  .main-nav li {
+    margin: 8px 0;
+  }
+  .hero {
+    height: 200px;
+  }
+  .after-banner .banner h2 {
+    font-size: 1.2rem;
+  }
+  .after-banner .banner .subtitle {
+    font-size: 0.9rem;
+  }
+  .banner-logos {
+    gap: 10px;
+  }
+  .team-logo img {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+
