@@ -15,14 +15,12 @@ nav.main-nav {
 nav.main-nav ul {
   list-style: none;
   display: flex;
-  justify-content: center;   /* centreren */
+  justify-content: center;
   gap: 28px;
   margin: 0;
   padding: 14px 0;
 }
-nav.main-nav li {
-  position: relative;
-}
+nav.main-nav li { position: relative; }
 nav.main-nav a {
   color: #e6e6e6;
   text-decoration: none;
@@ -30,10 +28,7 @@ nav.main-nav a {
   letter-spacing: 0.5px;
   transition: color 0.3s, transform 0.2s;
 }
-nav.main-nav a:hover {
-  color: #ffd700;
-  transform: scale(1.05);
-}
+nav.main-nav a:hover { color: #ffd700; transform: scale(1.05); }
 nav.main-nav a[aria-current="page"] {
   color: #ffd700;
   font-weight: 700;
@@ -45,7 +40,7 @@ nav.main-nav a[aria-current="page"] {
 .hero {
   position: relative;
   width: 100%;
-  max-width: 1200px;   /* begrens breedte */
+  max-width: 1200px;
   height: 250px;       /* uniforme hoogte */
   margin: 0 auto;
   overflow: hidden;
@@ -72,13 +67,6 @@ nav.main-nav a[aria-current="page"] {
   letter-spacing: 2px;
 }
 
-/* ====== Responsief gedrag ====== */
-@media (max-width: 768px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* ====== Navigatie mobiel fix ====== */
 @media (max-width: 600px) {
   nav.main-nav ul {
@@ -87,14 +75,12 @@ nav.main-nav a[aria-current="page"] {
     gap: 6px;
     padding: 6px 0;
   }
-
   nav.main-nav a {
     display: block;
     padding: 4px 8px;
-    font-size: 0.85rem;   /* compacte tekst */
+    font-size: 0.85rem;
     color: #e6e6e6;
   }
-
   nav.main-nav a[aria-current="page"] {
     color: #ffd700;
     border-bottom: none;
