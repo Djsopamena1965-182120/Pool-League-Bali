@@ -1,12 +1,12 @@
-/* ====== Basis ====== */
-body.dark-theme.other-events-page {
+/* Basis */
+body.dark-theme {
   background: #111;
   color: #eee;
   font-family: Arial, sans-serif;
   margin: 0;
 }
 
-/* ====== Navigatie (oude versie + fix mobiel) ====== */
+/* Navigatie */
 .main-nav {
   position: sticky;
   top: 0;
@@ -23,14 +23,14 @@ body.dark-theme.other-events-page {
   gap: 20px;
 }
 .main-nav a {
-  color: #fff;              /* niet-actieve links wit */
+  color: #eee;
   text-decoration: none;
   font-weight: bold;
 }
 .main-nav a[aria-current="page"] { color: #ffcc00; }
 .main-nav a:hover { color: #ffcc00; }
 
-/* ====== Hero banner ====== */
+/* Hero banner */
 .hero {
   position: relative;
   width: 100%;
@@ -52,10 +52,10 @@ body.dark-theme.other-events-page {
 }
 .hero-content { position: absolute; bottom: 14px; left: 14px; }
 
-/* ====== After banner ====== */
+/* After banner */
 .after-banner { margin-top: 2.5cm; }
 
-/* ====== Banner + logos ====== */
+/* Banner + logos */
 .banner {
   text-align: center;
   margin: 20px auto;
@@ -93,7 +93,7 @@ body.dark-theme.other-events-page {
   font-size: 0.9rem;
 }
 
-/* ====== Sectie ====== */
+/* Sectie */
 .section {
   max-width: 1000px;
   margin: 24px auto;
@@ -106,7 +106,7 @@ body.dark-theme.other-events-page {
 }
 .section p { margin: 8px 0 16px; }
 
-/* ====== Results table ====== */
+/* Results table — uniform */
 .results-table {
   width: 100%;
   border-collapse: collapse;
@@ -124,40 +124,24 @@ body.dark-theme.other-events-page {
   font-weight: 700;
 }
 .results-table tbody tr:nth-child(odd) td { background: #1a1a1a; }
-results-table tbody tr:nth-child(even) td { background: #2a2a2a; }
+.results-table tbody tr:nth-child(even) td { background: #2a2a2a; }
 .results-table td { color: #eee; }
 
-/* ====== Footer ====== */
+/* Footer — uniform gecentreerd */
 .footer {
   background: #222;
   color: #aaa;
   width: 100%;
   padding: 20px 0;
   margin-top: 40px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
 }
 .footer p {
   margin: 6px 0;
   max-width: 800px;
-}
-
-/* ====== Responsief gedrag ====== */
-@media (max-width: 600px) {
-  .main-nav ul {
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 0;
-  }
-
-  .main-nav a {
-    display: block;
-    padding: 4px 8px;
-    font-size: 0.8rem;
-    color: #fff;
-  }
-
-  .main-nav a[aria-current="page"] {
-    color: #ffcc00;
-  }
 }
