@@ -247,4 +247,57 @@ form input:focus, form select:focus {
   }
 }
 
+/* ====== Extra mobiel fix voor onderin standings.html ====== */
+@media (max-width: 600px) {
+  /* Tabellen horizontaal scrollbaar */
+  .standings-table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .standings-table table {
+    width: 100%;
+    min-width: 480px; /* voorkomt dat kolommen te smal worden */
+  }
+
+  /* Cards compacter */
+  .card {
+    padding: 12px;
+    margin: 12px 0;
+  }
+
+  /* Sub-secties */
+  .sub {
+    padding: 8px;
+    font-size: 0.8rem;
+  }
+
+  /* Notities en waarschuwingen */
+  .note, .warn {
+    font-size: 0.75rem;
+    line-height: 1.4;
+  }
+
+  /* Pills en tags */
+  .pill, .tag {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    white-space: nowrap; /* voorkomt afbreken */
+  }
+
+  /* Rijen netjes stapelen */
+  .row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  /* Grid naar één kolom */
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
 
