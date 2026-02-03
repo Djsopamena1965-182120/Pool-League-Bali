@@ -1,113 +1,82 @@
-/* ====== Algemene layout ====== */
+/* ===== Pool League Bali - Index Styles ===== */
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body */
 body {
-  margin: 0;
-  font-family: "Segoe UI", Arial, sans-serif;
-  background: #0f1117;
-  color: #e6e6e6;
-  line-height: 1.5;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #111;
+  color: #eee;
+  line-height: 1.6;
 }
 
-/* ====== Header / Banner ====== */
-header.banner {
-  background: url('../images/banner.jpg') no-repeat center;
-  background-size: cover;
-  height: 200px;
-  border-bottom: 3px solid #ffd700;
+/* Banner */
+.banner img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Navigation */
+nav {
+  background: #222;
+}
+nav ul {
   display: flex;
-  align-items: center;
   justify-content: center;
-}
-header.banner img.logo {
-  height: 120px;
-  width: auto;
-}
-
-/* ====== Navigatie ====== */
-nav.main-nav {
-  background: #141821;
-  border-bottom: 2px solid #ffd700;
-}
-nav.main-nav ul {
   list-style: none;
-  display: flex;
-  justify-content: center;
-  gap: 28px;
-  margin: 0;
-  padding: 14px 0;
 }
-nav.main-nav li { position: relative; }
-nav.main-nav a {
-  color: #e6e6e6;
+nav ul li {
+  margin: 0 15px;
+}
+nav ul li a {
+  color: #eee;
   text-decoration: none;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  transition: color 0.3s, transform 0.2s;
+  padding: 10px 15px;
+  display: block;
 }
-nav.main-nav a:hover {
-  color: #ffd700;
-  transform: scale(1.05);
-}
-nav.main-nav a[aria-current="page"] {
-  color: #ffd700;
-  font-weight: 700;
-  border-bottom: 2px solid #ffd700;
-  padding-bottom: 2px;
+nav ul li.active a,
+nav ul li a:hover {
+  background: #444;
+  border-radius: 4px;
 }
 
-/* ====== Navigatie mobiel ====== */
-@media (max-width: 600px) {
-  nav.main-nav ul {
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 0;
-  }
-  nav.main-nav a {
-    display: block;
-    padding: 6px 10px;
-    font-size: 0.9rem;
-    color: #e6e6e6;
-  }
-  nav.main-nav a[aria-current="page"] {
-    color: #ffd700;
-    border-bottom: none;
-  }
-}
-
-/* ====== Tabellen / Teams incl. handicap ====== */
-table {
-  width: 95%;
-  border-collapse: collapse;
-  margin: 20px auto;
-  background: #1c1f29;
-  color: #e6e6e6;
-  border-radius: 6px;
-  overflow: hidden;
-}
-table th, table td {
-  padding: 10px;
-  border: 1px solid #333;
+/* Intro Section */
+.intro {
   text-align: center;
+  padding: 40px 20px;
 }
-table th {
-  background: #141821;
-  color: #ffd700;
+.intro h1 {
+  font-size: 2rem;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 2px;
+  margin-bottom: 15px;
 }
-table tr:nth-child(even) {
-  background: #181b24;
+.intro p {
+  font-size: 1.1rem;
+  color: #ccc;
 }
 
-/* ====== Responsieve indeling ====== */
-@media (max-width: 900px) {
-  table {
-    font-size: 0.9rem;
-  }
+/* Footer */
+footer {
+  background: #222;
+  text-align: center;
+  padding: 15px;
+  font-size: 0.9rem;
+  color: #aaa;
 }
-@media (max-width: 600px) {
-  table, table th, table td {
-    font-size: 0.8rem;
-    padding: 6px;
+
+/* Responsive */
+@media (max-width: 768px) {
+  nav ul {
+    flex-direction: column;
+  }
+  nav ul li {
+    margin: 5px 0;
   }
 }
