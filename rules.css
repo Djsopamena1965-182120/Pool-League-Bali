@@ -131,4 +131,54 @@ body.dark-theme.rules-page {
   border-collapse: collapse;
   margin: 12px 0;
   font-size: 0.95rem;
+
   background: linear-gradient(145
+
+/* Tablet */
+@media (max-width: 992px) {
+  .main-nav ul {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .hero {
+    height: 300px;
+  }
+  .banner h2 {   /* aangepast */
+    font-size: 1.5rem;
+  }
+  .banner .subtitle {   /* aangepast */
+    font-size: 0.95rem;
+  }
+  .banner-logos {
+    gap: 15px;
+  }
+}
+
+/* Mobiel */
+@media (max-width: 600px) {
+  .main-nav ul {
+    flex-direction: column;
+    align-items: center;
+  }
+  .main-nav li {
+    margin: 8px 0;
+  }
+  .hero {
+    height: 200px;
+  }
+  .banner h2 {   /* aangepast */
+    font-size: 1.2rem;
+  }
+  .banner .subtitle {   /* aangepast */
+    font-size: 0.9rem;
+  }
+  .banner-logos {
+    gap: 10px;
+  }
+  .team-logo img {
+    width: 60px;
+    height: 60px;
+  }
+}
+                              
