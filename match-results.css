@@ -1,4 +1,4 @@
-/* Container & headings */
+/* ====== Container & headings ====== */
 #match-results {
   max-width: 1200px;
   margin: 40px auto;
@@ -21,7 +21,7 @@
   letter-spacing: 1px;
 }
 
-/* Table styling – identiek aan teams.css look */
+/* ====== Table styling – identiek aan teams.css look ====== */
 .standings-table {
   width: 100%;
   border-collapse: collapse;
@@ -71,6 +71,38 @@
   text-align: right;
   padding: 8px;
 }
+
+/* ====== Hero banner ====== */
+.hero {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  height: 250px;       /* uniforme hoogte */
+  margin: 0 auto;
+  overflow: hidden;
+}
+.hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+}
+.hero-content {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #ffd700;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
 /* ====== Navigatie mobiel fix ====== */
 @media (max-width: 600px) {
   nav.main-nav ul {
@@ -83,7 +115,7 @@
   nav.main-nav a {
     display: block;
     padding: 4px 8px;
-    font-size: 0.85rem;   /* verkleint tekst */
+    font-size: 0.85rem;   /* compacte tekst */
     color: #e6e6e6;
   }
 
@@ -92,4 +124,3 @@
     border-bottom: none;
   }
 }
-
