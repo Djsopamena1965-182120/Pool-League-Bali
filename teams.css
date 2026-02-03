@@ -24,15 +24,15 @@ body.dark-theme.teams-page {
   flex-wrap: wrap;
 }
 .main-nav a {
-  color: #c080ff;
+  color: #fff;              /* alle niet-actieve links wit */
   text-decoration: none;
   font-weight: bold;
 }
 .main-nav a[aria-current="page"] {
-  color: #ffcc00;
+  color: #ffcc00;           /* actieve pagina geel */
 }
 .main-nav a:hover {
-  color: #ffcc00;
+  color: #ffcc00;           /* hover ook geel */
 }
 
 /* ====== Switch Language knop ====== */
@@ -153,19 +153,24 @@ body.dark-theme.teams-page {
   .main-nav ul {
     flex-direction: column;
     align-items: center;
-    gap: 6px;               /* minder ruimte */
+    gap: 6px;
     padding: 6px 0;
   }
 
   .main-nav a {
     display: block;
-    padding: 4px 8px;       /* kleinere padding */
-    font-size: 0.8rem;      /* kleinere tekst */
+    padding: 4px 8px;
+    font-size: 0.8rem;
+    color: #fff;            /* niet-actieve links wit op mobiel */
+  }
+
+  .main-nav a[aria-current="page"] {
+    color: #ffcc00;         /* actieve pagina geel */
   }
 
   .language-switch {
     margin-top: 6px;
-    font-size: 0.75rem;     /* kleinere knop */
+    font-size: 0.75rem;
     padding: 4px 8px;
   }
 
@@ -189,6 +194,6 @@ body.dark-theme.teams-page {
   }
 
   .sponsor-logos img {
-    max-width: 60px;        /* logo’s ook kleiner */
+    max-width: 60px;
   }
 }
