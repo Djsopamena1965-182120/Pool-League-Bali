@@ -3,51 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <title>Teams – Pool League Bali</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body { font-family:"Segoe UI", Arial, sans-serif; background:#111; color:#eee; margin:0; padding:0; }
-    nav ul { list-style:none; display:flex; gap:20px; padding:10px; margin:0; background:#111; }
-    nav a { color:#ffd700; text-decoration:none; font-weight:bold; }
-    h1 { text-align:center; text-transform:uppercase; letter-spacing:2px; color:#ffd700; margin:20px 0; }
-    .teams-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; padding:20px; }
-    table { width:100%; border-collapse:collapse; background:#1e1e1e; color:#eee; font-size:14px; border-radius:8px; overflow:hidden; box-shadow:0 4px 12px rgba(0,0,0,0.6); }
-    thead th { background:#2c2c2c; color:#ffd700; text-transform:uppercase; letter-spacing:1px; padding:10px; }
-    tbody td { padding:8px; border-top:1px solid #333; text-align:center; }
-    tbody tr:nth-child(even) { background:#252525; }
-    tbody tr:hover { background:#333; }
-    footer { text-align:center; color:#aaa; font-size:12px; margin:20px 0; }
-
-/* Navigatie consistent met index.html */
-.main-nav {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  background: #222;
-  border-bottom: 1px solid #333;
-}
-.main-nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 12px 0;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-.main-nav a {
-  color: #eee;
-  text-decoration: none;
-  font-weight: bold;
-}
-.main-nav a[aria-current="page"] {
-  color: #ffcc00;
-}
-.main-nav a:hover {
-  color: #ffcc00;
-}
-
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Teams pagina van Pool League Bali – overzicht van alle spelers en handicaps.">
+  <link rel="stylesheet" href="teams.css">
 </head>
-<body>
+<body class="dark-theme teams-page">
+
+  <!-- ====== Navigatie ====== -->
   <nav class="main-nav">
     <ul>
       <li><a href="index.html">Home</a></li>
@@ -61,17 +23,27 @@
     </ul>
   </nav>
 
-  <h1>Teams – Pool League Bali</h1>
-  <div class="teams-grid"></div>
+  <!-- ====== Titel ====== -->
+  <section id="teams">
+    <h2>Teams – Pool League Bali</h2>
 
-  <footer><p>&copy; Pool League Bali</p></footer>
+    <!-- Grid met teams -->
+    <div class="team-grid"></div>
+  </section>
 
+  <!-- ====== Footer ====== -->
+  <footer class="footer">
+    <p>&copy; 2026 Pool League Bali</p>
+    <p>Website Designer Johan Sopamena Alias DJ Sopamena</p>
+  </footer>
+
+  <!-- ====== JavaScript om teams-data.json te laden ====== -->
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       fetch("teams-data.json")
         .then(response => response.json())
         .then(data => {
-          const grid = document.querySelector(".teams-grid");
+          const grid = document.querySelector(".team-grid");
           grid.innerHTML = "";
 
           data.forEach(team => {
@@ -86,6 +58,7 @@
               rows = `<tr><td colspan="2">Geen spelers toegevoegd</td></tr>`;
             }
 
+            table.className = "players-table";
             table.innerHTML = `
               <thead>
                 <tr><th colspan="2">${team.team}</th></tr>
