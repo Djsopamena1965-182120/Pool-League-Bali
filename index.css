@@ -1,44 +1,206 @@
-/* Navigatie */
-.main-nav {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  background: #222;
-  border-bottom: 1px solid #333;
-}
-.main-nav ul {
-  list-style: none;
+/* ====== Basis layout ====== */
+body.dark-theme {
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  background: #121212;
+  color: #f0f0f0;
   margin: 0;
-  padding: 12px 0;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
+  padding: 0;
 }
-.main-nav a {
-  color: #eee;
+
+/* ====== Navigatie ====== */
+nav.main-nav {
+  background: #141821;
+  border-bottom: 2px solid #ffd700;
+}
+nav.main-nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;   /* centreren */
+  gap: 28px;
+  margin: 0;
+  padding: 14px 0;
+}
+nav.main-nav li {
+  position: relative;
+}
+nav.main-nav a {
+  color: #e6e6e6;
   text-decoration: none;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: color 0.3s, transform 0.2s;
+}
+nav.main-nav a:hover {
+  color: #ffd700;
+  transform: scale(1.05);
+}
+nav.main-nav a[aria-current="page"] {
+  color: #ffd700;
+  font-weight: 700;
+  border-bottom: 2px solid #ffd700;
+  padding-bottom: 2px;
+}
+
+/* ====== Hero banner – 1200 × 400 pixels bij 72 DPI */
+.hero {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  height: 400px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+.hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+}
+.hero-content { position: absolute; bottom: 14px; left: 14px; }
+
+/* After banner */
+.after-banner { margin-top: 2.5cm; }
+
+/* Banner + logos */
+.banner {
+  text-align: center;
+  margin: 20px 0;
+}
+.banner h2 {
+  margin: 6px 0;
+  color: #ffd700;
+  font-weight: 700;
+}
+.banner .subtitle {
+  margin: 4px 0 0;
+  color: #f0f0f0;
+  font-size: 0.95rem;
+  font-style: italic;
+}
+.banner-logos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 40px;
+  justify-items: center;
+  align-items: center;
+  margin: 30px auto;
+  max-width: 800px;
+}
+.team-logo img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid #ffd700;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+.team-logo img:hover {
+  transform: scale(1.1);
+  border-color: #ffe066;
+}
+.team-logo span {
+  display: block;
+  margin-top: 8px;
+  color: #f0f0f0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Secties */
+.section {
+  max-width: 900px;
+  margin: 24px auto;
+  padding: 0 20px;
+}
+.section h2 {
+  text-align: center;
+  color: #ffd700;
+  margin-bottom: 16px;
+}
+.section p {
+  margin: 8px 0 16px;
+}
+
+/* Tabellen */
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  font-size: 0.95rem;
+  background-color: #141821;
+  color: #e6e6e6;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+.results-table th, .results-table td {
+  border: 1px solid #263245;
+  padding: 8px 12px;
+  text-align: center;
+}
+.results-table th {
+  background: #1b2130;
+  color: #ffd700;
+  font-weight: 700;
+}
+.results-table tbody tr:nth-child(odd) td { background: #101622; }
+.results-table tbody tr:nth-child(even) td { background: #1f2738; }
+.results-table td { color: #e6e6e6; }
+
+/* Footer */
+.footer {
+  background: #141821;
+  color: #aaa;
+  width: 100%;
+  padding: 20px 0;
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.footer p {
+  margin: 6px 0;
+  max-width: 800px;
+}
+
+/* Language toggle button */
+.btn-lang {
+  margin-left: 20px;
+  padding: 6px 12px;
+  background: #ffd700;
+  color: #111;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
   font-weight: bold;
 }
-.main-nav a[aria-current="page"] { color: #ffcc00; }
-.main-nav a:hover { color: #ffcc00; }
+.btn-lang:hover {
+  background: #ffe066;
+}
 
-/* ✅ Mobiel weergave zoals standings.html */
-@media (max-width: 768px) {
-  .main-nav ul {
+/* ====== Extra mobiel fix ====== */
+@media (max-width: 600px) {
+  nav.main-nav ul {
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    padding: 10px 0;
+    gap: 6px;
+    padding: 6px 0;
   }
-  .main-nav a {
+  nav.main-nav a {
     display: block;
-    width: 100%;
-    text-align: center;
-    padding: 10px;
-    border-bottom: 1px solid #333;
+    padding: 4px 8px;
+    font-size: 0.85rem;
+    color: #e6e6e6;
   }
-  .main-nav a[aria-current="page"] {
-    background: #111;
-    color: #ffcc00;
+  nav.main-nav a[aria-current="page"] {
+    color: #ffd700;
+    border-bottom: none;
   }
 }
