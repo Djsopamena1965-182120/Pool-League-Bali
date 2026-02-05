@@ -1,1 +1,25 @@
+name: Update Matches
+
+on:
+  workflow_dispatch:   # handmatig starten
+  repository_dispatch: # kan aangeroepen worden via API
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Configure Git
+        run: |
+          git config user.name "PoolLeagueBot"
+          git config user.email "bot@poolleague.local"
+
+      - name: Update matches.json
+        run: |
+          echo '${{ github.event.client_payload.matches }}' > matches.json
+          git add matches.json
+          git commit -m "Update matches.json via admin panel"
+          git push
 
