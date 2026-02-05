@@ -20,7 +20,6 @@ async function loadAll() {
   }
 }
 
-// voorbeeld renderfunctie voor teams.html
 function renderTeamsPage() {
   const grid = document.querySelector(".team-grid");
   if (!grid) return;
