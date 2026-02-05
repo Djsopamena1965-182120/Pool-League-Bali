@@ -1,1 +1,16 @@
+[
+  {
+    "id": "match-001",
+    "week": 1,
+    "date": "2026-02-01",
+    "teamA": "Litut",
+    "teamB": "Black Library",
+    "type": "Single",
+    "playerA1": "Jesus",
+    "playerB1": "Achie",
+    "set1": "5-3",
+    "set2": "4-5",
+    "scoreBase": "3 – 3"
+  }
+]
 
