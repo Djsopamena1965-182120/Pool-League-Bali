@@ -1,19 +1,66 @@
 [
   {
     "name": "Black Library",
-    "players": ["Achie (Captain)", "Danny", "STV", "Jon", "Rose"]
+    "players": [
+      "Achie (Captain)", "Danny", "STV", "Jon", "Rose",
+      "Pyer", "Virgy", "Felix", "Gary", "JP",
+      "JC", "Philly", "BL-13", "BL-14", "BL-15"
+    ]
   },
   {
     "name": "Litut",
-    "players": ["Jesus (Captain)", "Ketut", "TJ", "Dave", "Troublemaker"]
+    "players": [
+      "Jesus (Captain)", "Ketut", "TJ", "Dave", "Troublemaker",
+      "BG John", "Kai", "Dylan", "Judas", "Niluh",
+      "Tony", "Sidd", "TL-13", "TL-14", "LT-15"
+    ]
   },
   {
     "name": "Venus – Samurai Warriors",
-    "players": ["Andrew (Captain)", "Susanto", "Stek", "Bill", "Hayato"]
+    "players": [
+      "Andrew (Captain)", "Susanto", "Stek", "Bill", "Hayato",
+      "Lance", "Vanda", "Josh", "Terry", "Johan",
+      "Jeff", "Ray", "Nima", "Tony", "VN-15"
+    ]
   },
   {
     "name": "Sixteen Degrees",
-    "players": ["Andrew S", "Budi", "Cahyo", "Dewa", "Eka"]
+    "players": [
+      "Imran (Captain)", "Joel", "Pete U", "John", "German",
+      "Candra", "Abdul", "Ipank", "Jeremy", "Iva",
+      "Pete F", "Fezza", "Noel", "Tiger", "Esha"
+    ]
+  },
+  {
+    "name": "Team 5",
+    "players": [
+      "TM5-Player1 (Captain)", "TM5-Player2", "TM5-Player3", "TM5-Player4", "TM5-Player5",
+      "TM5-Player6", "TM5-Player7", "TM5-Player8", "TM5-Player9", "TM5-Player10",
+      "TM5-Player11", "TM5-Player12", "TM5-Player13", "TM5-Player14", "TM5-Player15"
+    ]
+  },
+  {
+    "name": "Team 6",
+    "players": [
+      "TM6-Player1 (Captain)", "TM6-Player2", "TM6-Player3", "TM6-Player4", "TM6-Player5",
+      "TM6-Player6", "TM6-Player7", "TM6-Player8", "TM6-Player9", "TM6-Player10",
+      "TM6-Player11", "TM6-Player12", "TM6-Player13", "TM6-Player14", "TM6-Player15"
+    ]
+  },
+  {
+    "name": "Team 7",
+    "players": [
+      "TM7-Player1 (Captain)", "TM7-Player2", "TM7-Player3", "TM7-Player4", "TM7-Player5",
+      "TM7-Player6", "TM7-Player7", "TM7-Player8", "TM7-Player9", "TM7-Player10",
+      "TM7-Player11", "TM7-Player12", "TM7-Player13", "TM7-Player14", "TM7-Player15"
+    ]
+  },
+  {
+    "name": "Team 8",
+    "players": [
+      "TM8-Player1 (Captain)", "TM8-Player2", "TM8-Player3", "TM8-Player4", "TM8-Player5",
+      "TM8-Player6", "TM8-Player7", "TM8-Player8", "TM8-Player9", "TM8-Player10",
+      "TM8-Player11", "TM8-Player12", "TM8-Player13", "TM8-Player14", "TM8-Player15"
+    ]
   }
 ]
-
