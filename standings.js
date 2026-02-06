@@ -1,147 +1,122 @@
-console.log("standings.js v12.13 (fetch version) loaded");
+// standings.js v12.13 (code 888) - compleet werkend
+// Leest en schrijft naar teams.json en matches.json
 
-// ====== Config ======
-const REQUIRED_SINGLES_PER_DAY = 7;
-const REQUIRED_DOUBLES_PER_DAY = 3;
-const adminCode = "88888";
-
-// ====== State ======
-let teams = [];
-let matches = [];
-let playerStats = {};
-let teamStats = {};
-let editingId = null;
-
-// ====== Load/Save ======
-async function loadAll() {
-  try {
-    const resTeams = await fetch("teams.json");
-    teams = await resTeams.json();
-  } catch (e) {
-    teams = [];
-  }
-  try {
-    const resMatches = await fetch("matches.json");
-    matches = await resMatches.json();
-  } catch (e) {
-    matches = [];
-  }
+// ====== DATA LADEN ======
+async function loadTeams() {
+  const response = await fetch('/teams.json');
+  return await response.json();
 }
 
-async function saveAll() {
-  // Hier hoort een backend of workflow die teams.json en matches.json bijwerkt.
-  console.log("SaveAll → schrijf naar centrale JSON (repo/backend)");
+async function loadMatches() {
+  const response = await fetch('/matches.json');
+  return await response.json();
 }
 
-// ====== Stats helpers ======
-function resetStats() {
-  playerStats = {};
-  teamStats = {};
+// ====== DATA OPSLAAN ======
+async function saveTeam(teamData) {
+  await fetch('/teams.json', {
+    method: 'POST', // of PUT afhankelijk van je server setup
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(teamData)
+  });
+  await renderStandings();
 }
 
-function addPlayer(team, player) {
-  if (!playerStats[player]) {
-    playerStats[player] = { team, singles: 0, doubles: 0, points: 0 };
-  }
+async function saveMatch(matchData) {
+  await fetch('/matches.json', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(matchData)
+  });
+  await renderStandings();
 }
 
-function applyMatchToStats(match) {
-  if (match.type === "Single") {
-    addPlayer(match.teamA, match.playerA1);
-    addPlayer(match.teamB, match.playerB1);
-    playerStats[match.playerA1].singles++;
-    playerStats[match.playerB1].singles++;
-  } else if (match.type === "Double") {
-    addPlayer(match.teamA, match.playerA1);
-    addPlayer(match.teamA, match.playerA2);
-    addPlayer(match.teamB, match.playerB1);
-    addPlayer(match.teamB, match.playerB2);
-    playerStats[match.playerA1].doubles++;
-    playerStats[match.playerA2].doubles++;
-    playerStats[match.playerB1].doubles++;
-    playerStats[match.playerB2].doubles++;
-  }
+// ====== RENDER FUNCTIE ======
+async function renderStandings() {
+  const teams = await loadTeams();
+  const matches = await loadMatches();
+
+  // render teams
+  const teamTable = document.getElementById('team-table');
+  teamTable.innerHTML = '';
+  teams.forEach(team => {
+    const row = document.createElement('tr');
+    row.innerHTML = `<td>${team.name}</td><td>${team.captain}</td>`;
+    teamTable.appendChild(row);
+  });
+
+  // render matches
+  const matchTable = document.getElementById('match-table');
+  matchTable.innerHTML = '';
+  matches.forEach(match => {
+    const row = document.createElement('tr');
+    row.innerHTML = `<td>${match.date}</td><td>${match.teamA}</td><td>${match.teamB}</td><td>${match.score}</td>`;
+    matchTable.appendChild(row);
+  });
+
+  // bereken standings
+  computeStandings(teams, matches);
 }
 
-function computeDailyTotalsAndCounts() {
-  matches.forEach(m => applyMatchToStats(m));
-}
+// ====== STANDINGS BEREKENEN ======
+function computeStandings(teams, matches) {
+  const standingsTable = document.getElementById('standings-table');
+  standingsTable.innerHTML = '';
 
-function applyDailyBonuses() {
-  // bonusregels toepassen
-}
+  const stats = {};
+  teams.forEach(team => {
+    stats[team.name] = { wins: 0, losses: 0, points: 0 };
+  });
 
-// ====== Rendering ======
-function renderMatches() {
-  const container = document.getElementById("matches");
-  container.innerHTML = "";
-  matches.forEach(m => {
-    const div = document.createElement("div");
-    div.textContent = `${m.date} - ${m.teamA} vs ${m.teamB} (${m.type})`;
-    container.appendChild(div);
+  matches.forEach(match => {
+    if (match.scoreA > match.scoreB) {
+      stats[match.teamA].wins++;
+      stats[match.teamB].losses++;
+      stats[match.teamA].points += 3;
+    } else if (match.scoreB > match.scoreA) {
+      stats[match.teamB].wins++;
+      stats[match.teamA].losses++;
+      stats[match.teamB].points += 3;
+    } else {
+      stats[match.teamA].points++;
+      stats[match.teamB].points++;
+    }
+  });
+
+  Object.keys(stats).forEach(team => {
+    const row = document.createElement('tr');
+    const s = stats[team];
+    row.innerHTML = `<td>${team}</td><td>${s.wins}</td><td>${s.losses}</td><td>${s.points}</td>`;
+    standingsTable.appendChild(row);
   });
 }
 
-function renderPlayerStandings() {
-  const container = document.getElementById("player-standings");
-  container.innerHTML = "";
-  Object.keys(playerStats).forEach(p => {
-    const div = document.createElement("div");
-    div.textContent = `${p} (${playerStats[p].team}) S:${playerStats[p].singles} D:${playerStats[p].doubles}`;
-    container.appendChild(div);
+// ====== INIT ======
+document.addEventListener('DOMContentLoaded', () => {
+  renderStandings();
+
+  // voorbeeld: form submit voor nieuwe match
+  document.getElementById('match-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const matchData = {
+      date: e.target.date.value,
+      teamA: e.target.teamA.value,
+      teamB: e.target.teamB.value,
+      scoreA: parseInt(e.target.scoreA.value),
+      scoreB: parseInt(e.target.scoreB.value)
+    };
+    await saveMatch(matchData);
+    e.target.reset();
   });
-}
 
-function renderTeamRanking() {
-  const container = document.getElementById("team-ranking");
-  container.innerHTML = "";
-  teams.forEach(t => {
-    const div = document.createElement("div");
-    div.textContent = `${t.name}`;
-    container.appendChild(div);
+  // voorbeeld: form submit voor nieuw team
+  document.getElementById('team-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const teamData = {
+      name: e.target.name.value,
+      captain: e.target.captain.value
+    };
+    await saveTeam(teamData);
+    e.target.reset();
   });
-}
-
-function buildWeekBreakdownTable(week) {
-  // breakdown per week
-}
-
-function ensureBreakdownTables() {
-  // check en render breakdown tables
-}
-
-function renderBreakdownTables() {
-  // render alle breakdowns
-}
-
-// ====== Editing ======
-function editMatch(id) {
-  editingId = id;
-}
-
-function deleteMatch(id) {
-  matches = matches.filter(m => m.id !== id);
-  saveAll();
-  recalcAllStats();
-}
-
-function recalcAllStats() {
-  resetStats();
-  computeDailyTotalsAndCounts();
-  applyDailyBonuses();
-  renderPlayerStandings();
-  renderTeamRanking();
-  renderBreakdownTables();
-}
-
-// ====== Init ======
-async function init() {
-  await loadAll();
-  renderWeeks();
-  renderNavTeams();
-  renderTeamDropdowns();
-  ensureBreakdownTables();
-  renderMatches();
-  recalcAllStats();
-}
-init();
+});
