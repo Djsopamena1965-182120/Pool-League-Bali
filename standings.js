@@ -1,122 +1,89 @@
-// standings.js v12.13 (code 888) - compleet werkend
-// Leest en schrijft naar teams.json en matches.json
+// standings.js v1.0
 
-// ====== DATA LADEN ======
-async function loadTeams() {
-  const response = await fetch('/teams.json');
-  return await response.json();
-}
-
-async function loadMatches() {
-  const response = await fetch('/matches.json');
-  return await response.json();
-}
-
-// ====== DATA OPSLAAN ======
-async function saveTeam(teamData) {
-  await fetch('/teams.json', {
-    method: 'POST', // of PUT afhankelijk van je server setup
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(teamData)
-  });
-  await renderStandings();
-}
-
-async function saveMatch(matchData) {
-  await fetch('/matches.json', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(matchData)
-  });
-  await renderStandings();
-}
-
-// ====== RENDER FUNCTIE ======
-async function renderStandings() {
-  const teams = await loadTeams();
-  const matches = await loadMatches();
-
-  // render teams
-  const teamTable = document.getElementById('team-table');
-  teamTable.innerHTML = '';
-  teams.forEach(team => {
-    const row = document.createElement('tr');
-    row.innerHTML = `<td>${team.name}</td><td>${team.captain}</td>`;
-    teamTable.appendChild(row);
-  });
-
-  // render matches
-  const matchTable = document.getElementById('match-table');
-  matchTable.innerHTML = '';
-  matches.forEach(match => {
-    const row = document.createElement('tr');
-    row.innerHTML = `<td>${match.date}</td><td>${match.teamA}</td><td>${match.teamB}</td><td>${match.score}</td>`;
-    matchTable.appendChild(row);
-  });
-
-  // bereken standings
+// Load JSON data
+async function loadData() {
+  const teamsResponse = await fetch('teams.json');
+  const matchesResponse = await fetch('match.json');
+  const teams = await teamsResponse.json();
+  const matches = await matchesResponse.json();
   computeStandings(teams, matches);
 }
 
-// ====== STANDINGS BEREKENEN ======
+// Compute standings
 function computeStandings(teams, matches) {
-  const standingsTable = document.getElementById('standings-table');
-  standingsTable.innerHTML = '';
+  const standings = {};
 
-  const stats = {};
+  // Initialize teams
   teams.forEach(team => {
-    stats[team.name] = { wins: 0, losses: 0, points: 0 };
+    standings[team.name] = {
+      played: 0,
+      won: 0,
+      lost: 0,
+      setsFor: 0,
+      setsAgainst: 0,
+      points: 0
+    };
   });
 
+  // Process matches
   matches.forEach(match => {
-    if (match.scoreA > match.scoreB) {
-      stats[match.teamA].wins++;
-      stats[match.teamB].losses++;
-      stats[match.teamA].points += 3;
-    } else if (match.scoreB > match.scoreA) {
-      stats[match.teamB].wins++;
-      stats[match.teamA].losses++;
-      stats[match.teamB].points += 3;
+    const teamA = standings[match.teamA];
+    const teamB = standings[match.teamB];
+
+    // Count sets
+    const sets = [match.set1, match.set2, match.set3, match.set4].filter(Boolean);
+    let setsA = 0, setsB = 0;
+    sets.forEach(set => {
+      const [a, b] = set.split('-').map(Number);
+      setsA += a;
+      setsB += b;
+    });
+
+    // Update stats
+    teamA.played++;
+    teamB.played++;
+    teamA.setsFor += setsA;
+    teamA.setsAgainst += setsB;
+    teamB.setsFor += setsB;
+    teamB.setsAgainst += setsA;
+
+    if (setsA > setsB) {
+      teamA.won++;
+      teamB.lost++;
+      teamA.points += 3;
     } else {
-      stats[match.teamA].points++;
-      stats[match.teamB].points++;
+      teamB.won++;
+      teamA.lost++;
+      teamB.points += 3;
     }
   });
 
-  Object.keys(stats).forEach(team => {
+  renderStandings(standings);
+}
+
+// Render standings into HTML table
+function renderStandings(standings) {
+  const table = document.getElementById('standings-table');
+  table.innerHTML = '';
+
+  Object.keys(standings).forEach(team => {
     const row = document.createElement('tr');
-    const s = stats[team];
-    row.innerHTML = `<td>${team}</td><td>${s.wins}</td><td>${s.losses}</td><td>${s.points}</td>`;
-    standingsTable.appendChild(row);
+    const stats = standings[team];
+    row.innerHTML = `
+      <td>${team}</td>
+      <td>${stats.played}</td>
+      <td>${stats.won}</td>
+      <td>${stats.lost}</td>
+      <td>${stats.setsFor}</td>
+      <td>${stats.setsAgainst}</td>
+      <td>${stats.points}</td>
+    `;
+    table.appendChild(row);
   });
 }
 
-// ====== INIT ======
-document.addEventListener('DOMContentLoaded', () => {
-  renderStandings();
+// Recompute button
+document.getElementById('recompute-btn').addEventListener('click', loadData);
 
-  // voorbeeld: form submit voor nieuwe match
-  document.getElementById('match-form').addEventListener('submit', async e => {
-    e.preventDefault();
-    const matchData = {
-      date: e.target.date.value,
-      teamA: e.target.teamA.value,
-      teamB: e.target.teamB.value,
-      scoreA: parseInt(e.target.scoreA.value),
-      scoreB: parseInt(e.target.scoreB.value)
-    };
-    await saveMatch(matchData);
-    e.target.reset();
-  });
-
-  // voorbeeld: form submit voor nieuw team
-  document.getElementById('team-form').addEventListener('submit', async e => {
-    e.preventDefault();
-    const teamData = {
-      name: e.target.name.value,
-      captain: e.target.captain.value
-    };
-    await saveTeam(teamData);
-    e.target.reset();
-  });
-});
+// Initial load
+loadData();
