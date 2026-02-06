@@ -1,4 +1,4 @@
-<deel 1 regel 1>
+<deel 1a regel 1>
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -7,6 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Koppeling naar externe stylesheet -->
   <link rel="stylesheet" href="standings.css">
+  
+  <deel 1b regel 12 begin van de style>
   <style>
     :root {
       --bg:#0f1115; --card:#141821; --sub:#101622; --text:#e6e6e6;
@@ -84,8 +86,10 @@
     .status-missing{color:#ffcc80}
     .status-tie{color:#90caf9}
   </style>
-</head>
+ <deel 1b regel 88 einde van de style>
 
+ <deel 1c regel 92 begin van de heat>   
+</head>
 <body>
 
   <!-- Hoofd-navigatie bovenaan -->
@@ -110,10 +114,12 @@
       <h1>Pool League Bali – Season 3</h1>
     </div>
   </header>
-
+ <deel 1d regel 116 einde van de heat>
+   
 </body>
 </html>
 
+    <deel 1e regel 123 begin invulshema>
   <!-- Teamlinks (apart blok) -->
   <nav class="team-nav" aria-label="Nav teams">
     <ul id="nav-teams"></ul>
@@ -207,7 +213,8 @@
   <button type="button" class="btn ok" id="save-rules-btn">Save Rules</button>
 </div>
 
-  <!-- Weekly matches -->
+  
+  <!-- Weekly matches Tabel 1 -->
   <div class="card locked" id="weekly-card">
     <div class="titlebar"><h2>Weekly matches</h2><span class="tag">Overzicht</span></div>
     <table id="matches-table">
@@ -218,7 +225,7 @@
     </table>
   </div>
 
-  <!-- Player standings -->
+  <!-- Player standings tabel 2-->
   <div class="card">
     <div class="titlebar"><h2>Player standings</h2><span class="tag">Season 3</span></div>
     <table id="player-standings-table">
@@ -229,7 +236,7 @@
     </table>
   </div>
 
-  <!-- Team ranking -->
+  <!-- Team ranking tabel 3-->
   <div class="card">
     <div class="titlebar"><h2>Team ranking</h2><span class="tag">Season 3</span></div>
     <table id="team-ranking-table">
@@ -240,7 +247,7 @@
     </table>
   </div>
 
-  <!-- Breakdown (per datum + teams-combinatie) -->
+  <!-- Breakdown (per datum + teams-combinatie) tabel 4-->
   <div class="card">
     <div class="titlebar"><h2>Season 3 — Match breakdown</h2><span class="tag">Per datum + teams-combinatie</span></div>
     <div id="breakdown-tables"></div>
@@ -252,7 +259,7 @@
     <p>Website Designer Johan Sopamena Alias DJ Sopamena</p>
       </footer>
 
-<deel 2 regel 255>
+<deel 2a begin script regel 263>
   <!-- Script -->
   <script>
     console.log("standings.js v12.13 loaded");
@@ -427,7 +434,7 @@
       return {teamAPoints:a, teamBPoints:b};
     }
 
-<deel 3 regel 430>
+<deel 3a script regel 438>
     // ====== Stats ======
     function resetStats(){ playerStats={}; teamStats={}; teams.forEach(t=>teamStats[t.name]={played:0,wins:0,draws:0,losses:0,points:0}); }
     function addPlayer(p,pts,win,loss){ if(!p) return; if(!playerStats[p]) playerStats[p]={played:0,wins:0,losses:0,points:0}; playerStats[p].played++; playerStats[p].points+=pts; if(win) playerStats[p].wins++; if(loss) playerStats[p].losses++; }
@@ -668,7 +675,7 @@
       });
     }
 
-<deel 4 regel 671>
+<deel 4 script regel 678>
     // ====== Edit/Delete ======
     function editMatch(id){
       const m=matches.find(x=>x.id===id); if(!m) return;
@@ -744,6 +751,8 @@
   </script>
 
 <script>
+<deel 4a einde script regel 753>
+  
 document.addEventListener("DOMContentLoaded", () => {
   // laad bestaande regels
   const rulesText = document.getElementById("rules-text");
@@ -766,5 +775,6 @@ document.addEventListener("DOMContentLoaded", () => {
 </body>
 
 </html>
+
 
 
