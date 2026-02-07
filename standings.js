@@ -38,11 +38,9 @@
 
   // ====== Storage Firestore ======
   async function saveAll(){
-    // Teams opslaan
     for (const t of teams) {
       await setDoc(doc(db, "teams", t.name), t);
     }
-    // Matches opslaan
     for (const m of matches) {
       await setDoc(doc(db, "results", m.id || crypto.randomUUID()), m);
     }
@@ -68,10 +66,16 @@
     recalcAllStats();
   }
 
-  // ====== Alle bestaande functies ======
-  // (applyMatchToStats, computeBasePoints, renderMatches, renderPlayerStandings,
-  // renderTeamRanking, renderBreakdownTables, editMatch, deleteMatch, etc.)
-  // blijven ongewijzigd en werken nu met Firestore-data.
+  // ====== Admin login ======
+  function checkAdminCode() {
+    const input = document.getElementById("adminPw").value;
+    if (input === adminCode) {
+      document.getElementById("adminPanel").style.display = "block";
+    } else {
+      alert("Wrong password");
+    }
+  }
+  window.checkAdminCode = checkAdminCode;
 
   // ====== Init ======
   function init(){
