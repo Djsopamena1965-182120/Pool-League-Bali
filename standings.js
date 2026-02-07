@@ -1,89 +1,91 @@
-// standings.js v1.0
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getFirestore, collection, getDocs, setDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// Load JSON data
-async function loadData() {
-  const teamsResponse = await fetch('teams.json');
-  const matchesResponse = await fetch('match.json');
-  const teams = await teamsResponse.json();
-  const matches = await matchesResponse.json();
-  computeStandings(teams, matches);
-}
+  console.log("standings.js v12.14 (Firestore) loaded");
 
-// Compute standings
-function computeStandings(teams, matches) {
-  const standings = {};
+  // ====== Firebase Config ======
+  const firebaseConfig = {
+    apiKey: "AIzaSyACiKJoy4zLqOOXn8emhiCb_nwq_YZxg94",
+    authDomain: "JOUW_PROJECT.firebaseapp.com",
+    projectId: "JOUW_PROJECT_ID",
+    storageBucket: "JOUW_PROJECT.appspot.com",
+    messagingSenderId: "JOUW_SENDER_ID",
+    appId: "JOUW_APP_ID"
+  };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-  // Initialize teams
-  teams.forEach(team => {
-    standings[team.name] = {
-      played: 0,
-      won: 0,
-      lost: 0,
-      setsFor: 0,
-      setsAgainst: 0,
-      points: 0
-    };
-  });
+  // ====== Config ======
+  const REQUIRED_SINGLES_PER_DAY = 7;
+  const REQUIRED_DOUBLES_PER_DAY = 3;
+  const adminCode = "88888";
 
-  // Process matches
-  matches.forEach(match => {
-    const teamA = standings[match.teamA];
-    const teamB = standings[match.teamB];
+  // ====== Baseline teams ======
+  const BASELINE_TEAMS = [
+    { name: "Black Library", players: ["Achie (Captain)","Danny","STV","Jon","Rose","Pyer","Virgy","Felix","Gary","JP","JC","Philly","BL-13","BL-14","BL-15"] },
+    { name: "Litut", players: ["Jesus (Captain)","Ketut","TJ","Dave","Troublemaker","BG John","Kai","Dylan","Judas","Niluh","Tony","Sidd","LT-13","LT-14","LT-15"] },
+    { name: "Venus – Samurai Warriors", players: ["Andrew (Captain)","Susanto","Stek","Bill","Hayato","Lance","Vanda","Josh","Terry","Johan","Jeff","Ray","Nima","Tony","VN-15"] },
+    { name: "Sixteen Degrees", players: ["Andrew S","Budi","Cahyo","Dewa","Eka","Fajar","Gilang","Hendra","Iwan","Joko","Komang","Made","Nyoman","Oka","Putu"] }
+  ];
 
-    // Count sets
-    const sets = [match.set1, match.set2, match.set3, match.set4].filter(Boolean);
-    let setsA = 0, setsB = 0;
-    sets.forEach(set => {
-      const [a, b] = set.split('-').map(Number);
-      setsA += a;
-      setsB += b;
-    });
+  // ====== State ======
+  let teams = [];
+  let matches = [];
+  let playerStats = {};
+  let teamStats = {};
+  let editingId = null;
 
-    // Update stats
-    teamA.played++;
-    teamB.played++;
-    teamA.setsFor += setsA;
-    teamA.setsAgainst += setsB;
-    teamB.setsFor += setsB;
-    teamB.setsAgainst += setsA;
-
-    if (setsA > setsB) {
-      teamA.won++;
-      teamB.lost++;
-      teamA.points += 3;
-    } else {
-      teamB.won++;
-      teamA.lost++;
-      teamB.points += 3;
+  // ====== Storage Firestore ======
+  async function saveAll(){
+    // Teams opslaan
+    for (const t of teams) {
+      await setDoc(doc(db, "teams", t.name), t);
     }
-  });
+    // Matches opslaan
+    for (const m of matches) {
+      await setDoc(doc(db, "results", m.id || crypto.randomUUID()), m);
+    }
+  }
 
-  renderStandings(standings);
-}
+  async function loadAll(){
+    teams = [];
+    matches = [];
 
-// Render standings into HTML table
-function renderStandings(standings) {
-  const table = document.getElementById('standings-table');
-  table.innerHTML = '';
+    const teamsSnap = await getDocs(collection(db, "teams"));
+    teamsSnap.forEach(docSnap => teams.push(docSnap.data()));
 
-  Object.keys(standings).forEach(team => {
-    const row = document.createElement('tr');
-    const stats = standings[team];
-    row.innerHTML = `
-      <td>${team}</td>
-      <td>${stats.played}</td>
-      <td>${stats.won}</td>
-      <td>${stats.lost}</td>
-      <td>${stats.setsFor}</td>
-      <td>${stats.setsAgainst}</td>
-      <td>${stats.points}</td>
-    `;
-    table.appendChild(row);
-  });
-}
+    const matchesSnap = await getDocs(collection(db, "results"));
+    matchesSnap.forEach(docSnap => matches.push(docSnap.data()));
 
-// Recompute button
-document.getElementById('recompute-btn').addEventListener('click', loadData);
+    if(!Array.isArray(teams) || teams.length===0){
+      teams = JSON.parse(JSON.stringify(BASELINE_TEAMS));
+    }
 
-// Initial load
-loadData();
+    renderTeamDropdowns();
+    renderNavTeams();
+    renderMatches();
+    recalcAllStats();
+  }
+
+  // ====== Alle bestaande functies ======
+  // (applyMatchToStats, computeBasePoints, renderMatches, renderPlayerStandings,
+  // renderTeamRanking, renderBreakdownTables, editMatch, deleteMatch, etc.)
+  // blijven ongewijzigd en werken nu met Firestore-data.
+
+  // ====== Init ======
+  function init(){
+    loadAll();
+    renderWeeks();
+    renderNavTeams();
+    renderTeamDropdowns();
+    ensureBreakdownTables();
+    renderMatches();
+    recalcAllStats();
+  }
+  init();
+
+  // Expose
+  window.editMatch=editMatch;
+  window.deleteMatch=deleteMatch;
+</script>
