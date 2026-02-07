@@ -6,7 +6,7 @@
 
   // ====== Firebase Config ======
   const firebaseConfig = {
-    apiKey: "AIzaSyACiKJoy4zLqOOXn8emhiCb_nwq_YZxg94",
+    apiKey: "key here",
     authDomain: "JOUW_PROJECT.firebaseapp.com",
     projectId: "JOUW_PROJECT_ID",
     storageBucket: "JOUW_PROJECT.appspot.com",
@@ -93,3 +93,4 @@
   window.editMatch=editMatch;
   window.deleteMatch=deleteMatch;
 </script>
+
