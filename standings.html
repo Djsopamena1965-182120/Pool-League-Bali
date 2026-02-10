@@ -1,4 +1,3 @@
-<deel 1 regel 1 section 1>
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -113,6 +112,8 @@
 
 </body>
 </html>
+
+
 
   <!-- Teamlinks (apart blok) -->
   <nav class="team-nav" aria-label="Nav teams">
@@ -252,7 +253,6 @@
     <p>Website Designer Johan Sopamena Alias DJ Sopamena</p>
       </footer>
 
-<deel 2 regel 255>
   <!-- Script -->
   <script>
     console.log("standings.js v12.13 loaded");
@@ -427,7 +427,6 @@
       return {teamAPoints:a, teamBPoints:b};
     }
 
-<deel 3 regel 430>
     // ====== Stats ======
     function resetStats(){ playerStats={}; teamStats={}; teams.forEach(t=>teamStats[t.name]={played:0,wins:0,draws:0,losses:0,points:0}); }
     function addPlayer(p,pts,win,loss){ if(!p) return; if(!playerStats[p]) playerStats[p]={played:0,wins:0,losses:0,points:0}; playerStats[p].played++; playerStats[p].points+=pts; if(win) playerStats[p].wins++; if(loss) playerStats[p].losses++; }
@@ -668,7 +667,6 @@
       });
     }
 
-<deel 4 regel 671>
     // ====== Edit/Delete ======
     function editMatch(id){
       const m=matches.find(x=>x.id===id); if(!m) return;
@@ -766,4 +764,5 @@ document.addEventListener("DOMContentLoaded", () => {
 </body>
 
 </html>
+
 
